@@ -9,10 +9,10 @@ import re
 url = raw_input("Enter YouTube URL: ")
 http = urllib3.PoolManager()
 fetch = http.request('GET', url)
-s = fetch.data
+a = fetch.data
 start = '{"title":{"runs":[{"text":"'
 end = '"}]},"viewCount"'
-title = s[s.find(start)+len(start):s.rfind(end)]
+title = a[a.find(start)+len(start):a.rfind(end)]
 #print(title)
 
 ## Formats video link's title into YouTube search link
@@ -21,5 +21,7 @@ query = "https://www.youtube.com/results?search_query=" + "+".join(title.split()
 print(query)
 
 #3 Fetches data from query link
-fetchQuery = http.request('GET', query)
-#print(fetchQuery.data)
+#fetchQuery = http.request('GET', query)
+#b = fetchQuery.data
+#searchTitle = b[b.find(start)+len(start):b.rfind(end)]
+#print(searchTitle)
