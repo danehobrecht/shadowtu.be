@@ -25,3 +25,5 @@ print(query)
 #b = fetchQuery.data
 #searchTitle = b[b.find(start)+len(start):b.rfind(end)]
 #print(searchTitle)
+
+# OBJECTIVE: Find (or in the case of shadowbanning, don't find) the instance of the title fetched earlier in the youtube query data fetch
