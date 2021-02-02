@@ -13,8 +13,13 @@ s = fetch.data
 start = '{"title":{"runs":[{"text":"'
 end = '"}]},"viewCount"'
 title = s[s.find(start)+len(start):s.rfind(end)]
+#print(title)
 
-## Formats link into YouTube title search
+## Formats video link's title into YouTube search link
 
-title = "https://www.youtube.com/results?search_query=" + "+".join( title.split() )
-print(title)
+query = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
+print(query)
+
+#3 Fetches data from query link
+fetchQuery = http.request('GET', query)
+#print(fetchQuery.data)
