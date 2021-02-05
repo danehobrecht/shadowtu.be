@@ -12,10 +12,14 @@ nonAccessible = 0
 def userInput():
 	global urlInput
 	urlInput = raw_input("Enter YouTube URL: ")
-	try:
-    		urllib.urlopen(urlInput)
-	except IOError:
-    		print "Invalid URL."
+	if 'https://youtu.be/' in urlInput.split():
+		try:
+    			urllib.urlopen(urlInput)
+		except IOError:
+    			print "Invalid YouTube URL."
+			userInput()
+	else:
+		print "Invalid YouTube URL."
 		userInput()
 
 def getTitle():
