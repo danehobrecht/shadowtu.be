@@ -1,13 +1,21 @@
 #!/usr/bin/python
-# Dependencies: python-pip, python-pip3, urllib, urllib3
+# Dependencies: python-pip, python-pip3, pip3 install urllib3, pip install PySocks, sudo apt install tor
 # Example test url: https://youtu.be/Y6ljFaKRTrI
 
 import urllib
 import urllib3
 import re
+import socks
+import socket
 
-accessible = 0
-nonAccessible = 0
+videosAccessible = 0
+videosNonAccessible = 0
+attemptedRoutes = 0
+
+def create_connection(address, timeout = None, source_address = None):
+	sock = socks.socksocket()
+	sock.connect(address)
+	return sock
 
 def userInput():
 	global urlInput
@@ -34,25 +42,30 @@ def getTitle():
 	title = a[a.find(start)+len(start):a.rfind(end)]
 
 def searchTitle():
-	global accessible
-	global nonAccessible
-	print("Searching for title...")
+	global videosAccessible
+	global videosNonAccessible
+	global attemptedRoutes
+	print("Searching for instance...")
 	formatQuery = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
 	fetchQuery = http.request('GET', formatQuery)
 	b = fetchQuery.data
 	if b.find(title) >= 0:
 		print("Found!")
-		accessible += 1
+		videosAccessible += 1
+		attemptedRoutes += 1
 	else:
 		print("Not found!")
-		nonAccessible += 1
+		videosNonAccessible += 1
+		attemptedRoutes += 1
 
-userInput()
-getTitle()
+def execute():
+	userInput()
+	socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050)
+	socket.socket = socks.socksocket
+	socket.create_connection = create_connection
+	getTitle()
+	for x in range(0, 3, 1):
+		searchTitle()
+	print("Videos publicly accessible: " + str(videosAccessible) + "/" + str(attemptedRoutes))
 
-for x in range(0, 3, 1):
-	searchTitle()
-
-print("Videos publicly accessible: " + str(accessible) + "/" + "?")
-
-# Calling external script: subprocess.call("./py.py", shell = False)
+execute()
