@@ -1,6 +1,8 @@
 #!/usr/bin/python
-#Dependencies: sudo apt install python-pip, sudo apt install python-pip3, pip3 install urllib3, pip install PySocks, sudo apt install tor
-#Example test url: https://youtu.be/Y6ljFaKRTrI
+
+# Dependencies: sudo apt install python-pip, sudo apt install python-pip3, pip3 install urllib3, pip install PySocks, sudo apt install tor
+# Tor browser must be running for this script to execute successfully.
+# Example test url: https://youtu.be/Y6ljFaKRTrI
 
 import urllib
 import urllib3
