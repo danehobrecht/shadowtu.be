@@ -80,7 +80,7 @@ def searchTitle():
 def execute():
 	userInput()
 	getTitle()
-	for x in range(0, 3, 1):
+	for x in range(0, 10, 1):
 		searchTitle()
 		print("Rotating IP...")
 		time.sleep(9)
