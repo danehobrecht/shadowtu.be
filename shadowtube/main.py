@@ -17,12 +17,12 @@ from stem import Signal
 videosAccessible = 0
 attemptedRoutes = 0
 
-def getTorSession():
+def get_tor_session():
     session = requests.Session()
     session.proxies = {"http": "socks5://localhost:9150", "https": "socks5://localhost:9150"}
     return session
 
-def renewConnection():
+def renew_connection():
     with Controller.from_port(port = 9151) as c:
         c.authenticate()
         c.signal(Signal.NEWNYM)
@@ -74,13 +74,13 @@ def execute():
 	userInput()
 	getTitle()
 	for x in range(0, 30, 1):
-		s = getTorSession()
+		s = get_tor_session()
 		ip = s.get("http://icanhazip.com").text
 		print("IP being tested: " + ip)
 		searchTitle()
 		print("Rotating IP...\n")
 		time.sleep(9)
-		renewConnection()
+		renew_connection()
 	print(str(videosAccessible) + "/" + str(attemptedRoutes) + " public instances found.")
 
 execute()
