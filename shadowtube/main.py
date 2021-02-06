@@ -17,12 +17,12 @@ from stem import Signal
 videosAccessible = 0
 attemptedRoutes = 0
 
-def get_tor_session():
+def getTorSession():
     session = requests.Session()
     session.proxies = {"http": "socks5://localhost:9150", "https": "socks5://localhost:9150"}
     return session
 
-def renew_connection():
+def renewConnection():
     with Controller.from_port(port = 9151) as c:
         c.authenticate()
         c.signal(Signal.NEWNYM)
@@ -55,7 +55,7 @@ def getTitle():
 def searchTitle():
 	global videosAccessible
 	global attemptedRoutes
-	print("Searching for instance...")
+	print("Searching for instance..."),
 	formatQuery = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
 	fetchQuery = http.request('GET', formatQuery)
 	b = fetchQuery.data
@@ -73,14 +73,14 @@ def searchTitle():
 def execute():
 	userInput()
 	getTitle()
-	for x in range(0, 3, 1):
-		s = get_tor_session()
+	for x in range(0, 30, 1):
+		s = getTorSession()
 		ip = s.get("http://icanhazip.com").text
 		print("IP being tested: " + ip)
 		searchTitle()
 		print("Rotating IP...\n")
 		time.sleep(9)
-		renew_connection()
+		renewConnection()
 	print(str(videosAccessible) + "/" + str(attemptedRoutes) + " public instances found.")
 
 execute()
