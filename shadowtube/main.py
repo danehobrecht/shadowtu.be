@@ -14,26 +14,18 @@ import time
 from stem.control import Controller
 from stem import Signal
 
+videosAccessible = 0
+attemptedRoutes = 0
+
 def get_tor_session():
-    # initialize a requests Session
     session = requests.Session()
-    # setting the proxy of both http & https to the localhost:9050 
-    # this requires a running Tor service in your machine and listening on port 9050 (by default)
     session.proxies = {"http": "socks5://localhost:9150", "https": "socks5://localhost:9150"}
     return session
 
 def renew_connection():
     with Controller.from_port(port = 9151) as c:
         c.authenticate()
-        # send NEWNYM signal to establish a new clean connection through the Tor network
         c.signal(Signal.NEWNYM)
-
-s = get_tor_session()
-ip = s.get("http://icanhazip.com").text
-print("\nCurrent IP: " + ip)
-
-videosAccessible = 0
-attemptedRoutes = 0
 
 def userInput():
 	global urlInput
@@ -58,6 +50,7 @@ def getTitle():
 	start = '{"title":{"runs":[{"text":"'
 	end = '"}]},"viewCount"'
 	title = a[a.find(start)+len(start):a.rfind(end)]
+	print("Done.\n")
 
 def searchTitle():
 	global videosAccessible
@@ -67,11 +60,11 @@ def searchTitle():
 	fetchQuery = http.request('GET', formatQuery)
 	b = fetchQuery.data
 	if b.find(title) >= 0:
-		print("Found!")
+		print("Found!\n")
 		videosAccessible += 1
 		attemptedRoutes += 1
 	else:
-		print("Not found!")
+		print("Not found!\n")
 		videosAccessible -= 1
 		if videosAccessible < 0:
 			videosAccessible = 0
@@ -80,14 +73,14 @@ def searchTitle():
 def execute():
 	userInput()
 	getTitle()
-	for x in range(0, 10, 1):
-		searchTitle()
-		print("Rotating IP...")
-		time.sleep(9)
-		renew_connection()
+	for x in range(0, 3, 1):
 		s = get_tor_session()
 		ip = s.get("http://icanhazip.com").text
-		print("\nIP used: " + ip)
-	print("Videos publicly accessible: " + str(videosAccessible) + "/" + str(attemptedRoutes) + "attempted routes.")
+		print("IP being tested: " + ip)
+		searchTitle()
+		print("Rotating IP...\n")
+		time.sleep(9)
+		renew_connection()
+	print(str(videosAccessible) + "/" + str(attemptedRoutes) + " public instances found.")
 
 execute()
