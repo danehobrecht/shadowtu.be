@@ -61,14 +61,14 @@ def searchTitle():
 	b = fetchQuery.data
 	if b.find(title) >= 0:
 		print("Found!\n")
-		videosAccessible += 1
 		attemptedRoutes += 1
+		videosAccessible += 1
 	else:
 		print("Not found!\n")
+		attemptedRoutes += 1
 		videosAccessible -= 1
 		if videosAccessible < 0:
 			videosAccessible = 0
-		attemptedRoutes += 1
 
 def execute():
 	userInput()
