@@ -4,18 +4,14 @@
 # Example test url: https://youtu.be/Y6ljFaKRTrI
 # Tor Browser must be running for this script to execute successfully.
 
-import urllib
-import urllib3
-import re
-import socks
-import socket
-import requests
-import time
+import urllib, urllib2, urllib3, re, socks, socket, requests, time
 from stem.control import Controller
 from stem import Signal
 
 videosAccessible = 0
 attemptedRoutes = 0
+
+# Videos
 
 def get_tor_session():
     session = requests.Session()
@@ -28,25 +24,44 @@ def renew_connection():
         c.signal(Signal.NEWNYM)
 
 def userInput():
-	global urlInput
-	urlInput = raw_input("Enter YouTube share link: ")
-	if 'https://youtu.be/' in urlInput:
+	print("\nChoose search type:\n\n1. Videos\n2. ?\n")
+	choice = raw_input()	
+	if choice == "1":
 		try:
-    			urllib.urlopen(urlInput)
+			shareUrlInput()
 		except IOError:
-    			print "Invalid link."
+			print("\nInvalid input.")
+			userInput()		
+	elif choice == "2":
+		try:
+			print("\nYou must be logged in to your Google account via your local browser to continue.\n")
+		except IOError:
+			print("\nInvalid input.")
 			userInput()
-	else:
-		print "Invalid link."
+	else: 
+		print("\nInvalid input.")
 		userInput()
+
+def shareUrlInput():
+	global shareUrl
+	shareUrl = raw_input("\nEnter YouTube share link: ")
+	if 'https://youtu.be/' in shareUrl:
+		try:
+			videosExecute()
+		except IOError:
+    			print("Invalid link. (is Tor running?)")
+			shareUrlInput()
+	else:
+		print("\nInvalid link.")
+		shareUrlInput()
 
 def getTitle():
 	global http
 	global title
-	print("Fetching title...")
+	print("\nFetching title...")
 	http = urllib3.PoolManager()
-	fetchUrlInput = http.request('GET', urlInput)
-	a = fetchUrlInput.data
+	fetchShareUrl = http.request('GET', shareUrl)
+	a = fetchShareUrl.data
 	start = '{"title":{"runs":[{"text":"'
 	end = '"}]},"viewCount"'
 	title = a[a.find(start)+len(start):a.rfind(end)]
@@ -61,19 +76,18 @@ def searchTitle():
 	b = fetchQuery.data
 	if b.find(title) >= 0:
 		print("Found!\n")
-		attemptedRoutes += 1
 		videosAccessible += 1
+		attemptedRoutes += 1
 	else:
 		print("Not found!\n")
-		attemptedRoutes += 1
 		videosAccessible -= 1
 		if videosAccessible < 0:
 			videosAccessible = 0
+		attemptedRoutes += 1
 
-def execute():
-	userInput()
+def videosExecute():
 	getTitle()
-	for x in range(0, 30, 1):
+	for x in range(0, 3, 1):
 		s = get_tor_session()
 		ip = s.get("http://icanhazip.com").text
 		print("IP being tested: " + ip)
@@ -83,4 +97,4 @@ def execute():
 		renew_connection()
 	print(str(videosAccessible) + "/" + str(attemptedRoutes) + " public instances found.")
 
-execute()
+userInput()
