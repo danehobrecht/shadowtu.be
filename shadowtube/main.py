@@ -13,34 +13,33 @@ attemptedRoutes = 0
 
 # Videos
 
-def get_tor_session():
+def getTorSession():
     session = requests.Session()
     session.proxies = {"http": "socks5://localhost:9150", "https": "socks5://localhost:9150"}
     return session
 
-def renew_connection():
+def renewConnection():
     with Controller.from_port(port = 9151) as c:
         c.authenticate()
         c.signal(Signal.NEWNYM)
 
-def userInput():
-	print("\nChoose search type:\n\n1. Videos\n2. ?\n")
-	choice = raw_input()	
+def menuInput():
+	choice = raw_input("Choose one of the listed options: ")	
 	if choice == "1":
 		try:
 			shareUrlInput()
 		except IOError:
 			print("\nInvalid input.")
-			userInput()		
+			menuInput()		
 	elif choice == "2":
 		try:
 			print("\nYou must be logged in to your Google account via your local browser to continue.\n")
 		except IOError:
 			print("\nInvalid input.")
-			userInput()
+			menuInput()
 	else: 
-		print("\nInvalid input.")
-		userInput()
+		print("\nInvalid input.\n")
+		menuInput()
 
 def shareUrlInput():
 	global shareUrl
@@ -88,13 +87,14 @@ def searchTitle():
 def videosExecute():
 	getTitle()
 	for x in range(0, 3, 1):
-		s = get_tor_session()
+		s = getTorSession()
 		ip = s.get("http://icanhazip.com").text
 		print("IP being tested: " + ip)
 		searchTitle()
 		print("Rotating IP...\n")
 		time.sleep(9)
-		renew_connection()
+		renewConnection()
 	print(str(videosAccessible) + "/" + str(attemptedRoutes) + " public instances found.")
 
-userInput()
+print("\nShadowTube\n\n1. Videos\n2. ...\n")
+menuInput()
