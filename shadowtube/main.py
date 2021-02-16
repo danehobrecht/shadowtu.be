@@ -4,9 +4,10 @@
 # Example test url: https://youtu.be/Y6ljFaKRTrI
 # Tor Browser must be running for this script to execute successfully.
 
-import urllib, urllib2, urllib3, socks, socket, re, requests, time, io
 from stem.control import Controller
 from stem import Signal
+
+import urllib, urllib2, urllib3, socks, socket, re, requests, time, io
 
 videosAccessible = 0
 commentsAccessible = 0
@@ -112,6 +113,7 @@ def getComments():
 		#print(f)
 		# Comments
 		comments = re.findall('.png,null,(.*?),null,null,,,', f)
+		#comments1 = re.findall('data-token=(.*?) data-date', f) exact comment UUID
 		commentsFormatted = str(comments).replace("[u'", '"').replace("[u'", '"').replace("[u'", '"').replace("']", '".').replace("u'", '"').replace("'", '"')
 		# Links
 		links = re.findall('  <a href=(.*?)&', f)
@@ -128,14 +130,14 @@ def getComments():
 
 def searchComment():
 	global commentsAccessible, attemptedRoutesC
-	print("Searching for comment..."),
+	print("\nSearching for comment..."),
 	link = linksFormatted.split('"')[1]
 	comment = commentsFormatted.split('"')[1]
-	print(comment)
+	#print(comment)
 	http = urllib3.PoolManager()
-	fetchQuery = http.request('GET', link) ### THIS AREA NEEDS CORRECT COMMENT FETCHING, CANT DO SO FROM STANDARD YOUTUBE URL. POTENTIAL SOLUTION: https://github.com/srcecde/python-youtube-api/blob/master/youtube/video_comments.py
+	fetchQuery = http.request('GET', link) ### THIS AREA NEEDS CORRECT COMMENT FETCHING, CANT DO SO FROM STANDARD YOUTUBE URL.
 	b = fetchQuery.data
-	print(b)
+	#print(b)
 	if b.find(comment) >= 0:
 		print("Comment found!\n")
 		commentsAccessible += 1
