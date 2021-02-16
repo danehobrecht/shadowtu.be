@@ -112,9 +112,11 @@ def getComments():
 		f = strCommentHistoryHtml.replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '').replace(']', '')
 		#print(f)
 		parentLinks = re.findall('Commented on  <a href=(.*?)&', f)
+		parentLinksFormatted = str(parentLinks).replace("[u'", "").replace("']", "")	
 		replyLinks = re.findall('comment on  <a href=(.*?)&', f)
-		print("Parent comment links: " + str(parentLinks))
-		print("Reply comment links: " + str(replyLinks))
+		replyLinksFormatted = str(parentLinks).replace("[u'", "").replace("']", "")
+		print("\nParent comment links: " + str(parentLinksFormatted))
+		print("\nReply comment links: " + str(replyLinksFormatted) + "\n")
 
 def searchComments():
 	global commentsAccessible
