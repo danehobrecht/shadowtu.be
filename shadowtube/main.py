@@ -61,8 +61,7 @@ def shareUrlInput():
 # Videos
 
 def getTitle():
-	global http
-	global title
+	global http, title
 	print("\nFetching title...")
 	http = urllib3.PoolManager()
 	fetchShareUrl = http.request('GET', shareUrl)
@@ -73,8 +72,7 @@ def getTitle():
 	print("Done.\n")
 
 def searchVideo():
-	global videosAccessible
-	global attemptedRoutesV
+	global videosAccessible, attemptedRoutesV
 	print("Searching for instance..."),
 	formatQuery = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
 	fetchQuery = http.request('GET', formatQuery)
@@ -108,6 +106,7 @@ def videosExecute():
 def getComments():
 	#https://www.youtube.com/feed/history/comment_history
 	with io.open("Google - My Activity.html", 'r', encoding='utf-8') as commentHistoryHtml:
+		global commentsFormatted, linksFormatted, parentLinksFormatted, replyLinksFormatted
 		strCommentHistoryHtml = commentHistoryHtml.read()
 		f = strCommentHistoryHtml.replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '').replace(']', '')
 		#print(f)
@@ -121,18 +120,22 @@ def getComments():
 		parentLinksFormatted = str(parentLinks).replace("[u'", '"').replace("[u'", '"').replace("']", '".').replace("u'", '"').replace("'", '"')
 		replyLinks = re.findall('comment on  <a href=(.*?)&', f)
 		replyLinksFormatted = str(replyLinks).replace("[u'", '"').replace("[u'", '"').replace("']", '".').replace("u'", '"').replace("'", '"')
+		searchComment()
 		print("\nVideos supposedly featuring parent comment(s): " + str(parentLinksFormatted))
 		print("\nVideos supposedly featuring reply comment(s): " + str(replyLinksFormatted) + "\n\n")
 		print("\nComments: " + str(commentsFormatted))
 		print("\nLinks: " + str(linksFormatted) + "\n")
 
-def searchComments():
-	global commentsAccessible
-	global attemptedRoutesC
+def searchComment():
+	global commentsAccessible, attemptedRoutesC
 	print("Searching for comment..."),
-	link = "This is the current link being tested for it's corresponding comment."
-	fetchQuery = http.request('GET', link)
+	link = linksFormatted.split('"')[1]
+	comment = commentsFormatted.split('"')[1]
+	print(comment)
+	http = urllib3.PoolManager()
+	fetchQuery = http.request('GET', link) ### THIS AREA NEEDS CORRECT COMMENT FETCHING, CANT DO SO FROM STANDARD YOUTUBE URL. POTENTIAL SOLUTION: https://github.com/srcecde/python-youtube-api/blob/master/youtube/video_comments.py
 	b = fetchQuery.data
+	print(b)
 	if b.find(comment) >= 0:
 		print("Comment found!\n")
 		commentsAccessible += 1
@@ -146,8 +149,6 @@ def searchComments():
 	
 
 def commentsExecute():
-	comment = "Comment tested and then replaced by the next comment in the sequence after an output"
-	link = "Link tested with the corresponding comment and then replaced by the next link in the sequence after an output"
 	for x in range(0, 3, 1):
 		s = getTorSession()
 		ip = s.get("http://icanhazip.com").text
