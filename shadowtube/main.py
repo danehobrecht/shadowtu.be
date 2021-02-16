@@ -110,14 +110,12 @@ def getComments():
 	with io.open("Google - My Activity.html", 'r', encoding='utf-8') as commentHistoryHtml:
 		strCommentHistoryHtml = commentHistoryHtml.read()
 		f = strCommentHistoryHtml.replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '').replace(']', '')
-		print(f)
-		#start = 'Commented on  <a href='
-		#end = '&'
+		#print(f)
 		comments = re.findall(r'.png,null,(.*?),null,null,,,', f)
-		#replyLinks = re.findall('comment on  <a href=(.*?)&amp;', f)
-		#parentLinks = re.findall('...(.*?)...', f)
-		links = = re.findall('comment on  <a href=(.*?)&amp;', f)
-		print(links)
+		replyLinks = re.findall('comment on  <a href=(.*?)&amp;', f)
+		parentLinks = re.findall('Commented on  <a href=(.*?)&amp;', f)
+		print(replyLinks)
+		print(parentLinks)
 
 def searchComments():
 	global commentsAccessible
