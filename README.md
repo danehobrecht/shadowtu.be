@@ -1,1 +1,6 @@
-does not read content of comment data.
+# ShadowTube
+YouTube shadowban detection.
+
+Install dependencies by running:
+
+    pip install -r requirements.txt
