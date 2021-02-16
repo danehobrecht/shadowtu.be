@@ -1,0 +1,6 @@
+# pip install -r requirements.txt
+urllib3
+PySocks
+cssselect
+lxml
+requests
