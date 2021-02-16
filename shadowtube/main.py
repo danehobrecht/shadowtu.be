@@ -4,14 +4,12 @@
 # Example test url: https://youtu.be/Y6ljFaKRTrI
 # Tor Browser must be running for this script to execute successfully.
 
-import urllib, urllib2, urllib3, re, socks, socket, requests, time
+import urllib, urllib2, urllib3, socks, socket, re, requests, time, io
 from stem.control import Controller
 from stem import Signal
 
 videosAccessible = 0
 attemptedRoutes = 0
-
-# Videos
 
 def getTorSession():
     session = requests.Session()
@@ -33,7 +31,7 @@ def menuInput():
 			menuInput()		
 	elif choice == "2":
 		try:
-			print("\nYou must be logged in to your Google account via your local browser to continue.\n")
+			getComments()
 		except IOError:
 			print("\nInvalid input.")
 			menuInput()
@@ -94,7 +92,19 @@ def videosExecute():
 		print("Rotating IP...\n")
 		time.sleep(9)
 		renewConnection()
-	print(str(videosAccessible) + "/" + str(attemptedRoutes) + " public instances found.")
+	print(str(videosAccessible) + "/" + str(attemptedRoutes) + " public instances found.\n")
 
-print("\nShadowTube\n\n1. Videos\n2. ...\n")
+def getComments():
+	#https://www.youtube.com/feed/history/comment_history
+	with io.open("Google - My Activity.html", 'r', encoding='utf-8') as commentHistoryHtml:
+		strCommentHistoryHtml = commentHistoryHtml.read()
+		f = strCommentHistoryHtml.replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '')
+		print(f) 
+		#start = '["YouTube",null,"https://www.gstatic.com/images/branding/product/2x/youtube_24dp.png"],null,["'
+		#end = '"],null,null,[],[],null,null,null,null,null,[],[]'
+		comments = re.findall(r'.png,null,(.*?),null,null,,,', f)
+		#comments = f[f.find(start)+len(start):f.rfind(end)]
+		print(comments)
+
+print("\nShadowTube\n\n1. Videos\n2. Comments\n")
 menuInput()
