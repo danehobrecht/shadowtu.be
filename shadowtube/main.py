@@ -115,8 +115,8 @@ def getComments():
 		parentLinksFormatted = str(parentLinks).replace("[u'", "").replace("']", "")	
 		replyLinks = re.findall('comment on  <a href=(.*?)&', f)
 		replyLinksFormatted = str(parentLinks).replace("[u'", "").replace("']", "")
-		print("\nParent comment links: " + str(parentLinksFormatted))
-		print("\nReply comment links: " + str(replyLinksFormatted) + "\n")
+		print("\nLinks supposedly featuring parent comment(s): " + str(parentLinksFormatted))
+		print("\nLinks supposedly featuring reply comment(s): " + str(replyLinksFormatted) + "\n")
 
 def searchComments():
 	global commentsAccessible
