@@ -9,7 +9,11 @@ from stem.control import Controller
 from stem import Signal
 
 videosAccessible = 0
-attemptedRoutes = 0
+commentsAccessible = 0
+attemptedRoutesV = 0
+attemptedRoutesC = 0
+
+# Tor
 
 def getTorSession():
     session = requests.Session()
@@ -20,6 +24,8 @@ def renewConnection():
     with Controller.from_port(port = 9151) as c:
         c.authenticate()
         c.signal(Signal.NEWNYM)
+
+# Input
 
 def menuInput():
 	choice = raw_input("Choose one of the listed options: ")	
@@ -52,6 +58,8 @@ def shareUrlInput():
 		print("\nInvalid link.")
 		shareUrlInput()
 
+# Videos
+
 def getTitle():
 	global http
 	global title
@@ -64,9 +72,9 @@ def getTitle():
 	title = a[a.find(start)+len(start):a.rfind(end)]
 	print("Done.\n")
 
-def searchTitle():
+def searchVideo():
 	global videosAccessible
-	global attemptedRoutes
+	global attemptedRoutesV
 	print("Searching for instance..."),
 	formatQuery = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
 	fetchQuery = http.request('GET', formatQuery)
@@ -74,13 +82,13 @@ def searchTitle():
 	if b.find(title) >= 0:
 		print("Found!\n")
 		videosAccessible += 1
-		attemptedRoutes += 1
+		attemptedRoutesV += 1
 	else:
 		print("Not found!\n")
 		videosAccessible -= 1
 		if videosAccessible < 0:
 			videosAccessible = 0
-		attemptedRoutes += 1
+		attemptedRoutesV += 1
 
 def videosExecute():
 	getTitle()
@@ -88,23 +96,62 @@ def videosExecute():
 		s = getTorSession()
 		ip = s.get("http://icanhazip.com").text
 		print("IP being tested: " + ip)
-		searchTitle()
+		searchVideo()
 		print("Rotating IP...\n")
 		time.sleep(9)
 		renewConnection()
-	print(str(videosAccessible) + "/" + str(attemptedRoutes) + " public instances found.\n")
+	print(str(videosAccessible) + "/" + str(attemptedRoutesV) + " public instances found.\n")
+
+
+# Comments
 
 def getComments():
 	#https://www.youtube.com/feed/history/comment_history
 	with io.open("Google - My Activity.html", 'r', encoding='utf-8') as commentHistoryHtml:
 		strCommentHistoryHtml = commentHistoryHtml.read()
-		f = strCommentHistoryHtml.replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '')
-		print(f) 
-		#start = '["YouTube",null,"https://www.gstatic.com/images/branding/product/2x/youtube_24dp.png"],null,["'
-		#end = '"],null,null,[],[],null,null,null,null,null,[],[]'
+		f = strCommentHistoryHtml.replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '').replace(']', '')
+		print(f)
+		#start = 'Commented on  <a href='
+		#end = '&'
 		comments = re.findall(r'.png,null,(.*?),null,null,,,', f)
-		#comments = f[f.find(start)+len(start):f.rfind(end)]
-		print(comments)
+		#replyLinks = re.findall('comment on  <a href=(.*?)&amp;', f)
+		#parentLinks = re.findall('...(.*?)...', f)
+		links = = re.findall('comment on  <a href=(.*?)&amp;', f)
+		print(links)
+
+def searchComments():
+	global commentsAccessible
+	global attemptedRoutesC
+	print("Searching for comment..."),
+	link = "This is the current link being tested for it's corresponding comment."
+	fetchQuery = http.request('GET', link)
+	b = fetchQuery.data
+	if b.find(comment) >= 0:
+		print("Comment found!\n")
+		commentsAccessible += 1
+		attemptedRoutesC += 1
+	else:
+		print("Comment not found.\n")
+		commentsAccessible -= 1
+		if commentsAccessible < 0:
+			commentsAccessible = 0
+		attemptedRoutesC += 1
+	
+
+def commentsExecute():
+	comment = "Comment tested and then replaced by the next comment in the sequence after an output"
+	link = "Link tested with the corresponding comment and then replaced by the next link in the sequence after an output"
+	for x in range(0, 3, 1):
+		s = getTorSession()
+		ip = s.get("http://icanhazip.com").text
+		print("IP being tested: " + ip)
+		searchComment()
+		print("Rotating IP...\n")
+		time.sleep(9)
+		renewConnection()
+	print(str(commentsAccessible) + "/" + str(attemptedRoutesC) + " public comments found.\n")
+
+# Menu
 
 print("\nShadowTube\n\n1. Videos\n2. Comments\n")
 menuInput()
