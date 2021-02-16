@@ -111,12 +111,20 @@ def getComments():
 		strCommentHistoryHtml = commentHistoryHtml.read()
 		f = strCommentHistoryHtml.replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '').replace(']', '')
 		#print(f)
+		# Comments
+		comments = re.findall('.png,null,(.*?),null,null,,,', f)
+		commentsFormatted = str(comments).replace("[u'", '"').replace("[u'", '"').replace("[u'", '"').replace("']", '".').replace("u'", '"').replace("'", '"')
+		# Links
+		links = re.findall('  <a href=(.*?)&', f)
+		linksFormatted = str(links).replace("[u'", '"').replace("[u'", '"').replace("[u'", '"').replace("']", '".').replace("u'", '"').replace("'", '"')
 		parentLinks = re.findall('Commented on  <a href=(.*?)&', f)
-		parentLinksFormatted = str(parentLinks).replace("[u'", "").replace("']", "")	
+		parentLinksFormatted = str(parentLinks).replace("[u'", '"').replace("[u'", '"').replace("']", '".').replace("u'", '"').replace("'", '"')
 		replyLinks = re.findall('comment on  <a href=(.*?)&', f)
-		replyLinksFormatted = str(replyLinks).replace("[u'", "").replace("']", "")
-		print("\nLinks supposedly featuring parent comment(s): " + str(parentLinksFormatted))
-		print("\nLinks supposedly featuring reply comment(s): " + str(replyLinksFormatted) + "\n")
+		replyLinksFormatted = str(replyLinks).replace("[u'", '"').replace("[u'", '"').replace("']", '".').replace("u'", '"').replace("'", '"')
+		print("\nVideos supposedly featuring parent comment(s): " + str(parentLinksFormatted))
+		print("\nVideos supposedly featuring reply comment(s): " + str(replyLinksFormatted) + "\n\n")
+		print("\nComments: " + str(commentsFormatted))
+		print("\nLinks: " + str(linksFormatted) + "\n")
 
 def searchComments():
 	global commentsAccessible
