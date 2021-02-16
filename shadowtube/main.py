@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 # Example test url: https://youtu.be/Y6ljFaKRTrI
-# As of now, the Tor service must be running as a background process for this script to execute successfully.
 
 from stem.control import Controller
 from stem import Signal
@@ -99,8 +98,7 @@ def searchVideo():
 def videosExecute():
 	getTitle()
 	for x in range(0, 3, 1):
-		s = getTorSession()
-		ip = s.get("http://icanhazip.com").text
+		ip = getTorSession().get("http://icanhazip.com").text
 		print("IP being tested: " + ip)
 		searchVideo()
 		print("Rotating IP...\n")
@@ -111,56 +109,48 @@ def videosExecute():
 
 # Comments
 
-def getComments():
-	#https://www.youtube.com/feed/history/comment_history
+def getComments(): #https://www.youtube.com/feed/history/comment_history
 	with io.open("Google - My Activity.html", 'r', encoding='utf-8') as commentHistoryHtml:
-		global commentsFormatted, linksFormatted, parentLinksFormatted, replyLinksFormatted
-		strCommentHistoryHtml = commentHistoryHtml.read()
-		f = strCommentHistoryHtml.replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '').replace(']', '')
-		#print(f)
-		# Comments
-		comments = re.findall('.png,null,(.*?),null,null,,,', f)
-		#comments1 = re.findall('data-token=(.*?) data-date', f) exact comment UUID
-		commentsFormatted = str(comments).replace("[u'", '"').replace("[u'", '"').replace("[u'", '"').replace("']", '".').replace("u'", '"').replace("'", '"')
-		# Links
-		links = re.findall('  <a href=(.*?)&', f)
-		linksFormatted = str(links).replace("[u'", '"').replace("[u'", '"').replace("[u'", '"').replace("']", '".').replace("u'", '"').replace("'", '"')
-		parentLinks = re.findall('Commented on  <a href=(.*?)&', f)
-		parentLinksFormatted = str(parentLinks).replace("[u'", '"').replace("[u'", '"').replace("']", '".').replace("u'", '"').replace("'", '"')
-		replyLinks = re.findall('comment on  <a href=(.*?)&', f)
-		replyLinksFormatted = str(replyLinks).replace("[u'", '"').replace("[u'", '"').replace("']", '".').replace("u'", '"').replace("'", '"')
+		global links, commentIds, parentLinks, replyLinks 
+		f = commentHistoryHtml.read().replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '').replace(']', '')
+		commentIds = str(re.findall('data-token=(.*?) data-date', f)).replace(", u", "").replace("]", "")
+		links = str(re.findall('  <a href=(.*?)&', f)).replace(", u", "").replace("]", "")
 		searchComment()
-		print("\nVideos supposedly featuring parent comment(s): " + str(parentLinksFormatted))
-		print("\nVideos supposedly featuring reply comment(s): " + str(replyLinksFormatted) + "\n\n")
-		print("\nComments: " + str(commentsFormatted))
-		print("\nLinks: " + str(linksFormatted) + "\n")
+		#parentLinks = str(re.findall('Commented on  <a href=(.*?)&', f))
+		#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
+		#print(f)
+		#comments = re.findall('.png,null,(.*?),null,null,,,', f)
+		#print("\nVideos supposedly featuring parent comment(s): " + str(parentLinksFormatted))
+		#print("\nVideos supposedly featuring reply comment(s): " + str(replyLinksFormatted) + "\n\n")
+		#print("\nComments: " + str(commentsFormatted))
+		#print("\nLinks: " + str(linksFormatted) + "\n")
 
 def searchComment():
 	global commentsAccessible, attemptedRoutesC
-	print("\nSearching for comment..."),
-	link = linksFormatted.split('"')[1]
-	comment = commentsFormatted.split('"')[1]
-	#print(comment)
-	http = urllib3.PoolManager()
-	fetchQuery = http.request('GET', link) ### THIS AREA NEEDS CORRECT COMMENT FETCHING, CANT DO SO FROM STANDARD YOUTUBE URL.
-	b = fetchQuery.data
-	#print(b)
-	if b.find(comment) >= 0:
-		print("Comment found!\n")
-		commentsAccessible += 1
-		attemptedRoutesC += 1
-	else:
-		print("Comment not found.\n")
-		commentsAccessible -= 1
-		if commentsAccessible < 0:
-			commentsAccessible = 0
-		attemptedRoutesC += 1
+	print("\nSearching for comment...\n\n"),
+	i = 0;
+	for i in range(links.count("'") / 2):
+		i += 1
+		link = links.split("'")[i]
+		comment = commentIds.split("'")[i]
+		with open('json.json', 'r') as json:
+    			b = json.read()
+		#print(link + " " + comment)
+		if b.find(comment) >= 0:
+			print("Comment found!\n")
+			commentsAccessible += 1
+			attemptedRoutesC += 1
+		else:
+			print("Comment not found.\n")
+			commentsAccessible -= 1
+			if commentsAccessible < 0:
+				commentsAccessible = 0
+				attemptedRoutesC += 1
 	
 
 def commentsExecute():
 	for x in range(0, 3, 1):
-		s = getTorSession()
-		ip = s.get("http://icanhazip.com").text
+		ip = getTorSession().get("http://icanhazip.com").text
 		print("IP being tested: " + ip)
 		searchComment()
 		print("Rotating IP...\n")
