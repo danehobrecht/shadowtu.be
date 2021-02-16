@@ -12,4 +12,4 @@ Install dependencies by running:
 
     pip install -r requirements.txt
 
-ShadowTube does not process, read, or store the contents of comments inputted and script verification is encouraged.'
+ShadowTube does not process, read, or store the contents of comments inputted and script verification is encouraged.
