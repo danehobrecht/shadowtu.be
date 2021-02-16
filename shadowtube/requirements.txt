@@ -1,4 +1,9 @@
-# pip install -r requirements.txt
+# Fundamentals: sudo apt install python-pip python-pip3 tor
+#python-pip
+#python-pip3
+#tor
+
+# Dependencies: pip install -r requirements.txt
 urllib3
 PySocks
 cssselect
