@@ -1,13 +1,20 @@
 #!/usr/bin/python
 
-# Dependencies: sudo apt install python-pip, sudo apt install python-pip3, pip3 install urllib3, pip install PySocks, sudo apt install tor
 # Example test url: https://youtu.be/Y6ljFaKRTrI
-# Tor Browser must be running for this script to execute successfully.
+# As of now, the Tor service must be running as a background process for this script to execute successfully.
 
 from stem.control import Controller
 from stem import Signal
 
-import urllib, urllib2, urllib3, socks, socket, re, requests, time, io
+import urllib
+import urllib2
+import urllib3
+import socks
+import socket
+import re
+import requests
+import time
+import io
 
 videosAccessible = 0
 commentsAccessible = 0
