@@ -114,7 +114,7 @@ def getComments():
 		parentLinks = re.findall('Commented on  <a href=(.*?)&', f)
 		parentLinksFormatted = str(parentLinks).replace("[u'", "").replace("']", "")	
 		replyLinks = re.findall('comment on  <a href=(.*?)&', f)
-		replyLinksFormatted = str(parentLinks).replace("[u'", "").replace("']", "")
+		replyLinksFormatted = str(replyLinks).replace("[u'", "").replace("']", "")
 		print("\nLinks supposedly featuring parent comment(s): " + str(parentLinksFormatted))
 		print("\nLinks supposedly featuring reply comment(s): " + str(replyLinksFormatted) + "\n")
 
