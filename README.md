@@ -6,6 +6,8 @@ Current searches are as follows:
 * Particular video links
 * Complete comment history
 
+---
+
 Install dependencies by running:
 
     pip install -r requirements.txt
