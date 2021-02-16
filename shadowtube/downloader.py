@@ -17,7 +17,7 @@ YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v={youtube_id}'
 YOUTUBE_COMMENTS_AJAX_URL = 'https://www.youtube.com/comment_service_ajax'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
 
-def find_value(html, key, num_chars=2, separator='"'):
+def find_value(html, key, num_chars = 2, separator='"'):
     pos_begin = html.find(key) + len(key) + num_chars
     pos_end = html.find(separator, pos_begin)
     return html[pos_begin: pos_end]
@@ -32,8 +32,7 @@ def ajax_request(session, url, params = None, data = None, headers = None, retri
         else:
             time.sleep(sleep)
 
-def download_comments(youtube_id, sleep=.1):
-    # Use the new youtube API to download some comments
+def download_comments(youtube_id, sleep = .1):
     session = requests.Session()
     session.headers['User-Agent'] = USER_AGENT
 
@@ -101,7 +100,7 @@ def main(argv):
 
         if not youtube_id or not output:
             parser.print_usage()
-            raise ValueError('you need to specify a Youtube ID and an output filename')
+            raise ValueError('Faulty YouTube Video ID.')
 
         if os.sep in output:
             outdir = os.path.dirname(output)
@@ -110,7 +109,7 @@ def main(argv):
 
         print('Downloading Youtube comments for video:', youtube_id)
         count = 0
-        with io.open(output, 'w', encoding='utf8') as fp:
+        with io.open(output, 'w', encoding = 'utf8') as fp:
             sys.stdout.write('Downloaded %d comment(s)\r' % count)
             sys.stdout.flush()
             start_time = time.time()
