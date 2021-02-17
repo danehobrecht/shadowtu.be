@@ -156,7 +156,6 @@ def searchComment():
 				commentsAccessible = 0
 				attemptedRoutesC += 1
 	
-
 def commentsExecute():
 	for x in range(0, 3, 1):
 		ip = getTorSession().get("http://icanhazip.com").text
@@ -203,7 +202,6 @@ def download_comments(youtube_id, sleep = .1):
         if ncd:
             break
     continuations = [(ncd['continuation'], ncd['clickTrackingParams'])]
-
     while continuations:
         continuation, itct = continuations.pop()
         response = ajax_request(session, YOUTUBE_COMMENTS_AJAX_URL,
@@ -215,18 +213,14 @@ def download_comments(youtube_id, sleep = .1):
                                 data={'session_token': session_token},
                                 headers={'X-YouTube-Client-Name': '1',
                                          'X-YouTube-Client-Version': '2.20201202.06.01'})
-
         if not response:
             break
         if list(search_dict(response, 'externalErrorMessage')):
             raise RuntimeError('Error returned from server: ' + next(search_dict(response, 'externalErrorMessage')))
-
         continuations = [(ncd['continuation'], ncd['clickTrackingParams'])
                          for ncd in search_dict(response, 'nextContinuationData')] + continuations
-
         for comment in search_dict(response, 'commentRenderer'): # downloads comments
             yield {'cid': comment['commentId'],'text': ''.join([c['text'] for c in comment['contentText']['runs']])}
-
         time.sleep(sleep)
 
 def search_dict(partial, search_key):
@@ -242,7 +236,6 @@ def search_dict(partial, search_key):
         elif isinstance(current_item, list):
             for value in current_item:
                 stack.append(value)
-
 
 def fetchComments(youtube_id):
     parser = argparse.ArgumentParser()
