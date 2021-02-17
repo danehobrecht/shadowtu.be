@@ -60,7 +60,7 @@ def menuInput():
 
 def shareUrlInput():
 	global shareUrl
-	shareUrl = raw_input("\nEnter YouTube share link: ")
+	shareUrl = raw_input("Enter YouTube share link: ")
 	if 'https://youtu.be/' in shareUrl:
 		try:
 			videosExecute()
@@ -86,16 +86,16 @@ def getTitle():
 
 def searchVideo():
 	global videosAccessible, attemptedRoutesV
-	print("Searching for instance..."),
+	print("Searching for instance... ", end = "")
 	formatQuery = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
 	fetchQuery = http.request('GET', formatQuery)
 	b = fetchQuery.data
 	if b.find(title) >= 0:
-		print("Found!\n")
+		print("found.\n")
 		videosAccessible += 1
 		attemptedRoutesV += 1
 	else:
-		print("Not found!\n")
+		print("not found.\n")
 		videosAccessible -= 1
 		if videosAccessible < 0:
 			videosAccessible = 0
@@ -107,7 +107,7 @@ def videosExecute():
 		ip = getTorSession().get("http://icanhazip.com").text
 		print("IP being tested: " + ip)
 		searchVideo()
-		print("Rotating IP...\n")
+		print("Rotating IP...")
 		time.sleep(9)
 		renewConnection()
 	print(str(videosAccessible) + "/" + str(attemptedRoutesV) + " public instances found.\n")
@@ -140,16 +140,16 @@ def searchComment():
 		comment = commentIds.split("'")[i]
 		fetchComments(youtube_id.replace('https://www.youtube.com/watch?v=', ''))
 		print("Link being analyzed: " + youtube_id)
-		print("CID in question: " + comment + "\n")
-		print("Searching for comment..."),
+		print("Comment ID in question: " + comment + "\n")
+		print("Searching for comment... ", end = ""),
 		with open('json.json', 'r') as json:
     			b = json.read()
 		if b.find(comment) >= 0:
-			print("Comment found!")
+			print("found.\n")
 			commentsAccessible += 1
 			attemptedRoutesC += 1
 		else:
-			print("Comment not found.")
+			print("not found.\n")
 			commentsAccessible -= 1
 			if commentsAccessible < 0:
 				commentsAccessible = 0
@@ -244,13 +244,13 @@ def fetchComments(youtube_id):
         limit = 100
         if not youtube_id or not output:
             parser.print_usage()
-            raise ValueError('Faulty YouTube Video ID.')
+            raise ValueError('faulty video ID.')
         if os.sep in output:
             outdir = os.path.dirname(output)
             if not os.path.exists(outdir):
                 os.makedirs(outdir)
-	print('\nDownloading comments (depending on the video, this may take a while)...')
-        print('Video ID: ' + youtube_id + "\n")
+	print('Video ID: ' + youtube_id)
+	print('\nDownloading comments... ', end = "")
         count = 0
         with io.open(output, 'w', encoding = 'utf8') as fp:
             for comment in download_comments(youtube_id):
@@ -259,7 +259,7 @@ def fetchComments(youtube_id):
                 count += 1
                 if limit and count >= limit:
                     break
-        print('Done!\n')
+        print('done.\n')
     except Exception as e:
         print('Error:', str(e))
         exit()
