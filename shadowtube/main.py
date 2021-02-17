@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+#https://stackoverflow.com/questions/24119731/nonetype-object-has-no-attribute-getitem
 # Example test url: https://youtu.be/Y6ljFaKRTrI
 
 from __future__ import print_function
@@ -26,6 +26,10 @@ commentsAccessible = 0
 attemptedRoutesV = 0
 attemptedRoutesC = 0
 
+YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v={youtube_id}'
+YOUTUBE_COMMENTS_AJAX_URL = 'https://www.youtube.com/comment_service_ajax'
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
+
 # Tor
 
 def getTorSession():
@@ -42,13 +46,13 @@ def renewConnection():
 
 def menuInput():
 	choice = raw_input("Choose one of the listed options: ")	
-	if choice == "1":
+	if choice == "1": # Video
 		try:
 			shareUrlInput()
 		except IOError:
 			print("Invalid input. ", end = "")
 			menuInput()		
-	elif choice == "2":
+	elif choice == "2": # Comments
 		try:
 			getComments()
 		except IOError:
@@ -57,6 +61,8 @@ def menuInput():
 	else: 
 		print("Invalid input. ", end = "")
 		menuInput()
+
+# Videos
 
 def shareUrlInput():
 	global shareUrl
@@ -70,8 +76,6 @@ def shareUrlInput():
 	else:
 		print("Invalid link. ", end = "")
 		shareUrlInput()
-
-# Videos
 
 def getTitle():
 	global http, title
@@ -103,7 +107,7 @@ def searchVideo():
 
 def videosExecute():
 	getTitle()
-	for x in range(0, 2, 1):
+	for x in range(0, 3, 1):
 		ip = getTorSession().get("http://icanhazip.com").text
 		print("IP being tested: " + ip)
 		searchVideo()
@@ -166,10 +170,6 @@ def searchComment():
 	print(str(commentsAccessible) + "/" + str(attemptedRoutesC) + " public comments found.\n")
 	
 # Downloader
-
-YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v={youtube_id}'
-YOUTUBE_COMMENTS_AJAX_URL = 'https://www.youtube.com/comment_service_ajax'
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
 
 def find_value(html, key, num_chars = 2, separator = '"'):
     pos_begin = html.find(key) + len(key) + num_chars
