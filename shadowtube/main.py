@@ -141,8 +141,8 @@ def searchComment():
 		g += 2
 		#a = re.sub("'(.*?)'", "", links, 1)
 		#print(a)
-		print("Video in question: " + youtube_id)
-		print("Comment ID in question: " + comment + "\n")
+		print("\nVideo in question: " + youtube_id)
+		print("Comment ID in question: " + comment)
 		fetchComments(youtube_id.replace("https://www.youtube.com/watch?v=", ''))
 		print("Searching for comment... ", end = ""),
 		with open('json.json', 'r') as json:
@@ -151,13 +151,13 @@ def searchComment():
 			print("found.\n")
 			commentsAccessible += 1
 			attemptedRoutesC += 1
-			print("Rotating IP...\n")
+			print("Rotating IP...")
         		time.sleep(9)
         		renewConnection()
 		else:
 			print("not found.\n")
 			commentsAccessible -= 1
-			print("Rotating IP...\n")
+			print("Rotating IP...")
         		time.sleep(9)
         		renewConnection()
 			if commentsAccessible < 0:
@@ -260,7 +260,7 @@ def fetchComments(youtube_id):
                 count += 1
                 if limit and count >= limit:
                     break
-        print('done.\n')
+        print('done.')
     except Exception as e:
         print('Error:', str(e))
         exit()
