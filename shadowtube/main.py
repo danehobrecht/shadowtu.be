@@ -46,16 +46,16 @@ def menuInput():
 		try:
 			shareUrlInput()
 		except IOError:
-			print("\nInvalid input. ", end = "")
+			print("Invalid input. ", end = "")
 			menuInput()		
 	elif choice == "2":
 		try:
 			getComments()
 		except IOError:
-			print("\nInvalid input. ", end = "")
+			print("Invalid input. ", end = "")
 			menuInput()
 	else: 
-		print("\nInvalid input. ", end = "")
+		print("Invalid input. ", end = "")
 		menuInput()
 
 def shareUrlInput():
@@ -68,7 +68,7 @@ def shareUrlInput():
     			print("Invalid link. (is Tor running?) ", end = "")
 			shareUrlInput()
 	else:
-		print("\nInvalid link. ", end = "")
+		print("Invalid link. ", end = "")
 		shareUrlInput()
 
 # Videos
@@ -103,7 +103,7 @@ def searchVideo():
 
 def videosExecute():
 	getTitle()
-	for x in range(0, 3, 1):
+	for x in range(0, 2, 1):
 		ip = getTorSession().get("http://icanhazip.com").text
 		print("IP being tested: " + ip)
 		searchVideo()
@@ -117,9 +117,9 @@ def videosExecute():
 def getComments(): #https://www.youtube.com/feed/history/comment_history
 	with io.open("Google - My Activity.html", 'r', encoding = 'utf-8') as commentHistoryHtml:
 		global links, commentIds, parentLinks, replyLinks 
-		f = commentHistoryHtml.read().replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '').replace(']', '')
+		f = commentHistoryHtml.read().replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '')
 		commentIds = str(re.findall('data-token=(.*?) data-date', f)).replace(", u", "").replace("]", "")
-		links = str(re.findall('  <a href=(.*?)&', f)).replace(", u", "").replace("]", "")
+		links = str(re.findall('  <a href=(.*?)&', f)).replace(", u", "").replace("]", "").replace("[u", "")
 		searchComment()
 		#parentLinks = str(re.findall('Commented on  <a href=(.*?)&', f))
 		#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
@@ -132,15 +132,18 @@ def getComments(): #https://www.youtube.com/feed/history/comment_history
 
 def searchComment():
 	global commentsAccessible, attemptedRoutesC
-	i = 0;
-	for i in range(links.count("'") / 2):
-		i += 1
-		time.sleep(3)
-		youtube_id = links.split("'")[i]
-		comment = commentIds.split("'")[i]
-		fetchComments(youtube_id.replace('https://www.youtube.com/watch?v=', ''))
-		print("Link being analyzed: " + youtube_id)
+	i = 0
+	g = 1
+	numOfIds = links.count("'") / 2
+	for i in range(numOfIds):
+		youtube_id = links.split("'")[g]
+		comment = commentIds.split("'")[g]
+		g += 2
+		#a = re.sub("'(.*?)'", "", links, 1)
+		#print(a)
+		print("Video in question: " + youtube_id)
 		print("Comment ID in question: " + comment + "\n")
+		fetchComments(youtube_id.replace("https://www.youtube.com/watch?v=", ''))
 		print("Searching for comment... ", end = ""),
 		with open('json.json', 'r') as json:
     			b = json.read()
@@ -148,9 +151,15 @@ def searchComment():
 			print("found.\n")
 			commentsAccessible += 1
 			attemptedRoutesC += 1
+			print("Rotating IP...\n")
+        		time.sleep(9)
+        		renewConnection()
 		else:
 			print("not found.\n")
 			commentsAccessible -= 1
+			print("Rotating IP...\n")
+        		time.sleep(9)
+        		renewConnection()
 			if commentsAccessible < 0:
 				commentsAccessible = 0
 				attemptedRoutesC += 1
@@ -238,7 +247,9 @@ def search_dict(partial, search_key):
 
 def fetchComments(youtube_id):
     parser = argparse.ArgumentParser()
-    try:	
+    ip = getTorSession().get("http://icanhazip.com").text
+    print("IP being tested: " + ip)
+    try:
         args = parser.parse_args()
         output = 'json.json'
         limit = 100
@@ -249,8 +260,7 @@ def fetchComments(youtube_id):
             outdir = os.path.dirname(output)
             if not os.path.exists(outdir):
                 os.makedirs(outdir)
-	print('Video ID: ' + youtube_id)
-	print('\nDownloading comments... ', end = "")
+	print('Downloading comments... ', end = "")
         count = 0
         with io.open(output, 'w', encoding = 'utf8') as fp:
             for comment in download_comments(youtube_id):
