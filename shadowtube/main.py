@@ -163,17 +163,8 @@ def searchComment():
 			if commentsAccessible < 0:
 				commentsAccessible = 0
 				attemptedRoutesC += 1
-	
-def commentsExecute():
-	for x in range(0, 3, 1):
-		ip = getTorSession().get("http://icanhazip.com").text
-		print("IP being tested: " + ip)
-		searchComment()
-		print("Rotating IP...\n")
-		time.sleep(9)
-		renewConnection()
 	print(str(commentsAccessible) + "/" + str(attemptedRoutesC) + " public comments found.\n")
-
+	
 # Downloader
 
 YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v={youtube_id}'
