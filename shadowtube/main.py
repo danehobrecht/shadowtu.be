@@ -112,7 +112,6 @@ def videosExecute():
 		renewConnection()
 	print(str(videosAccessible) + "/" + str(attemptedRoutesV) + " public instances found.\n")
 
-
 # Comments
 
 def getComments(): #https://www.youtube.com/feed/history/comment_history
