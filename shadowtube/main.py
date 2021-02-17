@@ -46,16 +46,16 @@ def menuInput():
 		try:
 			shareUrlInput()
 		except IOError:
-			print("\nInvalid input.")
+			print("\nInvalid input. ", end = "")
 			menuInput()		
 	elif choice == "2":
 		try:
 			getComments()
 		except IOError:
-			print("\nInvalid input.")
+			print("\nInvalid input. ", end = "")
 			menuInput()
 	else: 
-		print("\nInvalid input.\n")
+		print("\nInvalid input. ", end = "")
 		menuInput()
 
 def shareUrlInput():
@@ -65,24 +65,24 @@ def shareUrlInput():
 		try:
 			videosExecute()
 		except IOError:
-    			print("Invalid link. (is Tor running?)")
+    			print("Invalid link. (is Tor running?) ", end = "")
 			shareUrlInput()
 	else:
-		print("\nInvalid link.")
+		print("\nInvalid link. ", end = "")
 		shareUrlInput()
 
 # Videos
 
 def getTitle():
 	global http, title
-	print("\nFetching title...")
+	print("Fetching title... ", end = "")
 	http = urllib3.PoolManager()
 	fetchShareUrl = http.request('GET', shareUrl)
 	a = fetchShareUrl.data
 	start = '{"title":{"runs":[{"text":"'
 	end = '"}]},"viewCount"'
 	title = a[a.find(start)+len(start):a.rfind(end)]
-	print("Done.\n")
+	print("done.\n")
 
 def searchVideo():
 	global videosAccessible, attemptedRoutesV
@@ -115,7 +115,7 @@ def videosExecute():
 # Comments
 
 def getComments(): #https://www.youtube.com/feed/history/comment_history
-	with io.open("Google - My Activity.html", 'r', encoding='utf-8') as commentHistoryHtml:
+	with io.open("Google - My Activity.html", 'r', encoding = 'utf-8') as commentHistoryHtml:
 		global links, commentIds, parentLinks, replyLinks 
 		f = commentHistoryHtml.read().replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '').replace(']', '')
 		commentIds = str(re.findall('data-token=(.*?) data-date', f)).replace(", u", "").replace("]", "")
