@@ -12,4 +12,4 @@ Install dependencies by running:
 
     pip install -r requirements.txt
 
-ShadowTube does not process, read, or store the contents of comment data.
+ShadowTube does not process, read, or store the text from comment data, and intentionally doesn't have the ability to. Comment UUIDs are used to detect prescence in corresponding videos. Individual verification is firmly encouraged.
