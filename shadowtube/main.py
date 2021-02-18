@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# https://stackoverflow.com/questions/24119731/nonetype-object-has-no-attribute-getitem
 # Example test url: https://youtu.be/Y6ljFaKRTrI
 
 from __future__ import print_function
