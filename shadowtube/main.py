@@ -55,7 +55,7 @@ def menuInput():
 		try:
 			getComments()
 		except IOError:
-			print("Invalid input. ", end = "")
+			print("Invalid input (is Tor running?). ", end = "")
 			menuInput()
 	else: 
 		print("Invalid input. ", end = "")
@@ -70,7 +70,7 @@ def shareUrlInput():
 		try:
 			videosExecute()
 		except IOError:
-    			print("Invalid link. (is Tor running?) ", end = "")
+    			print("Invalid link (is Tor running?). ", end = "")
 			shareUrlInput()
 	else:
 		print("Invalid link. ", end = "")
@@ -124,6 +124,7 @@ def getComments(): #https://www.youtube.com/feed/history/comment_history
 		commentIds = str(re.findall('data-token=(.*?) data-date', f)).replace(", u", "").replace("]", "")
 		links = str(re.findall('  <a href=(.*?)&', f)).replace(", u", "").replace("]", "").replace("[u", "")
 		searchComment()
+		# Sort parent/reply comments
 		#parentLinks = str(re.findall('Commented on  <a href=(.*?)&', f))
 		#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
 		#print(f)
@@ -188,12 +189,10 @@ def ajax_request(session, url, params = None, data = None, headers = None, retri
 def download_comments(youtube_id, sleep = .1):
     session = requests.Session()
     session.headers['User-Agent'] = USER_AGENT
-
     response = session.get(YOUTUBE_VIDEO_URL.format(youtube_id = youtube_id))
     html = response.text
     session_token = find_value(html, 'XSRF_TOKEN', 3)
     session_token = session_token.encode('ascii').decode('unicode-escape')
-
     data = json.loads(find_value(html, 'var ytInitialData = ', 0, '};') + '}')
     for renderer in search_dict(data, 'itemSectionRenderer'):
         ncd = next(search_dict(renderer, 'nextContinuationData'), None)
@@ -218,7 +217,8 @@ def download_comments(youtube_id, sleep = .1):
         continuations = [(ncd['continuation'], ncd['clickTrackingParams'])
                          for ncd in search_dict(response, 'nextContinuationData')] + continuations
         for comment in search_dict(response, 'commentRenderer'): # downloads comments
-            yield {'cid': comment['commentId'],'text': ''.join([c['text'] for c in comment['contentText']['runs']])}
+	    # Include text: yield {'cid': comment['commentId'],'text': ''.join([c['text'] for c in comment['contentText']['runs']])}
+            yield {'cid': comment['commentId']}
         time.sleep(sleep)
 
 def search_dict(partial, search_key):
@@ -242,7 +242,7 @@ def fetchComments(youtube_id):
     try:
         args = parser.parse_args()
         output = 'json.json'
-        limit = 100
+        limit = 500
         if not youtube_id or not output:
             parser.print_usage()
             raise ValueError('faulty video ID.')
