@@ -49,7 +49,7 @@ def menuInput():
 	elif choice == "2": # Comments
 		commentsInput()
 	else: 
-		print("Invalid input. ", end = "")
+		print("Invalid. ", end = "")
 		menuInput()
 
 def videosInput():
@@ -59,10 +59,10 @@ def videosInput():
 		try:
 			videosExecute()
 		except IOError:
-    			print("Invalid link (is Tor running?). ", end = "")
+    			print("Invalid (is Tor running?). ", end = "")
 			videosInput()
 	else:
-		print("Invalid link. ", end = "")
+		print("Invalid. ", end = "")
 		videosInput()
 
 def commentsInput():
@@ -71,10 +71,10 @@ def commentsInput():
 		try:
 			commentsExecute()
 		except IOError:
-			print("Invalid input (is Tor running?). ", end = "")
+			print("Invalid (is Tor running?). ", end = "")
 			commentsInput()
 	else:
-		print("Invalid input. ", end = "")
+		print("Invalid. ", end = "")
 		commentsInput()
 
 # Videos
@@ -145,10 +145,9 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		g += 2
 		#a = re.sub("'(.*?)'", "", links, 1)
 		#print(a)
-		print("\nVideo in question: " + youtube_id)
-		print("Comment ID in question: " + comment)
 		fetchComments(youtube_id.replace("https://www.youtube.com/watch?v=", ''))
-		print("Searching for comment... ", end = ""),
+		print("\nVideo in question: " + youtube_id)
+		print("Searching for comment (" + comment + ")... ", end = ""),
 		with open('json.json', 'r') as json:
     			b = json.read()
 		if b.find(comment) >= 0:
