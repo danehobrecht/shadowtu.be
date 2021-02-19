@@ -80,7 +80,6 @@ def commentsInput():
 # Videos
 
 def videosExecute():
-	global videosAccessible, attemptedRoutesV, http, title
 	print("Fetching title... ", end = "")
 	http = urllib3.PoolManager()
 	fetchShareUrl = http.request('GET', shareUrl)
@@ -125,30 +124,29 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 	i = 0
 	g = 1
 	with io.open("Google - My Activity.html", 'r', encoding = 'utf-8') as commentHistoryHtml:
-		global links, commentIds
 		f = commentHistoryHtml.read().replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '')
+		comments = str(re.findall('.png,null,(.*?),null,null,,,', f))
 		commentIds = str(re.findall('data-token=(.*?) data-date', f)).replace(", u", "").replace("]", "")
 		links = str(re.findall('  <a href=(.*?)&', f)).replace(", u", "").replace("]", "").replace("[u", "")
 		#Sort parent/reply comments
 		#parentLinks = str(re.findall('Commented on  <a href=(.*?)&', f))
 		#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
 		#print(f)
-		#comments = re.findall('.png,null,(.*?),null,null,,,', f)
 		#print("\nVideos supposedly featuring parent comment(s): " + str(parentLinksFormatted))
 		#print("\nVideos supposedly featuring reply comment(s): " + str(replyLinksFormatted) + "\n\n")
 		#print("\nComments: " + str(commentsFormatted))
 		#print("\nLinks: " + str(linksFormatted) + "\n")
 	numOfIds = links.count("'") / 2
 	for i in range(numOfIds):
-		youtube_id = links.split("'")[g]
-		comment = commentIds.split("'")[g]
 		g += 2
-		#a = re.sub("'(.*?)'", "", links, 1)
-		#print(a)
+		youtube_id = links.split("'")[g]
+		comment = comments.split("'")[g]
+		commentId = commentIds.split("'")[g]
 		ip = getTorSession().get("http://icanhazip.com").text
 		print("IP being tested: " + ip)
-		fetchComments(youtube_id.replace("https://www.youtube.com/watch?v=", ''))		
-		print('Searching for comment "' + comment + '"... ', end = ""),
+		fetchComments(youtube_id.replace("https://www.youtube.com/watch?v=", ''))
+		print('Text: "' + comment[0:80] + '..."')
+		print('Searching for comment "' + commentId + '"... ', end = ""),
 		with open('json.json', 'r') as json:
     			b = json.read()
 		if b.find(comment) >= 0:
@@ -239,7 +237,7 @@ def download_comments(youtube_id, sleep = .1):
 		continuations = [(ncd['continuation'], ncd['clickTrackingParams'])
 					for ncd in search_dict(response, 'nextContinuationData')] + continuations
 		for comment in search_dict(response, 'commentRenderer'):
-			yield {'cid': comment['commentId']}#,'text': ''.join([c['text'] for c in comment['contentText']['runs']])}
+			yield {'cid': comment['commentId'],'text': ''.join([c['text'] for c in comment['contentText']['runs']])}
 		time.sleep(sleep)
 
 def search_dict(partial, search_key):
