@@ -124,6 +124,7 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 	global commentsAccessible, attemptedRoutesC
 	i = 0
 	g = 1
+	commentCharCount = 0
 	print("\nParsing comment history... ", end = "")
 	with io.open("Google - My Activity.html", 'r', encoding = 'utf-8') as commentHistoryHtml:
 		f = commentHistoryHtml.read().replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '')
@@ -146,7 +147,12 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		commentId = commentIds.split("'")[g]
 		g += 2 ## this incrementation must follow splitting
 		fetchComments(youtube_id.replace("https://www.youtube.com/watch?v=", ''))
-		print('Text: "' + comment[0:80] + '..."')
+		for i in comment:
+			commentCharCount += 1
+		if commentCharCount >= 80:
+			print('Text: "' + comment[0:80] + '..."')
+		else:
+			print('Text: "' + comment + '"')
 		print('Searching for comment "' + commentId + '"... ', end = "")
 		with open('json.json', 'r') as json:
     			b = json.read()
