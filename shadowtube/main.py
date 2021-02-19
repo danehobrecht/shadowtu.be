@@ -150,7 +150,7 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		print('Searching for comment "' + commentId + '"... ', end = ""),
 		with open('json.json', 'r') as json:
     			b = json.read()
-		if b.find(comment) >= 0:
+		if b.find(commentId) >= 0:
 			print("found.\n")
 			commentsAccessible += 1
 			attemptedRoutesC += 1
