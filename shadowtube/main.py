@@ -67,7 +67,7 @@ def videosInput():
 
 def commentsInput():
 	choice = raw_input("Comment history HTML must be locally available. Continue? (Y) ")
-	if choice == "Y":
+	if choice == "Y" or "y":
 		try:
 			commentsExecute()
 		except IOError:
@@ -145,9 +145,10 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		g += 2
 		#a = re.sub("'(.*?)'", "", links, 1)
 		#print(a)
-		fetchComments(youtube_id.replace("https://www.youtube.com/watch?v=", ''))
-		print("\nVideo in question: " + youtube_id)
-		print("Searching for comment (" + comment + ")... ", end = ""),
+		ip = getTorSession().get("http://icanhazip.com").text
+		print("IP being tested: " + ip)
+		fetchComments(youtube_id.replace("https://www.youtube.com/watch?v=", ''))		
+		print('Searching for comment "' + comment + '"... ', end = ""),
 		with open('json.json', 'r') as json:
     			b = json.read()
 		if b.find(comment) >= 0:
@@ -167,20 +168,18 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 
 def fetchComments(youtube_id):
 	parser = argparse.ArgumentParser()
-	ip = getTorSession().get("http://icanhazip.com").text
-	print("IP being tested: " + ip)
 	try:
 		args = parser.parse_args()
 		output = 'json.json'
 		limit = 500
 		if not youtube_id or not output:
 			parser.print_usage()
-			raise ValueError('faulty video ID.')
+			raise ValueError('faulty video I.D.')
 		if os.sep in output:
 			outdir = os.path.dirname(output)
 			if not os.path.exists(outdir):
 				os.makedirs(outdir)
-		print('Downloading comments... ', end = "")
+		print("Downloading comments from https://youtu.be/" + youtube_id + "... ", end = "")
 		count = 0
 		with io.open(output, 'w', encoding = 'utf8') as fp:
 			for comment in download_comments(youtube_id):
