@@ -66,7 +66,7 @@ def videosInput():
 		videosInput()
 
 def commentsInput():
-	choice = raw_input("Comment history HTML must be locally available. Continue? (Y) ")
+	choice = raw_input('Comment history must be locally available as: "Google - My Activity.html".\nContinue? (Y) ')
 	if choice == "Y" or "y":
 		try:
 			commentsExecute()
