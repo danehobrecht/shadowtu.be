@@ -80,6 +80,7 @@ def commentsInput():
 # Videos
 
 def videosExecute():
+	global videosAccessible, attemptedRoutesV
 	print("Fetching title... ", end = "")
 	http = urllib3.PoolManager()
 	fetchShareUrl = http.request('GET', shareUrl)
@@ -142,8 +143,6 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		youtube_id = links.split("'")[g]
 		comment = comments.split("'")[g]
 		commentId = commentIds.split("'")[g]
-		ip = getTorSession().get("http://icanhazip.com").text
-		print("IP being tested: " + ip)
 		fetchComments(youtube_id.replace("https://www.youtube.com/watch?v=", ''))
 		print('Text: "' + comment[0:80] + '..."')
 		print('Searching for comment "' + commentId + '"... ', end = ""),
@@ -165,6 +164,8 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 	print(str(commentsAccessible) + "/" + str(attemptedRoutesC) + " public comments found."),
 
 def fetchComments(youtube_id):
+	ip = getTorSession().get("http://icanhazip.com").text
+	print("IP being tested: " + ip)
 	parser = argparse.ArgumentParser()
 	try:
 		args = parser.parse_args()
