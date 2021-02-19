@@ -109,7 +109,7 @@ def videosExecute():
 		print("Rotating IP...")
 		time.sleep(9)
 		renewConnection()
-	print(str(videosAccessible) + "/" + str(attemptedRoutesV) + " public instances found. ", end = "")
+	print("\n" + str(videosAccessible) + "/" + str(attemptedRoutesV) + " public instances found. ", end = "")
 	if videosAccessible == attemptedRoutesV:
 		print("Unlikely shadowbanned.\n")
 	elif videosAccessible <= attemptedRoutesV / 2:
@@ -169,7 +169,7 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		print("Rotating IP...")
         	time.sleep(9)
         	renewConnection()
-	print(str(commentsAccessible) + "/" + str(attemptedRoutesC) + " public comments found.\n")
+	print("\n" + str(commentsAccessible) + "/" + str(attemptedRoutesC) + " public comments found.\n")
 	menuInput()
 
 def fetchComments(youtube_id):
@@ -285,5 +285,5 @@ def search_dict(partial, search_key):
                 stack.append(value)
 # Menu
 
-print("\nShadowTube\n\n1. Videos\n2. Comments\n")
+print("\nShadowTube\n\n1. Video\n2. Comments\n")
 menuInput()
