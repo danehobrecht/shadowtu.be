@@ -109,13 +109,13 @@ def videosExecute():
 		print("Rotating IP...")
 		time.sleep(9)
 		renewConnection()
-	print(str(videosAccessible) + "/" + str(attemptedRoutesV) + " public instances found. ", end = ""),
+	print(str(videosAccessible) + "/" + str(attemptedRoutesV) + " public instances found. ", end = "")
 	if videosAccessible == attemptedRoutesV:
-		print("Unlikely shadowbanned.")
+		print("Unlikely shadowbanned.\n")
 	elif videosAccessible <= attemptedRoutesV / 2:
-		print("Potentially shadowbanned.")
+		print("Potentially shadowbanned.\n")
 	elif videosAccessible == 0:
-		print("Shadowbanned.")
+		print("Shadowbanned.\n")
 	menuInput()
 
 # Comments
@@ -147,7 +147,7 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		g += 2 ## this incrementation must follow splitting
 		fetchComments(youtube_id.replace("https://www.youtube.com/watch?v=", ''))
 		print('Text: "' + comment[0:80] + '..."')
-		print('Searching for comment "' + commentId + '"... ', end = ""),
+		print('Searching for comment "' + commentId + '"... ', end = "")
 		with open('json.json', 'r') as json:
     			b = json.read()
 		if b.find(commentId) >= 0:
@@ -163,7 +163,8 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		print("Rotating IP...")
         	time.sleep(9)
         	renewConnection()
-	print(str(commentsAccessible) + "/" + str(attemptedRoutesC) + " public comments found."),
+	print(str(commentsAccessible) + "/" + str(attemptedRoutesC) + " public comments found.\n")
+	menuInput()
 
 def fetchComments(youtube_id):
 	ip = getTorSession().get("http://icanhazip.com").text
