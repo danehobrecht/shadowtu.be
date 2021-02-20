@@ -20,10 +20,11 @@ import os
 import argparse
 import lxml.html
 
+videoAttempts = 0
 videosAccessible = 0
+commentAttempts = 0
 commentsAccessible = 0
-attemptedRoutesV = 0
-attemptedRoutesC = 0
+
 YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v={youtubeId}'
 YOUTUBE_COMMENTS_AJAX_URL = 'https://www.youtube.com/comment_service_ajax'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
@@ -40,6 +41,11 @@ def renewConnection():
     	with Controller.from_port(port = 9151) as c:
     	    c.authenticate()
     	    c.signal(Signal.NEWNYM)
+
+# Menu
+
+def menuOptions():
+	print("\nShadowTube\n\n1. Video\n2. Comments\n")
 
 # Input
 
@@ -58,6 +64,7 @@ def videosInput():
 	shareUrl = raw_input("Enter YouTube share link: ")
 	if 'https://youtu.be/' in shareUrl:
 		try:
+			verifyTor = getTorSession().get("http://icanhazip.com").text
 			videosExecute()
 		except IOError:
     			print("Invalid (is Tor running?). ", end = "")
@@ -70,6 +77,7 @@ def commentsInput():
 	choice = raw_input('Comment history must be locally available as: "Google - My Activity.html".\nContinue? (Y) ')
 	if choice == "Y" or "y":
 		try:
+			verifyTor = getTorSession().get("http://icanhazip.com").text
 			commentsExecute()
 		except IOError:
 			print("Invalid (is Tor running?). ", end = "")
@@ -81,8 +89,7 @@ def commentsInput():
 # Videos
 
 def videosExecute():
-	global videosAccessible, attemptedRoutesV
-	verifyTor = getTorSession().get("http://icanhazip.com").text
+	global videosAccessible, videoAttempts
 	print("\nFetching title... ", end = "")
 	http = urllib3.PoolManager()
 	fsud = http.request('GET', shareUrl).data
@@ -91,38 +98,35 @@ def videosExecute():
 	title = fsud[fsud.find(start)+len(start):fsud.rfind(end)]
 	print("done.\n")
 	for x in range(0, 5, 1):
-		ip = getTorSession().get("http://icanhazip.com").text
-		print("IP being tested: " + ip)
+		print("IP being tested: " + getTorSession().get("http://icanhazip.com").text)
 		print("Searching for instance... ", end = "")
-		formatQuery = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
-		fetchQuery = http.request('GET', formatQuery)
-		b = fetchQuery.data
-		if b.find(title) >= 0:
+		fetchQuery = http.request('GET', "https://www.youtube.com/results?search_query=" + "+".join(title.split())) 
+		if fetchQuery.data.find(title) >= 0:
 			print("found.")
 			videosAccessible += 1
-			attemptedRoutesV += 1
+			videoAttempts += 1
 		else:
 			print("not found.")
 			videosAccessible -= 1
+			videoAttempts += 1
 		if videosAccessible < 0:
 			videosAccessible = 0
-			attemptedRoutesV += 1
 		print("\nRotating IP...")
 		renewConnection()
-	print("\n" + str(videosAccessible) + "/" + str(attemptedRoutesV) + " public instances found. ", end = "")
-	if videosAccessible == attemptedRoutesV:
-		print("Unlikely shadowbanned.\n")
-	elif videosAccessible <= attemptedRoutesV / 2:
-		print("Potentially shadowbanned.\n")
+	print("\n" + str(videosAccessible) + "/" + str(videoAttempts) + " public instances found. ", end = "")
+	if videosAccessible == videoAttempts:
+		print("Unlikely shadowbanned.")
+	elif videosAccessible <= videoAttempts / 2:
+		print("Potentially shadowbanned.")
 	elif videosAccessible == 0:
-		print("Shadowbanned.\n")
+		print("Shadowbanned.")
+	menuOptions()
 	menuInput()
 
 # Comments
 
 def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
-	global commentsAccessible, attemptedRoutesC
-	verifyTor = getTorSession().get("http://icanhazip.com").text
+	global commentsAccessible, commentAttempts
 	commentCharCount = 0
 	index = 1
 	print("\nParsing comment history... ", end = "")
@@ -154,16 +158,17 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		if b.find(commentId) >= 0:
 			print("found.\n")
 			commentsAccessible += 1
-			attemptedRoutesC += 1
+			commentAttempts += 1
 		else:
 			print("not found.\n")
 			commentsAccessible -= 1
 			if commentsAccessible < 0:
 				commentsAccessible = 0
-				attemptedRoutesC += 1
+				commentAttempts += 1
 		print("Rotating IP...")
         	renewConnection()
-	print("\n" + str(commentsAccessible) + "/" + str(attemptedRoutesC) + " public comments found.\n")
+	print("\n" + str(commentsAccessible) + "/" + str(commentAttempts) + " public comments found.")
+	menuOptions()
 	menuInput()
 
 def fetchComments(youtubeId):
@@ -279,5 +284,5 @@ def search_dict(partial, search_key):
                 stack.append(value)
 # Menu
 
-print("\nShadowTube\n\n1. Video\n2. Comments\n")
+menuOptions()
 menuInput()
