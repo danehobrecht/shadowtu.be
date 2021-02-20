@@ -127,7 +127,7 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 	index = 1
 	print("\nParsing comment history... ", end = "")
 	with io.open("Google - My Activity.html", 'r', encoding = 'utf-8') as commentHistoryHtml:
-		chh = commentHistoryHtml.read().replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '')
+		chh = commentHistoryHtml.read().replace("\n", "").replace("'", "").replace('"', '').replace("[", "").replace("]", "")
 		comments = str(re.findall('.png,null,(.*?),null,null,,,', chh))
 		commentIds = str(re.findall('data-token=(.*?) data-date', chh))
 		links = str(re.findall('  <a href=(.*?)&', chh))
@@ -141,7 +141,7 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		comment = comments.split("'")[index]
 		commentId = commentIds.split("'")[index]
 		index += 2
-		fetchComments(link.replace("https://www.youtube.com/watch?v=", ''))
+		fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
 		for i in comment:
 			commentCharCount += 1
 		if commentCharCount >= 80:
@@ -185,14 +185,14 @@ def fetchComments(youtubeId):
 		count = 0
 		with io.open(output, 'w', encoding = 'utf8') as fp:
 			for comment in download_comments(youtubeId):
-				comment_json = json.dumps(comment, ensure_ascii = False)
+				comment_json = json.dumps(comment, ensure_ascii=False)
 				print(comment_json.decode('utf-8') if isinstance(comment_json, bytes) else comment_json, file=fp)
 				count += 1
 				if limit and count >= limit:
 					break
 		print('done.')
 	except Exception as e:
-		print('Error:', str(e))
+		print('Error:', str(e))	
 		exit()
 
 def find_value(html, key, num_chars=2, separator='"'):
