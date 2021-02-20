@@ -178,7 +178,7 @@ def fetchComments(youtubeId):
 	try:
 		args = parser.parse_args()
 		output = 'json.json'
-		limit = 100
+		limit = 500
 		if not youtubeId or not output:
 			parser.print_usage()
 			raise ValueError('faulty video I.D.')
