@@ -24,7 +24,7 @@ videosAccessible = 0
 commentsAccessible = 0
 attemptedRoutesV = 0
 attemptedRoutesC = 0
-YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v={youtube_id}'
+YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v={youtubeId}'
 YOUTUBE_COMMENTS_AJAX_URL = 'https://www.youtube.com/comment_service_ajax'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
 
@@ -36,17 +36,18 @@ def getTorSession():
     return session
 
 def renewConnection():
-    with Controller.from_port(port = 9151) as c:
-        c.authenticate()
-        c.signal(Signal.NEWNYM)
+	time.sleep(9)
+    	with Controller.from_port(port = 9151) as c:
+    	    c.authenticate()
+    	    c.signal(Signal.NEWNYM)
 
 # Input
 
 def menuInput():
 	choice = raw_input("Choose one of the listed options: ")	
-	if choice == "1": # Videos
+	if choice == "1":
 		videosInput()
-	elif choice == "2": # Comments
+	elif choice == "2":
 		commentsInput()
 	else: 
 		print("Invalid. ", end = "")
@@ -81,13 +82,13 @@ def commentsInput():
 
 def videosExecute():
 	global videosAccessible, attemptedRoutesV
+	verifyTor = getTorSession().get("http://icanhazip.com").text
 	print("\nFetching title... ", end = "")
 	http = urllib3.PoolManager()
-	fetchShareUrl = http.request('GET', shareUrl)
-	a = fetchShareUrl.data
+	fsud = http.request('GET', shareUrl).data
 	start = '{"title":{"runs":[{"text":"'
 	end = '"}]},"viewCount"'
-	title = a[a.find(start)+len(start):a.rfind(end)]
+	title = fsud[fsud.find(start)+len(start):fsud.rfind(end)]
 	print("done.\n")
 	for x in range(0, 5, 1):
 		ip = getTorSession().get("http://icanhazip.com").text
@@ -106,8 +107,7 @@ def videosExecute():
 		if videosAccessible < 0:
 			videosAccessible = 0
 			attemptedRoutesV += 1
-		print("Rotating IP...")
-		time.sleep(9)
+		print("\nRotating IP...")
 		renewConnection()
 	print("\n" + str(videosAccessible) + "/" + str(attemptedRoutesV) + " public instances found. ", end = "")
 	if videosAccessible == attemptedRoutesV:
@@ -122,38 +122,33 @@ def videosExecute():
 
 def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 	global commentsAccessible, attemptedRoutesC
-	i = 0
-	g = 1
+	verifyTor = getTorSession().get("http://icanhazip.com").text
 	commentCharCount = 0
+	index = 1
 	print("\nParsing comment history... ", end = "")
 	with io.open("Google - My Activity.html", 'r', encoding = 'utf-8') as commentHistoryHtml:
-		f = commentHistoryHtml.read().replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '')
-		comments = str(re.findall('.png,null,(.*?),null,null,,,', f))
-		commentIds = str(re.findall('data-token=(.*?) data-date', f)).replace(", u", "").replace("]", "")
-		links = str(re.findall('  <a href=(.*?)&', f)).replace(", u", "").replace("]", "").replace("[u", "")
+		chh = commentHistoryHtml.read().replace("\n", "").replace("'", "").replace('"', '').replace('[', '').replace(']', '')
+		comments = str(re.findall('.png,null,(.*?),null,null,,,', chh))
+		commentIds = str(re.findall('data-token=(.*?) data-date', chh))
+		links = str(re.findall('  <a href=(.*?)&', chh))
 		print(" done.\n")
-		#Sort parent/reply comments
 		#parentLinks = str(re.findall('Commented on  <a href=(.*?)&', f))
 		#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
-		#print(f)
-		#print("\nVideos supposedly featuring parent comment(s): " + str(parentLinksFormatted))
-		#print("\nVideos supposedly featuring reply comment(s): " + str(replyLinksFormatted) + "\n\n")
-		#print("\nComments: " + str(commentsFormatted))
-		#print("\nLinks: " + str(linksFormatted) + "\n")
-	numOfIds = links.count("'") / 2
-	for i in range(numOfIds):
-		youtube_id = links.split("'")[g]
-		comment = comments.split("'")[g]
-		commentId = commentIds.split("'")[g]
-		g += 2 ## this incrementation must follow splitting
-		fetchComments(youtube_id.replace("https://www.youtube.com/watch?v=", ''))
+		#print("\nVideos supposedly featuring parent comment(s): " + str(parentLinks) + "\n")
+		#print("\nVideos supposedly featuring reply comment(s): " + str(replyLinks) + "\n")
+	for i in range(links.count("'") / 2):
+		link = links.split("'")[index]
+		comment = comments.split("'")[index]
+		commentId = commentIds.split("'")[index]
+		index += 2
+		fetchComments(link.replace("https://www.youtube.com/watch?v=", ''))
 		for i in comment:
 			commentCharCount += 1
 		if commentCharCount >= 80:
 			print('Text: "' + comment[0:80] + '..."')
 		else:
 			print('Text: "' + comment + '"')
-		print('Searching for comment "' + commentId + '"... ', end = "")
+		print('Searching for comment... ', end = "")
 		with open('json.json', 'r') as json:
     			b = json.read()
 		if b.find(commentId) >= 0:
@@ -167,12 +162,11 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 				commentsAccessible = 0
 				attemptedRoutesC += 1
 		print("Rotating IP...")
-        	time.sleep(9)
         	renewConnection()
 	print("\n" + str(commentsAccessible) + "/" + str(attemptedRoutesC) + " public comments found.\n")
 	menuInput()
 
-def fetchComments(youtube_id):
+def fetchComments(youtubeId):
 	ip = getTorSession().get("http://icanhazip.com").text
 	print("IP being tested: " + ip)
 	parser = argparse.ArgumentParser()
@@ -180,17 +174,17 @@ def fetchComments(youtube_id):
 		args = parser.parse_args()
 		output = 'json.json'
 		limit = 100
-		if not youtube_id or not output:
+		if not youtubeId or not output:
 			parser.print_usage()
 			raise ValueError('faulty video I.D.')
 		if os.sep in output:
 			outdir = os.path.dirname(output)
 			if not os.path.exists(outdir):
 				os.makedirs(outdir)
-		print("Downloading comments from https://youtu.be/" + youtube_id + "... ", end = "")
+		print("Downloading comments from https://youtu.be/" + youtubeId + "... ", end = "")
 		count = 0
 		with io.open(output, 'w', encoding = 'utf8') as fp:
-			for comment in download_comments(youtube_id):
+			for comment in download_comments(youtubeId):
 				comment_json = json.dumps(comment, ensure_ascii = False)
 				print(comment_json.decode('utf-8') if isinstance(comment_json, bytes) else comment_json, file=fp)
 				count += 1
@@ -216,11 +210,11 @@ def ajax_request(session, url, params=None, data=None, headers=None, retries=5, 
         else:
             time.sleep(sleep)
 
-def download_comments(youtube_id, sleep=.1):
+def download_comments(youtubeId, sleep=.1):
     session = requests.Session()
     session.headers['User-Agent'] = USER_AGENT
 
-    response = session.get(YOUTUBE_VIDEO_URL.format(youtube_id=youtube_id))
+    response = session.get(YOUTUBE_VIDEO_URL.format(youtubeId=youtubeId))
     html = response.text
     session_token = find_value(html, 'XSRF_TOKEN', 3)
     session_token = session_token.encode('ascii').decode('unicode-escape')
