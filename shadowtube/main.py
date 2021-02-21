@@ -24,7 +24,7 @@ videoAttempts = 0
 videosAccessible = 0
 commentAttempts = 0
 commentsAccessible = 0
-
+		
 YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v={youtubeId}'
 YOUTUBE_COMMENTS_AJAX_URL = 'https://www.youtube.com/comment_service_ajax'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
@@ -178,12 +178,11 @@ def fetchComments(youtubeId):
 	try:
 		args = parser.parse_args()
 		output = 'json.json'
-		limit = 500
+		limit = 1000
 		if not youtubeId or not output:
 			parser.print_usage()
 			raise ValueError('faulty video I.D.')
 		if os.sep in output:
-			outdir = os.path.dirname(output)
 			if not os.path.exists(outdir):
 				os.makedirs(outdir)
 		print("Downloading comments from https://youtu.be/" + youtubeId + "... ", end = "")
