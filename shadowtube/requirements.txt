@@ -1,9 +1,10 @@
-# Fundamentals: sudo apt install python-pip tor
-#python-pip
-#python-pip3
-#tor
+# Install fundamentals:
+# sudo apt install python-pip tor
 
-# Dependencies: pip install -r requirements.txt
+# Install dependencies: 
+# cd ~/shadowtube
+# pip install -r requirements.txt
+
 urllib3
 PySocks
 cssselect
