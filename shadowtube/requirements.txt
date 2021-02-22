@@ -1,4 +1,4 @@
-# Fundamentals: sudo apt install python-pip python-pip3 tor
+# Fundamentals: sudo apt install python-pip tor
 #python-pip
 #python-pip3
 #tor
