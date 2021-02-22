@@ -9,3 +9,4 @@ PySocks
 cssselect
 lxml
 requests
+stem
