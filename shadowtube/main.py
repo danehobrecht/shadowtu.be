@@ -89,7 +89,7 @@ def commentsInput():
 # Videos
 
 def videosExecute():
-	global videosAccessible, videoAttempts
+	global videosAccessible, videoAttempts 
 	print("\nFetching title... ", end = "")
 	http = urllib3.PoolManager()
 	fsud = http.request('GET', shareUrl).data
@@ -114,12 +114,12 @@ def videosExecute():
 		print("\nRotating IP...")
 		renewConnection()
 	print("\n" + str(videosAccessible) + "/" + str(videoAttempts) + " public instances found. ", end = "")
-	if videosAccessible == videoAttempts:
-		print("Unlikely shadowbanned.")
+	if videosAccessible == 0:
+		print("Likely shadowbanned (or non-existent).")
 	elif videosAccessible <= videoAttempts / 2:
 		print("Potentially shadowbanned.")
-	elif videosAccessible == 0:
-		print("Likely shadowbanned (or non-existent).")
+	elif videosAccessible == videoAttempts:
+		print("Unlikely shadowbanned.")
 	menuOptions()
 	menuInput()
 
