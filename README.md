@@ -15,7 +15,9 @@ Install dependencies by running:
 Run (terminal)
     
     cd ~/shadowtube
+    
     sudo chmod a+x main.py
+    
     ./main.py
 
 ShadowTube does not relay personal data, nor does it have the ability to. Individual verification is firmly encouraged.
