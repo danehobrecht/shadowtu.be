@@ -10,12 +10,12 @@ Search analyzation features are as follows:
 
 Install dependencies by running:
 
-    ```pip install -r requirements.txt```
+```pip install -r requirements.txt```
 
 Run (terminal)
     
 1. ```cd ~/shadowtube```
-    2. ```sudo chmod a+x main.py```
-    3. ```./main.py```
+2. ```sudo chmod a+x main.py```
+3. ```./main.py```
 
 ShadowTube does not relay personal data, nor does it have the ability to. Individual verification is firmly encouraged.
