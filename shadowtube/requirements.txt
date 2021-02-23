@@ -2,7 +2,6 @@
 # sudo apt install python-pip tor
 
 # Install dependencies: 
-# cd ~/shadowtube
 # pip install -r requirements.txt
 
 urllib3
