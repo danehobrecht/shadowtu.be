@@ -119,7 +119,7 @@ def videosExecute():
 	elif videosAccessible <= videoAttempts / 2:
 		print("Potentially shadowbanned.")
 	elif videosAccessible == 0:
-		print("Shadowbanned.")
+		print("Likely shadowbanned (or non-existent).")
 	menuOptions()
 	menuInput()
 
