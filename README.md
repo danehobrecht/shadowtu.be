@@ -12,7 +12,7 @@ Install dependencies by running:
 
     pip install -r requirements.txt
 
-Run (terminal)
+Run (terminal):
     
     cd ~/shadowtube
     sudo chmod a+x main.py
