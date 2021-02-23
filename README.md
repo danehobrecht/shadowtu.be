@@ -14,7 +14,7 @@ Install dependencies by running:
 
 Run (terminal)
     
-    1. ```cd ~/shadowtube```
+1. ```cd ~/shadowtube```
     2. ```sudo chmod a+x main.py```
     3. ```./main.py```
 
