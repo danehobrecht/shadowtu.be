@@ -4,6 +4,7 @@
 # Install dependencies: 
 # pip install -r requirements.txt
 
+# Ignore the following:
 urllib3
 PySocks
 cssselect
