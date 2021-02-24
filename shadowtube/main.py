@@ -1,24 +1,24 @@
 #!/usr/bin/env python
 # Example test url: https://youtu.be/Y6ljFaKRTrI
 
-from __future__ import print_function
 from lxml.cssselect import CSSSelector
+from __future__ import print_function
 from stem.control import Controller
 from stem import Signal
 
-import urllib
-import urllib2
-import urllib3
-import socks
-import socket
-import re
-import requests
-import time
-import io
-import json
-import os
-import argparse
 import lxml.html
+import argparse
+import requests
+import urllib3
+import urllib2
+import urllib
+import socket
+import socks
+import time
+import json
+import re
+import io
+import os
 
 videoAttempts = 0
 videosAccessible = 0
