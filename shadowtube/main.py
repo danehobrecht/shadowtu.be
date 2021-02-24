@@ -98,7 +98,7 @@ def videosExecute():
 	title = fsud[fsud.find(start)+len(start):fsud.rfind(end)]
 	print("done.\n")
 	for x in range(0, 5, 1):
-		print("IP being tested: " + getTorSession().get("http://icanhazip.com").text)
+		print("Current IP: " + getTorSession().get("http://icanhazip.com").text)
 		print("Searching for instance... ", end = "")
 		fetchQuery = http.request('GET', "https://www.youtube.com/results?search_query=" + "+".join(title.split())) 
 		if fetchQuery.data.find(title) >= 0:
@@ -111,15 +111,15 @@ def videosExecute():
 			videoAttempts += 1
 		if videosAccessible < 0:
 			videosAccessible = 0
-		print("\nRotating IP...")
+		print("\nRotating...")
 		renewConnection()
-	print("\n" + str(videosAccessible) + "/" + str(videoAttempts) + " public instances found. ", end = "")
+	print("\n" + str(videosAccessible) + "/" + str(videoAttempts) + " public instances found - ", end = "")
 	if videosAccessible == 0:
-		print("Likely shadowbanned (or non-existent).")
+		print("likely shadowbanned (or non-existent).")
 	elif videosAccessible <= videoAttempts / 2:
-		print("Potentially shadowbanned.")
+		print("potentially shadowbanned.")
 	elif videosAccessible == videoAttempts:
-		print("Unlikely shadowbanned.")
+		print("unlikely shadowbanned.")
 	menuOptions()
 	menuInput()
 
@@ -165,15 +165,14 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 			if commentsAccessible < 0:
 				commentsAccessible = 0
 				commentAttempts += 1
-		print("Rotating IP...")
+		print("Rotating...")
         	renewConnection()
 	print("\n" + str(commentsAccessible) + "/" + str(commentAttempts) + " public comments found.")
 	menuOptions()
 	menuInput()
 
 def fetchComments(youtubeId):
-	ip = getTorSession().get("http://icanhazip.com").text
-	print("IP being tested: " + ip)
+	print("Current IP: " + getTorSession().get("http://icanhazip.com").text)
 	parser = argparse.ArgumentParser()
 	try:
 		args = parser.parse_args()
