@@ -22,6 +22,7 @@ import os
 
 videoAttempts = 0
 videosAccessible = 0
+
 commentAttempts = 0
 commentsAccessible = 0
 
