@@ -1,10 +1,3 @@
-# Install fundamentals:
-# sudo apt install python3-pip tor
-
-# Install dependencies: 
-# pip3 install -r requirements.txt
-
-# Ignore the following:
 urllib3
 PySocks
 cssselect
