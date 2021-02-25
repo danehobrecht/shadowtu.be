@@ -1,5 +1,5 @@
 # Install fundamentals:
-# sudo apt install python-pip tor
+# sudo apt install python3-pip tor
 
 # Install dependencies: 
 # pip install -r requirements.txt
@@ -11,3 +11,4 @@ cssselect
 lxml
 requests
 stem
+torpy
