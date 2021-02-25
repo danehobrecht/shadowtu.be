@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # Example test url: https://youtu.be/Y6ljFaKRTrI
 
-from lxml.cssselect import CSSSelector
 from __future__ import print_function
+from lxml.cssselect import CSSSelector
 from stem.control import Controller
 from stem import Signal
 
@@ -24,7 +24,7 @@ videoAttempts = 0
 videosAccessible = 0
 commentAttempts = 0
 commentsAccessible = 0
-		
+
 YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v={youtubeId}'
 YOUTUBE_COMMENTS_AJAX_URL = 'https://www.youtube.com/comment_service_ajax'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
@@ -64,7 +64,7 @@ def videosInput():
 	shareUrl = raw_input("Enter YouTube share link: ")
 	if 'https://youtu.be/' in shareUrl:
 		try:
-			verifyTor = getTorSession().get("http://icanhazip.com").text
+			checkTor = getTorSession().get("http://icanhazip.com").text
 			videosExecute()
 		except IOError:
     			print("Invalid (is Tor running?). ", end = "")
@@ -77,7 +77,7 @@ def commentsInput():
 	choice = raw_input('Comment history must be locally available as: "Google - My Activity.html".\nContinue? (Y) ')
 	if choice == "Y" or "y":
 		try:
-			verifyTor = getTorSession().get("http://icanhazip.com").text
+			checkTor = getTorSession().get("http://icanhazip.com").text
 			commentsExecute()
 		except IOError:
 			print("Invalid (is Tor running?). ", end = "")
@@ -156,16 +156,16 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		with open('json.json', 'r') as json:
     			b = json.read()
 		if b.find(commentId) >= 0:
-			print("found.\n")
+			print("found.")
 			commentsAccessible += 1
 			commentAttempts += 1
 		else:
-			print("not found.\n")
+			print("not found.")
 			commentsAccessible -= 1
 			if commentsAccessible < 0:
 				commentsAccessible = 0
 				commentAttempts += 1
-		print("Rotating...")
+		print("\nRotating...")
         	renewConnection()
 	print("\n" + str(commentsAccessible) + "/" + str(commentAttempts) + " public comments found.")
 	menuOptions()
