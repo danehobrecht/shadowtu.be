@@ -10,7 +10,7 @@ Search analyzation features are as follows:
 
 Install dependencies by running:
 
-    pip install -r requirements.txt
+    pip3 install -r requirements.txt
 
 Run (terminal):
     
