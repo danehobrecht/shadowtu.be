@@ -4,4 +4,3 @@ cssselect
 lxml
 requests
 stem
-torpy
