@@ -1,5 +1,4 @@
 # ShadowTube
-Python: 2.7.16
 
 YouTube shadowban detection. This script does not utilize the YouTube API, or Google dependencies of any kind. In theory, it should not be able to be blacklisted, as scraping is done with constantly rotating IPs. As of now, the Tor service must be running as a background process for this script to execute successfully. For the time being this program is strictly bash.
 
@@ -12,7 +11,7 @@ Search analyzation features are as follows:
 
 Install dependencies by running:
 
-    pip install -r requirements.txt
+    pip3 install -r requirements.txt
 
 Run (terminal):
     
