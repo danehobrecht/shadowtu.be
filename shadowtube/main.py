@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from __future__ import print_function
 from lxml.cssselect import CSSSelector
@@ -9,7 +9,6 @@ import lxml.html
 import argparse
 import requests
 import urllib3
-import urllib2
 import urllib
 import socket
 import socks
@@ -38,9 +37,9 @@ def getTorSession():
 
 def renewConnection():
 	time.sleep(9)
-    	with Controller.from_port(port = 9151) as c:
-    	    c.authenticate()
-    	    c.signal(Signal.NEWNYM)
+	with Controller.from_port(port = 9151) as c:
+		c.authenticate()
+		c.signal(Signal.NEWNYM)
 
 # Menu
 
@@ -50,7 +49,7 @@ def menuList():
 # Input
 
 def menuInput():
-	choice = raw_input("Choose one of the listed options: ")	
+	choice = input("Choose one of the listed options: ")	
 	if choice == "1":
 		videosInput()
 	elif choice == "2":
@@ -61,20 +60,20 @@ def menuInput():
 
 def videosInput():
 	global shareUrl
-	shareUrl = raw_input("Enter YouTube share link: ") # Example test url: https://youtu.be/Y6ljFaKRTrI
+	shareUrl = input("Enter YouTube share link: ") # Example test url: https://youtu.be/Y6ljFaKRTrI
 	if 'https://youtu.be/' in shareUrl:
 		try:
 			checkTor = getTorSession().get("http://icanhazip.com").text
 			videosExecute()
 		except IOError:
-    			print("Invalid (is Tor running?). ", end = "")
+			print("Invalid (is Tor running?). ", end = "")
 			videosInput()
 	else:
 		print("Invalid. ", end = "")
 		videosInput()
 
 def commentsInput():
-	choice = raw_input('Comment history must be locally available as: "Google - My Activity.html".\nContinue? (Y) ')
+	choice = input('Comment history must be locally available as: "Google - My Activity.html".\nContinue? (Y) ')
 	if choice == "Y" or "y":
 		try:
 			checkTor = getTorSession().get("http://icanhazip.com").text
@@ -92,16 +91,16 @@ def videosExecute():
 	global videosAccessible, videoAttempts 
 	print("\nFetching title... ", end = "")
 	http = urllib3.PoolManager()
-	fsud = http.request('GET', shareUrl).data
-	start = '{"title":{"runs":[{"text":"'
-	end = '"}]},"viewCount"'
-	title = fsud[fsud.find(start)+len(start):fsud.rfind(end)]
-	print("done.\n")
+	fsud = str(http.request('GET', shareUrl).data).replace("\n", "").replace("'", "").replace('"', '').replace("[", "").replace("]", "").replace("\\", "")
+	titleFind = str(re.findall(',title:{simpleText:(.*?)},description:{simpleText:', fsud))
+	title = titleFind.split("'")[1]
+	print("done (" + title + ").	\n")
 	for x in range(0, 5, 1):
 		print("Current IP: " + getTorSession().get("http://icanhazip.com").text)
 		print("Searching for instance... ", end = "")
-		fetchQuery = http.request('GET', "https://www.youtube.com/results?search_query=" + "+".join(title.split())) 
-		if fetchQuery.data.find(title) >= 0:
+		searchTitle = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
+		fetchQuery = str(http.request('GET', searchTitle).data)
+		if fetchQuery.find(title) >= 0:
 			print("found.")
 			videosAccessible += 1
 			videoAttempts += 1
@@ -140,7 +139,8 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
 		#print("\nVideos supposedly featuring parent comment(s): " + str(parentLinks) + "\n")
 		#print("\nVideos supposedly featuring reply comment(s): " + str(replyLinks) + "\n")
-	for i in range(links.count("'") / 2):
+		numOfLinks = links.count("'") / 2
+	for i in range(int(numOfLinks)):
 		link = links.split("'")[index]
 		comment = comments.split("'")[index]
 		commentId = commentIds.split("'")[index]
@@ -166,7 +166,7 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 				commentsAccessible = 0
 				commentAttempts += 1
 		print("\nRotating...")
-        	renewConnection()
+		renewConnection()
 	print("\n" + str(commentsAccessible) + "/" + str(commentAttempts) + " public comments found.")
 	menuList()
 	menuInput()
