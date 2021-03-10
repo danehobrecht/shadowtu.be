@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from __future__ import print_function
+
 from lxml.cssselect import CSSSelector
 from stem.control import Controller
 from stem import Signal
