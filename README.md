@@ -10,7 +10,6 @@ Analyzation features are as follows:
 ## Bash
 
 ### Installation (GNU/Linux)
----
 
 - Download the "shadowtube" folder and cd into it:
 
