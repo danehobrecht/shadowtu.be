@@ -19,10 +19,10 @@ import re
 import io
 import os
 
-videoAttempts = 0
+videosAttempted = 0
 videosAccessible = 0
 
-commentAttempts = 0
+commentsAttempted = 0
 commentsAccessible = 0
 
 YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v={youtubeId}'
@@ -42,10 +42,10 @@ def renewConnection():
 		c.authenticate()
 		c.signal(Signal.NEWNYM)
 
-# Videos - test url: https://youtu.be/Y6ljFaKRTrI
+# Videos [test url: https://youtu.be/Y6ljFaKRTrI]
 
 def videoExecute(shareUrl):
-	global videosAccessible, videoAttempts
+	global videosAccessible, videosAttempted
 	if "https://youtu.be/" or "https://www.youtube.com/watch?v=" in str(shareUrl):
 		try:
 			checkTor = getTorSession().get("http://icanhazip.com").text
@@ -58,7 +58,7 @@ def videoExecute(shareUrl):
 	fsud = str(http.request('GET', shareUrl).data).replace("\n", "").replace("'", "").replace('"', '').replace("[", "").replace("]", "").replace("\\", "")
 	titleFind = str(re.findall(',title:{simpleText:(.*?)},description:{simpleText:', fsud))
 	title = titleFind.split("'")[1]
-	print('done: "' + title + '".\n')
+	print("done.\n")
 	for x in range(0, 5, 1):
 		print("Current IP: " + getTorSession().get("http://icanhazip.com").text)
 		print("Searching for instance... ", end = "")
@@ -67,44 +67,35 @@ def videoExecute(shareUrl):
 		if fetchQuery.find(title) >= 0:
 			print("found.")
 			videosAccessible += 1
-			videoAttempts += 1
 		else:
 			print("not found.")
 			videosAccessible -= 1
-			videoAttempts += 1
 		if videosAccessible < 0:
 			videosAccessible = 0
+		videosAttempted += 1
 		print("\nRotating...")
 		renewConnection()
 	if videosAccessible == 0:
 		conclusion = """likely shadowbanned (or non-existent)."""
-	elif videosAccessible <= videoAttempts / 2:
+	elif videosAccessible <= videosAttempted / 2:
 		conclusion = """potentially shadowbanned."""
-	elif videosAccessible == videoAttempts:
+	elif videosAccessible == videosAttempted:
 		conclusion = """unlikely shadowbanned."""
-	return str(videosAccessible) + """/""" + str(videoAttempts) + """ public instances found - """ + conclusion
+	return str(videosAccessible) + """/""" + str(videosAttempted) + """ public instances found - """ + conclusion
 
-# Comments - https://www.youtube.com/feed/history/comment_history
+# Comments [https://www.youtube.com/feed/history/comment_history]
 
-def commentsExecute():
-	global commentsAccessible, commentAttempts
+def commentsExecute(): 
+	global commentsAccessible, commentsAttempted
 	commentCharCount = 0
 	index = 1
-	if "jej" == "jej": # if file is uploaded as "Google - My Activity.html"
-		try:
-			checkTor = getTorSession().get("http://icanhazip.com").text
-			commentsExecute()
-		except IOError:
-			return """The Tor service is down serverside. Please try again later."""
-	else:
-		return """Invalid file. """
 	print("\nParsing comment history... ", end = "")
 	with io.open("Google - My Activity.html", 'r', encoding = 'utf-8') as commentHistoryHtml:
 		chh = commentHistoryHtml.read().replace("\n", "").replace("'", "").replace('"', '').replace("[", "").replace("]", "")
 		comments = str(re.findall('.png,null,(.*?),null,null,,,', chh))
 		commentIds = str(re.findall('data-token=(.*?) data-date', chh))
 		links = str(re.findall('  <a href=(.*?)&', chh))
-		print(" done.\n")
+		print(" done.")
 		#parentLinks = str(re.findall('Commented on  <a href=(.*?)&', f))
 		#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
 		#print("\nVideos supposedly featuring parent comment(s): " + str(parentLinks) + "\n")
@@ -114,30 +105,42 @@ def commentsExecute():
 		link = links.split("'")[index]
 		comment = comments.split("'")[index]
 		commentId = commentIds.split("'")[index]
+		print("\nVideo: " + link)
 		index += 2
-		fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
 		for i in comment:
-			commentCharCount += 1
+			if i.isspace() != True:
+				commentCharCount += 1
 		if commentCharCount >= 80:
-			print('Text: "' + comment[0:80] + '..."')
-		else:
-			print('Text: "' + comment + '"')
-		print('Searching for comment... ', end = "")
-		with open('json.json', 'r') as json:
-    			b = json.read()
-		if b.find(commentId) >= 0:
-			print("found.")
+			print('Comment: "' + comment[0:80] + '..."\n')
+		elif commentCharCount <= 80:
+			print('Comment: "' + comment + '"\n')
+		commentCharCount = 0
+		commentInstances = 0
+		for i in range(0, 1, 1): # Number of rotations
+			fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
+			print('Searching for comment... ', end = "")
+			with open('json.json', 'r') as json:
+				b = json.read()
+			if b.find(commentId) >= 0:
+				print("found.")
+				commentInstances += 1
+			else:
+				print("not found.")
+				commentInstances -= 1
+				if commentInstances < 0:
+					commentInstances = 0
+			#print("\nComment instances: " + str(commentInstances))
+			print("\nRotating...")
+			renewConnection()
+		if commentInstances > 0:
 			commentsAccessible += 1
-			commentAttempts += 1
-		else:
-			print("not found.")
+			#print("\nComments accessible: " + str(commentsAccessible))
+		elif commentInstances == 0:
 			commentsAccessible -= 1
 			if commentsAccessible < 0:
 				commentsAccessible = 0
-				commentAttempts += 1
-		print("\nRotating...")
-		renewConnection()
-	return str(commentsAccessible) + """/""" + str(commentAttempts) + """ public comments found."""
+		commentsAttempted += 1
+	return str(commentsAccessible) + """/""" + str(commentsAttempted) + """ public comments found."""
 
 def fetchComments(youtubeId):
 	print("Current IP: " + getTorSession().get("http://icanhazip.com").text)
