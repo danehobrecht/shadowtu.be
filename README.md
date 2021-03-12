@@ -30,6 +30,6 @@ Comment history must be locally available. If you are unsure how to accomplish t
 
 ShadowTube does not or store logs or relay personal data, nor does it have the ability to. Analyzing comments for shadowbanning requires that the user upload the extracted HTML data from their Google account comment history. This can be retrieved by logging in to the respective Google account and exporting this page: 
 
-https://www.youtube.com/feed/history/comment_history. 
+https://www.youtube.com/feed/history/comment_history
 
 In most cases, pressing "CTRL+S", or, "COMMAND+S" on the page is the most straightforward way to do this. If this isn't the case, look into exporting HTML data from webpage on the respective browser/operating system. Storing/parsing is required for basic functionality, but is ephermeral. Individual verification is firmly encouraged.
