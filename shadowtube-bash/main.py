@@ -19,10 +19,10 @@ import re
 import io
 import os
 
-videoAttempts = 0
+videosAttempted = 0
 videosAccessible = 0
 
-commentAttempts = 0
+commentsAttempted = 0
 commentsAccessible = 0
 
 YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v={youtubeId}'
@@ -74,7 +74,7 @@ def videosInput():
 		videosInput()
 
 def commentsInput():
-	choice = input('\nComment history must be locally available as: "Google - My Activity.html".\nContinue? (Y) ')
+	choice = input('\nComment history must be locally available as: "Google - My Activity.html".\n\nContinue? (Y) ')
 	if choice == "Y" or "y":
 		try:
 			checkTor = getTorSession().get("http://icanhazip.com").text
@@ -89,7 +89,7 @@ def commentsInput():
 # Videos [test url: https://youtu.be/Y6ljFaKRTrI]
 
 def videosExecute():
-	global videosAccessible, videoAttempts 
+	global videosAccessible, videosAttempted
 	print("\nFetching title... ", end = "")
 	http = urllib3.PoolManager()
 	fsud = str(http.request('GET', shareUrl).data).replace("\n", "").replace("'", "").replace('"', '').replace("[", "").replace("]", "").replace("\\", "")
@@ -104,21 +104,21 @@ def videosExecute():
 		if fetchQuery.find(title) >= 0:
 			print("found.")
 			videosAccessible += 1
-			videoAttempts += 1
+			videosAttempted += 1
 		else:
 			print("not found.")
 			videosAccessible -= 1
-			videoAttempts += 1
+			videosAttempted += 1
 		if videosAccessible < 0:
 			videosAccessible = 0
 		print("\nRotating...")
 		renewConnection()
-	print("\n" + str(videosAccessible) + "/" + str(videoAttempts) + " public instances found - ", end = "")
+	print("\n" + str(videosAccessible) + "/" + str(videosAttempted) + " public instances found - ", end = "")
 	if videosAccessible == 0:
 		print("likely shadowbanned (or non-existent).")
-	elif videosAccessible <= videoAttempts / 2:
+	elif videosAccessible <= videosAttempted / 2:
 		print("potentially shadowbanned.")
-	elif videosAccessible == videoAttempts:
+	elif videosAccessible == videosAttempted:
 		print("unlikely shadowbanned.")
 	menuList()
 	menuInput()
@@ -126,7 +126,7 @@ def videosExecute():
 # Comments [https://www.youtube.com/feed/history/comment_history]
 
 def commentsExecute(): 
-	global commentsAccessible, commentAttempts
+	global commentsAccessible, commentsAttempted
 	commentCharCount = 0
 	index = 1
 	print("\nParsing comment history... ", end = "")
@@ -170,15 +170,15 @@ def commentsExecute():
 			#print("\nComment instances: " + str(commentInstances))
 			print("\nRotating...")
 			renewConnection()
-		if commentInstances == 3:
+		if commentInstances > 0:
 			commentsAccessible += 1
 			#print("\nComments accessible: " + str(commentsAccessible))
 		elif commentInstances == 0:
 			commentsAccessible -= 1
 			if commentsAccessible < 0:
 				commentsAccessible = 0
-				commentAttempts += 1
-	print("\n" + str(commentsAccessible) + "/" + str(commentAttempts) + " public comments found.")
+		commentsAttempted += 1
+	print("\n" + str(commentsAccessible) + "/" + str(commentsAttempted) + " public comments found.")
 	menuList()
 	menuInput()
 
