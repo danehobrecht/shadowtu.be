@@ -12,7 +12,13 @@ def home():
 	return render_template('html.html')
 
 @app.route('/', methods=['POST'])
-def runAndOutput():
+def video():
 	urlInput = request.form['shareUrl']
 	output = main.videoExecute(urlInput)
 	return render_template('html.html', output=output)
+
+@app.route('/', methods=['GET', 'POST'])
+def comment():
+    if request.method == 'POST':
+        f = request.files['Google - My Activity.html']
+        f.save('~/Backup/Documents/Programming/shadowtube-flask/Google - My Activity.html')
