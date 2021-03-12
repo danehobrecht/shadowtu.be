@@ -13,19 +13,19 @@ Analyzation features are as follows:
 
 - Download the "shadowtube" folder and cd into it:
 
-    cd /path/to/shadowtube
+    `cd /path/to/shadowtube`
 
 - Open the folder in terminal and install dependencies:
 
-    pip3 install -r requirements.txt
+    `pip3 install -r requirements.txt`
 
 - Make the main python script an executable:
 
-    sudo chmod a+x main.py
+    `sudo chmod a+x main.py`
 
 - Run the script:
 
-    ./main.py
+    `./main.py`
 
 ###
 
