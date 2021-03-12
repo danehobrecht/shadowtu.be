@@ -25,4 +25,6 @@ Analyzation features are as follows:
 
     `./main.py`
     
+#### More information    
+
 Comment history must be locally available to the script to use the comment analyzation feature. This can be retrieved by logging in to the respective Google account and exporting the HTML data from https://www.youtube.com/feed/history/comment_history. In most cases, pressing "CTRL+S", or, "COMMAND+S" on the tab is the most straightforward way to do this. If this isn't the case, look into exporting HTML data from a particular webpage on the respective browser/operating system.
