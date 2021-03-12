@@ -148,13 +148,15 @@ def commentsExecute():
 		print("\nVideo: " + link)
 		index += 2
 		for i in comment:
-			commentCharCount += 1
+			if i.isspace() != True:
+				commentCharCount += 1
 		if commentCharCount >= 80:
 			print('Comment: "' + comment[0:80] + '..."\n')
-		else:
+		elif commentCharCount <= 80:
 			print('Comment: "' + comment + '"\n')
+		commentCharCount = 0
 		commentInstances = 0
-		for i in range(0, 3, 1):
+		for i in range(0, 1, 1): # Number of rotations
 			fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
 			print('Searching for comment... ', end = "")
 			with open('json.json', 'r') as json:
