@@ -7,19 +7,19 @@ Analyzation features are as follows:
 
 #### Installation (GNU/Linux)
 
-- Download "shadowtube-bash" and open the folder in terminal:
+1. Download "shadowtube-bash" and open the folder in terminal:
 
     `cd /path/to/shadowtube-bash`
 
-- Install dependencies:
+2. Install dependencies:
 
     `pip3 install -r requirements.txt`
 
-- Make the script an executable:
+3. Make the script an executable:
 
     `sudo chmod a+x main.py`
 
-- Run:
+4. Run:
 
     `./main.py`
 
