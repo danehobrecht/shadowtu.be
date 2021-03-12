@@ -1,11 +1,17 @@
 #!/venv/bin/python3
 
-from flask import Flask, request, render_template
+from flask import Flask, request, flash, redirect, url_for, render_template
 from markupsafe import Markup
+from werkzeug.utils import secure_filename
 
 import main
+import os
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = '/var/www/uploads'
+ALLOWED_EXTENSIONS = {'html'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def home():
@@ -17,8 +23,6 @@ def video():
 	output = main.videoExecute(urlInput)
 	return render_template('html.html', output=output)
 
-@app.route('/', methods=['GET', 'POST'])
-def comment():
-    if request.method == 'POST':
-        f = request.files['Google - My Activity.html']
-        f.save('~/Backup/Documents/Programming/shadowtube-flask/Google - My Activity.html')
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
