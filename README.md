@@ -5,7 +5,7 @@ Analyzation features are as follows:
 * Specific video links
 * Complete comment history
 
-#### Installation (GNU/Linux)
+#### Installation (GNU/Linux):
 
 1. Download "shadowtube-bash" and open the folder in terminal:
 
@@ -25,6 +25,6 @@ Analyzation features are as follows:
 
 #### More information
 
-Tor Browser is required to be running during script execution.
+Tor Browser is required to be running during script execution: https://www.torproject.org/
 
-Basic HTML data from https://www.youtube.com/feed/history/comment_history must be locally available.
+"Google - My Activity.html" must be locally available to the script: https://www.youtube.com/feed/history/comment_history
