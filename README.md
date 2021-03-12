@@ -7,17 +7,27 @@ Analyzation features are as follows:
 * Specific video links
 * Complete comment history
 
-### Bash
+## Bash
+
+### Installation (GNU/Linux)
 ---
 
-Install dependencies by running:
+- Download the "shadowtube" folder and cd into it:
+
+    cd /path/to/shadowtube
+
+- Open the folder in terminal and install dependencies:
 
     pip3 install -r requirements.txt
 
-Run (terminal):
-    
-    cd ~/shadowtube
+- Make the main python script an executable:
+
     sudo chmod a+x main.py
+
+- Run the script:
+
     ./main.py
+
+###
 
 ShadowTube does not or store logs or relay personal data, nor does it have the ability to. Analyzing comments for shadowbanning requires that the user upload the extracted HTML data from https://www.youtube.com/feed/history/comment_history. Storing/parsing is required for this service to be functional, but is ephermeral with the ambition to entirely respect user privacy. Individual verification is firmly encouraged.
