@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 from __future__ import print_function
 
@@ -50,7 +50,7 @@ def menuList():
 # Input
 
 def menuInput():
-	choice = input("Choose one of the listed options: ")	
+	choice = input("Choose one of the listed options: ")
 	if choice == "1":
 		videosInput()
 	elif choice == "2":
@@ -61,7 +61,7 @@ def menuInput():
 
 def videosInput():
 	global shareUrl
-	shareUrl = input("Enter YouTube share link: ") # Example test url: https://youtu.be/Y6ljFaKRTrI
+	shareUrl = input("\nEnter YouTube share link: ") 
 	if 'https://youtu.be/' in shareUrl:
 		try:
 			checkTor = getTorSession().get("http://icanhazip.com").text
@@ -74,7 +74,7 @@ def videosInput():
 		videosInput()
 
 def commentsInput():
-	choice = input('Comment history must be locally available as: "Google - My Activity.html".\nContinue? (Y) ')
+	choice = input('\nComment history must be locally available as: "Google - My Activity.html".\nContinue? (Y) ')
 	if choice == "Y" or "y":
 		try:
 			checkTor = getTorSession().get("http://icanhazip.com").text
@@ -86,7 +86,7 @@ def commentsInput():
 		print("Invalid. ", end = "")
 		commentsInput()
 
-# Videos
+# Videos [test url: https://youtu.be/Y6ljFaKRTrI]
 
 def videosExecute():
 	global videosAccessible, videoAttempts 
@@ -123,9 +123,9 @@ def videosExecute():
 	menuList()
 	menuInput()
 
-# Comments
+# Comments [https://www.youtube.com/feed/history/comment_history]
 
-def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
+def commentsExecute(): 
 	global commentsAccessible, commentAttempts
 	commentCharCount = 0
 	index = 1
@@ -135,7 +135,7 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		comments = str(re.findall('.png,null,(.*?),null,null,,,', chh))
 		commentIds = str(re.findall('data-token=(.*?) data-date', chh))
 		links = str(re.findall('  <a href=(.*?)&', chh))
-		print(" done.\n")
+		print(" done.")
 		#parentLinks = str(re.findall('Commented on  <a href=(.*?)&', f))
 		#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
 		#print("\nVideos supposedly featuring parent comment(s): " + str(parentLinks) + "\n")
@@ -145,29 +145,39 @@ def commentsExecute(): #https://www.youtube.com/feed/history/comment_history
 		link = links.split("'")[index]
 		comment = comments.split("'")[index]
 		commentId = commentIds.split("'")[index]
+		print("\nVideo: " + link)
 		index += 2
-		fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
 		for i in comment:
 			commentCharCount += 1
 		if commentCharCount >= 80:
-			print('Text: "' + comment[0:80] + '..."')
+			print('Comment: "' + comment[0:80] + '..."\n')
 		else:
-			print('Text: "' + comment + '"')
-		print('Searching for comment... ', end = "")
-		with open('json.json', 'r') as json:
-    			b = json.read()
-		if b.find(commentId) >= 0:
-			print("found.")
+			print('Comment: "' + comment + '"\n')
+		commentInstances = 0
+		for i in range(0, 3, 1):
+			fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
+			print('Searching for comment... ', end = "")
+			with open('json.json', 'r') as json:
+				b = json.read()
+			if b.find(commentId) >= 0:
+				print("found.")
+				commentInstances += 1
+			else:
+				print("not found.")
+				commentInstances -= 1
+				if commentInstances < 0:
+					commentInstances = 0
+			#print("\nComment instances: " + str(commentInstances))
+			print("\nRotating...")
+			renewConnection()
+		if commentInstances == 3:
 			commentsAccessible += 1
-			commentAttempts += 1
-		else:
-			print("not found.")
+			#print("\nComments accessible: " + str(commentsAccessible))
+		elif commentInstances == 0:
 			commentsAccessible -= 1
 			if commentsAccessible < 0:
 				commentsAccessible = 0
 				commentAttempts += 1
-		print("\nRotating...")
-		renewConnection()
 	print("\n" + str(commentsAccessible) + "/" + str(commentAttempts) + " public comments found.")
 	menuList()
 	menuInput()
@@ -185,7 +195,7 @@ def fetchComments(youtubeId):
 		if os.sep in output:
 			if not os.path.exists(outdir):
 				os.makedirs(outdir)
-		print("Downloading comments from https://youtu.be/" + youtubeId + "... ", end = "")
+		#print("Downloading comments... ", end = "")
 		count = 0
 		with io.open(output, 'w', encoding = 'utf8') as fp:
 			for comment in download_comments(youtubeId):
@@ -194,7 +204,7 @@ def fetchComments(youtubeId):
 				count += 1
 				if limit and count >= limit:
 					break
-		print('done.')
+		#print('done.')
 	except Exception as e:
 		print('Error:', str(e))	
 		exit()
