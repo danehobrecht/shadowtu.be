@@ -20,4 +20,4 @@ Run (terminal):
     sudo chmod a+x main.py
     ./main.py
 
-ShadowTube does not or relay personal data of any kind, nor does it have the ability to. In regards to the comment analyzation portion, parsing/storing data of any kind is ephemeral. Individual verification is firmly encouraged.
+ShadowTube does not or store logs or relay personal data, nor does it have the ability to. Analyzing comments for shadowbanning requires that the user upload the extracted HTML data from https://www.youtube.com/feed/history/comment_history. Storing/parsing is required for this service to be functional, but is ephermeral with the ambition to entirely respect user privacy. Individual verification is firmly encouraged.
