@@ -18,8 +18,8 @@ def home():
 
 @app.route('/', methods=['POST'])
 def video():
-	urlInput = request.form['shareUrl']
-	vOutput = main.videoExecute(urlInput)
+	user_input = request.form['shareUrl']
+	vOutput = main.videoExecute(user_input)
 	return render_template('html.html', vOutput=vOutput)
 	
 @app.route('/uploader', methods = ['GET', 'POST'])
