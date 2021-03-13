@@ -252,6 +252,3 @@ def search_dict(partial, search_key):
         elif isinstance(current_item, list):
             for value in current_item:
                 stack.append(value)
-
-if __name__ == "__main__":
-    import argparse
