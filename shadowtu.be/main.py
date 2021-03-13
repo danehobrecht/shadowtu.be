@@ -90,7 +90,7 @@ def commentsExecute():
 	commentCharCount = 0
 	index = 1
 	print("\nParsing comment history... ", end = "")
-	with io.open("Google - My Activity.html", 'r', encoding = 'utf-8') as commentHistoryHtml:
+	with io.open("Google_-_My_Activity.html", 'r', encoding = 'utf-8') as commentHistoryHtml:
 		chh = commentHistoryHtml.read().replace("\n", "").replace("'", "").replace('"', '').replace("[", "").replace("]", "")
 		comments = str(re.findall('.png,null,(.*?),null,null,,,', chh))
 		commentIds = str(re.findall('data-token=(.*?) data-date', chh))
@@ -141,12 +141,13 @@ def commentsExecute():
 				commentsAccessible = 0
 		commentsAttempted += 1
 	return str(commentsAccessible) + """/""" + str(commentsAttempted) + """ public comments found."""
+	echo("rm Google_-_My_Activity.html")
 
 def fetchComments(youtubeId):
 	print("Current IP: " + getTorSession().get("http://icanhazip.com").text)
 	parser = argparse.ArgumentParser()
 	try:
-		args = parser.parse_args()
+		args, unknown = parser.parse_known_args()
 		output = 'json.json'
 		limit = 1000
 		if not youtubeId or not output:
@@ -251,3 +252,6 @@ def search_dict(partial, search_key):
         elif isinstance(current_item, list):
             for value in current_item:
                 stack.append(value)
+
+if __name__ == "__main__":
+    import argparse
