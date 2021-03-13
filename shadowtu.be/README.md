@@ -1,2 +1,3 @@
-`export FLASK_APP=py.py`\
-`flask run`
+export FLASK_APP=py.py
+
+flask run
