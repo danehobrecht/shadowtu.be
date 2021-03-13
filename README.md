@@ -27,4 +27,4 @@ Analyzation features are as follows:
 
 Tor Browser is required to be running during script execution: https://www.torproject.org/
 
-"Google - My Activity.html" must be locally available to the script: https://www.youtube.com/feed/history/comment_history
+"Google - My Activity.html" must be locally available to the script to use the comment feature: https://www.youtube.com/feed/history/comment_history
