@@ -63,7 +63,7 @@ def videoExecute(shareUrl):
 	titleFormat = titleFind.split("'")[1]
 	title = html.unescape(titleFormat)
 	print("done.\n")
-	for x in range(0, 5, 1):
+	for x in range(0, 10, 1): # Number of rotations (videos)
 		print("Current IP: " + getTorSession().get("http://icanhazip.com").text)
 		print("Searching for instance... ", end = "")
 		searchTitle = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
@@ -120,7 +120,7 @@ def commentsExecute():
 			print('Comment: "' + comment + '"\n')
 		commentCharCount = 0
 		commentInstances = 0
-		for i in range(0, 3, 1): # Number of rotations
+		for i in range(0, 3, 1): # Number of rotations (comments)
 			fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
 			print('Searching for comment... ', end = "")
 			with open('json.json', 'r') as json:
