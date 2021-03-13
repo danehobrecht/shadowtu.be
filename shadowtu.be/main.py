@@ -15,6 +15,7 @@ import socket
 import socks
 import time
 import json
+import html
 import re
 import io
 import os
@@ -46,7 +47,7 @@ def renewConnection():
 
 def videoExecute(shareUrl):
 	global videosAccessible, videosAttempted
-	if "https://youtu.be/" or "https://www.youtube.com/watch?v=" in str(shareUrl):
+	if "https://youtu.be/" in str(shareUrl) or "https://www.youtube.com/watch?v=" in str(shareUrl):
 		try:
 			checkTor = getTorSession().get("http://icanhazip.com").text
 		except IOError:
@@ -56,14 +57,17 @@ def videoExecute(shareUrl):
 	print("\nFetching title... ", end = "")
 	http = urllib3.PoolManager()
 	fsud = str(http.request('GET', shareUrl).data).replace("\n", "").replace("'", "").replace('"', '').replace("[", "").replace("]", "").replace("\\", "")
-	titleFind = str(re.findall(',title:{simpleText:(.*?)},description:{simpleText:', fsud))
-	title = titleFind.split("'")[1]
+	titleFind = str(re.findall('<title>(.*?) - YouTube</title><meta name=title content=', fsud))
+	#print(titleFind)
+	#print(fsudc)
+	titleFormat = titleFind.split("'")[1]
+	title = html.unescape(titleFormat)
 	print("done.\n")
 	for x in range(0, 5, 1):
 		print("Current IP: " + getTorSession().get("http://icanhazip.com").text)
 		print("Searching for instance... ", end = "")
 		searchTitle = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
-		fetchQuery = str(http.request('GET', searchTitle).data)
+		fetchQuery = str(http.request('GET', searchTitle).data).replace("\\", "")
 		if fetchQuery.find(title) >= 0:
 			print("found.")
 			videosAccessible += 1
@@ -116,7 +120,7 @@ def commentsExecute():
 			print('Comment: "' + comment + '"\n')
 		commentCharCount = 0
 		commentInstances = 0
-		for i in range(0, 1, 1): # Number of rotations
+		for i in range(0, 3, 1): # Number of rotations
 			fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
 			print('Searching for comment... ', end = "")
 			with open('json.json', 'r') as json:
