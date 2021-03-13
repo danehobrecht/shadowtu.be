@@ -145,7 +145,7 @@ def commentsExecute():
 				commentsAccessible = 0
 		commentsAttempted += 1
 	return str(commentsAccessible) + """/""" + str(commentsAttempted) + """ public comments found."""
-	echo("rm Google_-_My_Activity.html")
+	# add function to delete the json.json and html page of comment history when done
 
 def fetchComments(youtubeId):
 	print("Current IP: " + getTorSession().get("http://icanhazip.com").text)
