@@ -10,7 +10,7 @@ style= "text-align: center;
 
 <h1> ShadowTube </h1>
 
-<h2> Videos </h2>
+<!-- Videos -->
 <form method="POST">
 <input placeholder="https://www.youtube.com/watch?v=Y6ljFaKRTrI"; name="shareUrl"; type="text";
 style= "height: 50px;
@@ -20,14 +20,18 @@ style= "height: 50px;
 </form>
 <p>{{ vOutput }}</p>
 
-<h2> Comments </h2>
-<p>Upload and submit YouTube comment history as:<br> "Google - My Activity.html"</p>
+<a href= "https://github.com/danehobrecht/shadowtube"; style="color: white;"; target="_blank">GitHub</a>
+
+<!-- Comments
+<p>Upload YouTube comment history as: "Google - My Activity.html"</p>
 <form action = "http://localhost:5000/uploader" method = "POST" enctype = "multipart/form-data">
 	<input type = "file" name = "file" />
 	<input type = "submit"/>
 </form>
 <p>{{ cOutput }}</p>
+-->
 
+<!-- GitHub at bottom of page
 <a href= "https://github.com/danehobrecht/shadowtube"
 style= "position: absolute;
 		bottom: 0; 
@@ -35,6 +39,7 @@ style= "position: absolute;
 		width: 100%; 
 		color: white;">
 GitHub</a>
+-->
 
 </body>
 </html>
