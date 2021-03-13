@@ -160,7 +160,7 @@ def fetchComments(youtubeId):
 		if os.sep in output:
 			if not os.path.exists(outdir):
 				os.makedirs(outdir)
-		print("Downloading comments from https://youtu.be/" + youtubeId + "... ", end = "")
+		print("Downloading comments... ", end = "")
 		count = 0
 		with io.open(output, 'w', encoding = 'utf8') as fp:
 			for comment in download_comments(youtubeId):
