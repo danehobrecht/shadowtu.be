@@ -9,8 +9,7 @@ import os
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = '/var/www/uploads'
-ALLOWED_EXTENSIONS = {'html'}
+UPLOAD_FOLDER = '~/shadowtube-flask'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
@@ -20,9 +19,14 @@ def home():
 @app.route('/', methods=['POST'])
 def video():
 	urlInput = request.form['shareUrl']
-	output = main.videoExecute(urlInput)
-	return render_template('html.html', output=output)
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+	vOutput = main.videoExecute(urlInput)
+	return render_template('html.html', vOutput=vOutput)
+	
+@app.route('/uploader', methods = ['GET', 'POST'])
+def upload_files():
+	if request.method == 'POST':
+		f = request.files['file']
+		filename = "Google_-_My_Activity.html"
+		f.save(secure_filename(f.filename))
+	cOutput = main.commentsExecute()
+	return render_template('html.html', cOutput=cOutput)
