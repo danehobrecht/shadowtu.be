@@ -25,6 +25,6 @@ Analyzation features are as follows:
 
 #### More information
 
-- Tor Browser is required to be running during script execution (https://www.torproject.org/).
-- "Google - My Activity.html" must be locally available to use the comment feature. Export the HTML page from the following link and move it into the same directory as the script: https://www.youtube.com/feed/history/comment_history
-- Clearnet-accessible website is in the works.
+- Tor Browser (https://www.torproject.org/) is required to be running during script execution.
+- "Google - My Activity.html" must be locally available to use the comment feature. Export the HTML page from the comment history page (https://www.youtube.com/feed/history/comment_history) and move it into the same directory as the script.
+- Clearnet-accessible website is in the works
