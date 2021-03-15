@@ -6,6 +6,7 @@ from lxml.cssselect import CSSSelector
 from stem.control import Controller
 from stem import Signal
 
+import subprocess
 import lxml.html
 import argparse
 import requests
@@ -20,17 +21,11 @@ import re
 import io
 import os
 
-videosAttempted = 0
-videosAccessible = 0
-
-commentsAttempted = 0
-commentsAccessible = 0
-
 YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v={youtubeId}'
 YOUTUBE_COMMENTS_AJAX_URL = 'https://www.youtube.com/comment_service_ajax'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
 
-# Tor
+### Tor
 
 def getTorSession():
     session = requests.Session()
@@ -43,10 +38,11 @@ def renewConnection():
 		c.authenticate()
 		c.signal(Signal.NEWNYM)
 
-# Videos [test url: https://youtu.be/Y6ljFaKRTrI]
+### Videos [test url: https://youtu.be/Y6ljFaKRTrI]
 
 def videoExecute(shareUrl):
-	global videosAccessible, videosAttempted
+	videosAttempted = 0
+	videosAccessible = 0
 	if "https://youtu.be/" in str(shareUrl) or "https://www.youtube.com/watch?v=" in str(shareUrl):
 		try:
 			checkTor = getTorSession().get("http://icanhazip.com").text
@@ -56,14 +52,14 @@ def videoExecute(shareUrl):
 		return """Invalid input. """
 	print("\nFetching title... ", end = "")
 	http = urllib3.PoolManager()
-	fsud = str(http.request('GET', shareUrl).data).replace("\n", "").replace("'", "").replace('"', '').replace("[", "").replace("]", "").replace("\\", "")
-	titleFind = str(re.findall('<title>(.*?) - YouTube</title><meta name=title content=', fsud))
+	fsud = str(http.request('GET', shareUrl).data).replace("\n", "").replace("&amp;", "and")
+	titleFind = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', fsud))
+	#print(fsud)
 	#print(titleFind)
-	#print(fsudc)
 	titleFormat = titleFind.split("'")[1]
 	title = html.unescape(titleFormat)
-	print("done.\n")
-	for x in range(0, 10, 1): # Number of rotations (videos)
+	print("done.\n" + title + "\n")
+	for x in range(0, 1, 1): # Video rotations
 		print("Current IP: " + getTorSession().get("http://icanhazip.com").text)
 		print("Searching for instance... ", end = "")
 		searchTitle = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
@@ -80,18 +76,19 @@ def videoExecute(shareUrl):
 		print("\nRotating...")
 		renewConnection()
 	if videosAccessible == 0:
-		conclusion = """likely shadowbanned (or non-existent)."""
+		conclusion = """likely shadowban (or non-existent)."""
 	elif videosAccessible <= videosAttempted / 2:
-		conclusion = """potentially shadowbanned."""
+		conclusion = """potential shadowban."""
 	elif videosAccessible == videosAttempted:
-		conclusion = """unlikely shadowbanned."""
+		conclusion = """unlikely shadowban."""
+	print("\n" + str(videosAccessible) + "/" + str(videosAttempted) + " public instances found - " + conclusion)
 	return str(videosAccessible) + """/""" + str(videosAttempted) + """ public instances found - """ + conclusion
 
-# Comments [https://www.youtube.com/feed/history/comment_history]
+### Comments [https://www.youtube.com/feed/history/comment_history]
 
-def commentsExecute(): 
-	global commentsAccessible, commentsAttempted
-	commentCharCount = 0
+def commentsExecute():
+	commentsAttempted = 0
+	commentsAccessible = 0
 	index = 1
 	print("\nParsing comment history... ", end = "")
 	with io.open("Google_-_My_Activity.html", 'r', encoding = 'utf-8') as commentHistoryHtml:
@@ -99,16 +96,16 @@ def commentsExecute():
 		comments = str(re.findall('.png,null,(.*?),null,null,,,', chh))
 		commentIds = str(re.findall('data-token=(.*?) data-date', chh))
 		links = str(re.findall('  <a href=(.*?)&', chh))
-		print(" done.")
-		#parentLinks = str(re.findall('Commented on  <a href=(.*?)&', f))
-		#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
-		#print("\nVideos supposedly featuring parent comment(s): " + str(parentLinks) + "\n")
-		#print("\nVideos supposedly featuring reply comment(s): " + str(replyLinks) + "\n")
-		numOfLinks = links.count("'") / 2
-	for i in range(int(numOfLinks)):
+	print(" done.")
+	#parentLinks = str(re.findall('Commented on  <a href=(.*?)&', f))
+	#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
+	#print("\nVideos supposedly featuring parent comment(s): " + str(parentLinks) + "\n")
+	#print("\nVideos supposedly featuring reply comment(s): " + str(replyLinks) + "\n")
+	for i in range(int(links.count("'") / 2)):
 		link = links.split("'")[index]
 		comment = comments.split("'")[index]
 		commentId = commentIds.split("'")[index]
+		commentCharCount = 0
 		print("\nVideo: " + link)
 		index += 2
 		for i in comment:
@@ -118,9 +115,8 @@ def commentsExecute():
 			print('Comment: "' + comment[0:80] + '..."\n')
 		elif commentCharCount <= 80:
 			print('Comment: "' + comment + '"\n')
-		commentCharCount = 0
 		commentInstances = 0
-		for i in range(0, 3, 1): # Number of rotations (comments)
+		for i in range(0, 3, 1): # Comment rotations
 			fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
 			print('Searching for comment... ', end = "")
 			with open('json.json', 'r') as json:
@@ -137,15 +133,18 @@ def commentsExecute():
 			print("\nRotating...")
 			renewConnection()
 		if commentInstances > 0:
+			print("\nAccessible. Unlikely shadowban.")
 			commentsAccessible += 1
 			#print("\nComments accessible: " + str(commentsAccessible))
 		elif commentInstances == 0:
+			print("\nNon-accessible. Potential shadowban.")
 			commentsAccessible -= 1
 			if commentsAccessible < 0:
 				commentsAccessible = 0
 		commentsAttempted += 1
+	subprocess.Popen(["rm", "Google_-_My_Activity.html", "json.json"], stdout=subprocess.PIPE) # $ rm Google_-_My_Activity.html json.json
+	print("\n" + str(commentsAccessible) + "/" + str(commentsAttempted) + " public comments found.")
 	return str(commentsAccessible) + """/""" + str(commentsAttempted) + """ public comments found."""
-	# add function to delete the json.json and html page of comment history when done
 
 def fetchComments(youtubeId):
 	print("Current IP: " + getTorSession().get("http://icanhazip.com").text)
