@@ -59,7 +59,7 @@ def videoExecute(shareUrl):
 	titleFormat = titleFind.split("'")[1]
 	title = html.unescape(titleFormat)
 	print("done.\n" + title + "\n")
-	for x in range(0, 1, 1): # Video rotations
+	for x in range(0, 5, 1): # Video rotations
 		print("Current IP: " + getTorSession().get("http://icanhazip.com").text)
 		print("Searching for instance... ", end = "")
 		searchTitle = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
