@@ -8,19 +8,15 @@ Analyzation features are as follows:
 #### Installation (GNU/Linux):
 
 1. Download "shadowtube-bash" and open the folder in terminal:
-
     `cd /path/to/shadowtube-bash`
 
 2. Install dependencies:
-
     `pip3 install -r requirements.txt`
 
 3. Make the script an executable:
-
     `sudo chmod a+x main.py`
 
 4. Run:
-
     `./main.py`
 
 #### More information
