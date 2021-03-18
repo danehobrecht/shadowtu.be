@@ -25,7 +25,7 @@ Analyzation features are as follows:
 
     `./main.py`
     
-#### Pre-requisites
+### Pre-requisites
 
 - Tor Browser - https://www.torproject.org/
     - Required to be running during script execution.
