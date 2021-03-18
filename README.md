@@ -23,8 +23,9 @@ Analyzation features are as follows:
 
     `./main.py`
 
-#### More information
+#### Pre-requisites
 
-- Tor Browser (https://www.torproject.org/) is required to be running during script execution.
-- "Google - My Activity.html" must be locally available to use the comment feature. Export the HTML page from the comment history page (https://www.youtube.com/feed/history/comment_history) and move it into the same directory as the script.
-- Clearnet-accessible website is in the works
+- Tor Browser (https://www.torproject.org/)
+    - Required to be running during script execution.
+- Comment History HTML (https://www.youtube.com/feed/history/comment_history)
+    - "Google - My Activity.html" must be locally available to the script to use the comment feature.
