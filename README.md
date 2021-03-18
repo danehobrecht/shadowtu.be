@@ -1,5 +1,7 @@
 # ShadowTube
 
+Clearnet accessible website is in development. For now, this program is strictly bash.
+
 Analyzation features are as follows:
 
 * Specific video links
@@ -22,9 +24,7 @@ Analyzation features are as follows:
 4. Run:
 
     `./main.py`
-
-Clearnet accessible website is under development.
-
+    
 #### Pre-requisites
 
 - Tor Browser - https://www.torproject.org/
