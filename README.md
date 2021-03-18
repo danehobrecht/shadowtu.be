@@ -23,6 +23,8 @@ Analyzation features are as follows:
 
     `./main.py`
 
+Clearnet accessible website is under development.
+
 #### Pre-requisites
 
 - Tor Browser - https://www.torproject.org/
