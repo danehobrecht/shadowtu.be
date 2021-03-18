@@ -7,7 +7,7 @@ Analyzation features are as follows:
 * Specific video links
 * Complete comment history
 
-### Installation (GNU/Linux):
+### Installation (GNU/Linux, MacOS):
 
 1. Download "shadowtube-bash" and open the folder in terminal:
 
