@@ -29,7 +29,7 @@ Analyzation features are as follows:
 
 1. (Coming soon).
     
-### Pre-requisites
+### Prerequisites:
 
 - Tor Browser - https://www.torproject.org/
     - Required to be running during script execution.
