@@ -27,7 +27,7 @@ Analyzation features are as follows:
     
 ### Installation (Windows):
 
-1. Coming soon
+1. (Coming soon).
     
 ### Pre-requisites
 
