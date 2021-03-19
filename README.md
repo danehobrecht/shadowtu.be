@@ -25,7 +25,9 @@ Analyzation features are as follows:
 
     `./main.py`
     
-### Installation (Windows - coming soon):
+### Installation (Windows):
+
+1. Coming soon
     
 ### Pre-requisites
 
