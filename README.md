@@ -25,6 +25,8 @@ Analyzation features are as follows:
 
     `./main.py`
     
+### Installation (Windows - coming soon):
+    
 ### Pre-requisites
 
 - Tor Browser - https://www.torproject.org/
