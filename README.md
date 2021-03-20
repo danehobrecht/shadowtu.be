@@ -1,6 +1,6 @@
 # ShadowTube
 
-Clearnet accessible website is in development. For now, this program is strictly bash.
+Clearnet and onion websites are in development. For now, this program is strictly bash.
 
 Analyzation features are as follows:
 
