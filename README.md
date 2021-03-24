@@ -7,7 +7,9 @@ Analyzation features are as follows:
 * Specific video links
 * Complete comment history
 
-### Installation (GNU/Linux, MacOS):
+### Installation 
+## Bash 
+# GNU/Linux, MacOS:
 
 1. Download "shadowtube-bash" and open the folder in terminal:
 
@@ -25,7 +27,7 @@ Analyzation features are as follows:
 
     `./main.py`
     
-### Installation (Windows):
+# Windows:
 
 1. (Coming soon).
     
