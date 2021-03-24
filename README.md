@@ -7,9 +7,7 @@ Analyzation features are as follows:
 * Specific video links
 * Complete comment history
 
-### Installation 
-## Bash 
-# GNU/Linux, MacOS:
+### Installation (GNU/Linux, MacOS):
 
 1. Download "shadowtube-bash" and open the folder in terminal:
 
@@ -26,11 +24,7 @@ Analyzation features are as follows:
 4. Run:
 
     `./main.py`
-    
-# Windows:
-
-1. (Coming soon).
-    
+       
 ### Prerequisites:
 
 - Tor Browser | https://www.torproject.org/
