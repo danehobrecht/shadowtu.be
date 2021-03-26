@@ -9,7 +9,7 @@ Analyzation features are as follows:
 
 ### Installation
 ---
-#### Bash
+### Bash
 #### (GNU/Linux, MacOS):
 
 1. Download "shadowtube-bash" and open in terminal:
