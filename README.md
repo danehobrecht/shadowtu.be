@@ -26,7 +26,7 @@ Analyzation features are as follows:
 4. Run:
 
     `./main.py`
----
+    
 ### Flask
 #### GNU/Linux, MacOS:
 
@@ -45,7 +45,7 @@ Analyzation features are as follows:
 4. Run:
 
     `flask run`
----
+
 #### Windows support coming soon.
 
 ## Prerequisites:
