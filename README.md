@@ -33,7 +33,6 @@ Analyzation features are as follows:
 1. Coming soon.
 ---
 ### Flask
----
 #### (GNU/Linux, MacOS):
 
 1. Download "shadowtube-flask.zip" and extract the folder, and open in terminal
