@@ -11,7 +11,7 @@ Analyzation features are as follows:
 ### Bash 
 #### (GNU/Linux, MacOS):
 
-1. Download "shadowtube-bash" and open the folder in terminal:
+1. Download "shadowtube-bash" and open in terminal:
 
     `cd /path/to/shadowtube-bash`
 
@@ -26,7 +26,27 @@ Analyzation features are as follows:
 4. Run:
 
     `./main.py`
-       
+    
+### Flask
+#### (GNU/Linux, MacOS):
+
+1. Download "shadowtube-flask.zip" and extract the folder, and open in terminal
+
+    `cd /path/to/shadowtube-flask`
+    
+2. Install dependencies:
+
+    `pip3 install -r requirements.txt`
+
+3. Establish the flask app:
+
+    `export FLASK_APP=shadowtube.py`
+    
+4. Run:
+
+    `flask run`
+
+
 ### Prerequisites:
 
 - Tor Browser | https://www.torproject.org/
