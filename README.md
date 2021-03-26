@@ -46,7 +46,7 @@ Analyzation features are as follows:
 
     `flask run`
 
-***Windows support coming soon.
+***Windows support coming soon.***
 
 ## Prerequisites
 
