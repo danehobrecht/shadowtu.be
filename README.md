@@ -7,9 +7,10 @@ Analyzation features are as follows:
 * Specific video links
 * Complete comment history
 
-# Installation 
-## Bash 
-### (GNU/Linux, MacOS):
+## Installation 
+### Bash
+---
+#### (GNU/Linux, MacOS):
 
 1. Download "shadowtube-bash" and open in terminal:
 
@@ -27,8 +28,13 @@ Analyzation features are as follows:
 
     `./main.py`
     
-## Flask
-### (GNU/Linux, MacOS):
+#### (Windows):
+
+1. Coming soon.
+
+### Flask
+---
+#### (GNU/Linux, MacOS):
 
 1. Download "shadowtube-flask.zip" and extract the folder, and open in terminal
 
@@ -45,7 +51,10 @@ Analyzation features are as follows:
 4. Run:
 
     `flask run`
+    
+#### (Windows):
 
+1. Coming soon.
 
 ### Prerequisites:
 
