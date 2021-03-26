@@ -26,10 +26,6 @@ Analyzation features are as follows:
 4. Run:
 
     `./main.py`
-    
-#### Windows:
-
-1. Coming soon.
 ---
 ### Flask
 #### GNU/Linux, MacOS:
@@ -50,10 +46,8 @@ Analyzation features are as follows:
 
     `flask run`
     
-#### Windows:
+#### Windows support coming soon.
 
-1. Coming soon.
----
 ### Prerequisites:
 
 - Tor Browser | https://www.torproject.org/
