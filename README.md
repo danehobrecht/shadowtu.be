@@ -7,8 +7,8 @@ Analyzation features are as follows:
 * Specific video links
 * Complete comment history
 
-## Installation 
-### Bash
+### Installation 
+#### Bash
 ---
 #### (GNU/Linux, MacOS):
 
