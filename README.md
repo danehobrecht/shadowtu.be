@@ -30,7 +30,7 @@ Analyzation features are as follows:
 #### (Windows):
 
 1. Coming soon.
------
+---
 ### Flask
 #### (GNU/Linux, MacOS):
 
@@ -53,7 +53,7 @@ Analyzation features are as follows:
 #### (Windows):
 
 1. Coming soon.
-----
+---
 ### Prerequisites:
 
 - Tor Browser | https://www.torproject.org/
