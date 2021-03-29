@@ -4,8 +4,8 @@ Website is in development. For now, this program is strictly bash.
 
 Analyzation features are as follows:
 
-* Specific video links
-* Complete comment history
+* Video links
+* Specific comments (or complete history)
 
 ## Installation
 ### Bash
