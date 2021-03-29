@@ -48,7 +48,7 @@ Analyzation features are as follows:
 
 ***Windows support coming soon.***
 
-## Prerequisites
+## Bash prerequisites
 
 - Tor Browser | https://www.torproject.org/
     - Required to be running during script execution.
