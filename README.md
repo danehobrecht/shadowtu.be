@@ -40,7 +40,7 @@ Analyzation features are as follows:
 
 3. Establish the flask app:
 
-    `export FLASK_APP=shadowtube.py`
+    `export FLASK_APP=app.py`
     
 4. Run:
 
