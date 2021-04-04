@@ -5,8 +5,8 @@ Website is in development. For now, this program is strictly bash.
 Analyzation features are as follows:
 
 Video links
-    * Video links
-    * Specific comments (or complete history)
+- Video links
+- Specific comments (or complete history)
 
 ## Installation
 ### Bash
@@ -55,4 +55,3 @@ Video links
     - Required to be running during script execution.
 - Comment History HTML | https://www.youtube.com/feed/history/comment_history
     - "Google - My Activity.html" must be locally available to the script to use the comment feature.
->>>>>>> adfb0752919e691cd48c325e9b9aa9eee8ae10bb
