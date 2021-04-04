@@ -1,0 +1,54 @@
+<!DOCTYPE html>	
+
+<html class="general-format";>
+
+	<title>
+		ShadowTube
+	</title>
+
+	<head>
+		<!-- CSS -->
+		<link rel="stylesheet"; type="text/css"; href="{{ url_for('static',filename='styles/css.css') }}";/>
+		<!-- Font -->
+		<link rel="stylesheet"; type="text/css"; href="https://fontlibrary.org//face/liberation-sans-unofficial-opentype-cff-version";/>
+		<!-- jQuery -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<div class="center-page">
+			<a class="header-button";>ShadowTube</a>
+			<!--
+			<img align="middle"; src="{{url_for('static', filename='images/png.png')}}";/>
+		    Videos -->
+			<p>Enter the YouTube video link in question.</p>
+			<form method="POST";>
+				<div class="input-container">
+					<input class="link-box"; type="text"; name="shareUrl"; placeholder="https://www.youtube.com/watch?v=Y6ljFaKRTrI";/>
+					<div class="loader toshow";></div>
+				</div>
+				<script>
+					$(document).on('keypress',function(e) {
+				    	if(e.which == 13) {
+				    		$("div.toshow").show();
+							$(".link-box").hide();
+							$("p").hide();
+							$(".header-button").hide();
+				    	}
+					});
+				</script>
+				<p>{{ output }}</p>
+			</form>
+		</div>
+	</body>
+
+	<footer>
+		<br>
+		<a style="color: black;";>Videos</a>
+		<a style="color: black;"; href="/comments";>Comments</a>
+		<a style="color: black;"; href="/why";>Why?</a>
+   <!-- <a style="color: black;"; href="/";>Onion link</a> -->
+		<a style="color: black;"; target="_blank"; href="https://github.com/danehobrecht/shadowtube";>GitHub</a>
+	</footer>
+
+</html>

@@ -1,0 +1,268 @@
+#!/venv/bin/python3
+
+from __future__ import print_function
+
+from lxml.cssselect import CSSSelector
+from stem.control import Controller
+from array import array
+from stem import Signal
+
+import subprocess
+import lxml.html
+import argparse
+import requests
+import urllib3
+import urllib
+import socket
+import socks
+import time
+import json
+import html
+import re
+import io
+import os
+
+YOUTUBE_VIDEO_URL = "https://www.youtube.com/watch?v={youtubeId}"
+YOUTUBE_COMMENTS_AJAX_URL = "https://www.youtube.com/comment_service_ajax"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"
+
+### Tor
+
+def getTorSession():
+    session = requests.Session()
+    session.proxies = {"http": "socks5://localhost:9150", "https": "socks5://localhost:9150"}
+    return session
+
+def rotateConnection():
+	print("\nRotating... ", end = "")
+	time.sleep(10)
+	with Controller.from_port(port = 9151) as c:
+		c.authenticate()
+		c.signal(Signal.NEWNYM)
+	print("IP: " + getTorSession().get("http://icanhazip.com").text)
+
+### Videos 
+## Test URL: https://youtu.be/Y6ljFaKRTrI
+
+def videoExecute(shareUrl):
+	videosAttempted = 0
+	videosAccessible = 0
+	if "https://youtu.be/" in str(shareUrl) or "https://www.youtube.com/watch?v=" in str(shareUrl):
+		if len(shareUrl) > 43:
+			return "Invalid input."
+		try:
+			print("\nInitial IP: " + getTorSession().get("http://icanhazip.com").text)
+		except IOError:
+			return "Tor service is down serverside. Please try again later."
+	else:
+		return "Invalid input."
+	print("Fetching title... ", end = "")
+	http = urllib3.PoolManager()
+	fsud = str(http.request('GET', shareUrl).data).replace("\n", "").replace("&amp;", "and")
+	titleFind = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', fsud))
+	titleFormat = titleFind.split("'")[1]
+	title = html.unescape(titleFormat)
+	print("done.\n" + title)
+	for x in range(0, 10, 1): # Video rotations
+		print("Searching for instance... ", end = "")
+		searchTitle = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
+		fetchQuery = str(http.request('GET', searchTitle).data).replace("\\", "")
+		if fetchQuery.find(title) >= 0:
+			print("found.")
+			videosAccessible += 1
+		else:
+			print("not found.")
+			videosAccessible -= 1
+		if videosAccessible < 0:
+			videosAccessible = 0
+		videosAttempted += 1
+		rotateConnection()
+	if videosAccessible == 0:
+		conclusion = "likely shadowbanned (or non-existent)."
+	elif videosAccessible <= videosAttempted / 2:
+		conclusion = "potentially shadowbanned."
+	elif videosAccessible == videosAttempted:
+		conclusion = "unlikely shadowbanned."
+	print(str(videosAccessible) + "/" + str(videosAttempted) + " public instances found - " + conclusion)
+	return str(videosAccessible) + "/" + str(videosAttempted) + " public instances found - " + conclusion
+
+### Comments [https://www.youtube.com/feed/history/comment_history]
+
+def clearData():
+	subprocess.Popen(["rm", "Google_-_My_Activity.html", "json.json"], stdout=subprocess.PIPE) # $ rm Google_-_My_Activity.html json.json
+
+def commentsExecute():
+	commentsAttempted = 0
+	commentsAccessible = 0
+	index = 1
+	try:
+		f = open("Google_-_My_Activity.html")
+		try:
+			print("Initial IP: " + getTorSession().get("http://icanhazip.com").text)
+		except IOError:
+			clearData()
+			return "Tor service is down serverside. Please try again later."
+	except IOError:
+		clearData()
+		return "Incorrect file type."
+	print("Parsing comment history... ", end = "")
+	with io.open("Google_-_My_Activity.html", "r", encoding = "utf-8") as commentHistoryHtml:
+		chh = commentHistoryHtml.read().replace("\n", "").replace("'", "`")
+		comments = str(re.findall('<div class="QTGV3c" jsname="r4nke">(.*?)</div>', chh))
+		commentIds = str(re.findall("data-token=(.*?) data-date", chh))
+		links = str(re.findall('  <a href="(.*?)&', chh))
+	print("done.")
+	#return "Choose comment(s) in question: " + comments
+	#parentLinks = str(re.findall('Commented on  <a href=(.*?)&', f))
+	#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
+	#print("\nVideos supposedly featuring parent comment(s): " + str(parentLinks) + "\n")
+	#print("\nVideos supposedly featuring reply comment(s): " + str(replyLinks) + "\n")
+	commentsReturn = comments.replace("['", "1. ").replace("']", "").replace("`", "'")
+	num = 1
+	commentIndex = 1
+	for i in range(int(commentsReturn.count("', '"))):
+		num = num + 1
+		commentsReturn = commentsReturn.replace("', '", "\n" + str(num) + ". ", 1)
+	for i in range(int(links.count("'") / 2)):
+		link = links.split("'")[index]
+		comment = comments.split("'")[index]
+		commentId = commentIds.split("'")[index]
+		commentInstances = 0;
+		index += 2
+		print("\nVideo: " + link)
+		print('Comment: "' + comment.replace("`", "'") + '"')
+		for i in range(0, 3, 1): # Comment rotations
+			rotateConnection()
+			fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
+			print("Searching for comment... ", end = "")
+			with open("json.json", "r") as json:
+				b = json.read()
+			if b.find(commentId) >= 0:
+				print("found.")
+				commentInstances += 1
+				break
+			else:
+				print("not found.")
+				if commentInstances > 0:
+					commentInstances -= 1
+			#print("\nComment instances: " + str(commentInstances))
+		if commentInstances > 0:
+			print("\nAccessible. Unlikely shadowbanned.")
+			commentsAccessible += 1
+		elif commentInstances == 0:
+			print("\nNon-accessible. Potentially shadowbanned.")
+			if commentsAccessible > 0:
+				commentsAccessible -= 1
+		commentsAttempted += 1
+	print("\n" + str(commentsAccessible) + "/" + str(commentsAttempted) + " public comments found.")
+	clearData()
+	return str(commentsAccessible) + "/" + str(commentsAttempted) + " public comments found."
+
+def fetchComments(youtubeId):
+	parser = argparse.ArgumentParser()
+	try:
+		args, unknown = parser.parse_known_args()
+		output = "json.json"
+		limit = 1000
+		if not youtubeId or not output:
+			parser.print_usage()
+			raise ValueError('faulty video I.D.')
+		if os.sep in output:
+			if not os.path.exists(outdir):
+				os.makedirs(outdir)
+		print("Downloading comments... ", end = "")
+		count = 0
+		with io.open(output, 'w', encoding = 'utf8') as fp:
+			for comment in download_comments(youtubeId):
+				comment_json = json.dumps(comment, ensure_ascii=False)
+				print(comment_json.decode('utf-8') if isinstance(comment_json, bytes) else comment_json, file=fp)
+				count += 1
+				if limit and count >= limit:
+					break
+		print("done.")
+	except Exception as e:
+		print('Error:', str(e))	
+		exit()
+
+def find_value(html, key, num_chars=2, separator='"'):
+    pos_begin = html.find(key) + len(key) + num_chars
+    pos_end = html.find(separator, pos_begin)
+    return html[pos_begin: pos_end]
+
+def ajax_request(session, url, params=None, data=None, headers=None, retries=5, sleep=20):
+    for _ in range(retries):
+        response = session.post(url, params=params, data=data, headers=headers)
+        if response.status_code == 200:
+            return response.json()
+        if response.status_code in [403, 413]:
+            return {}
+        else:
+            time.sleep(sleep)
+
+def download_comments(youtubeId, sleep=.1):
+    session = requests.Session()
+    session.headers['User-Agent'] = USER_AGENT
+
+    response = session.get(YOUTUBE_VIDEO_URL.format(youtubeId=youtubeId))
+    html = response.text
+    session_token = find_value(html, 'XSRF_TOKEN', 3)
+    session_token = session_token.encode('ascii').decode('unicode-escape')
+
+    data = json.loads(find_value(html, 'var ytInitialData = ', 0, '};') + '}')
+    for renderer in search_dict(data, 'itemSectionRenderer'):
+        ncd = next(search_dict(renderer, 'nextContinuationData'), None)
+        if ncd:
+            break
+
+    if not ncd:
+        return
+
+    continuations = [(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments')]
+    while continuations:
+        continuation, itct, action = continuations.pop()
+        response = ajax_request(session, YOUTUBE_COMMENTS_AJAX_URL,
+                                params={action: 1,
+                                        'pbj': 1,
+                                        'ctoken': continuation,
+                                        'continuation': continuation,
+                                        'itct': itct},
+                                data={'session_token': session_token},
+                                headers={'X-YouTube-Client-Name': '1',
+                                         'X-YouTube-Client-Version': '2.20201202.06.01'})
+
+        if not response:
+            break
+        if list(search_dict(response, 'externalErrorMessage')):
+            raise RuntimeError('Error returned from server: ' + next(search_dict(response, 'externalErrorMessage')))
+
+        if action == 'action_get_comments':
+            section = next(search_dict(response, 'itemSectionContinuation'), {})
+            for continuation in section.get('continuations', []):
+                ncd = continuation['nextContinuationData']
+                continuations.append((ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments'))
+            for item in section.get('contents', []):
+                continuations.extend([(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comment_replies')
+                                      for ncd in search_dict(item, 'nextContinuationData')])
+
+        elif action == 'action_get_comment_replies':
+            continuations.extend([(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comment_replies')
+                                  for ncd in search_dict(response, 'nextContinuationData')])
+
+        for comment in search_dict(response, 'commentRenderer'):
+            yield {'cid': comment['commentId'],'text': ''.join([c['text'] for c in comment['contentText']['runs']])}
+
+        time.sleep(sleep)
+
+def search_dict(partial, search_key):
+    stack = [partial]
+    while stack:
+        current_item = stack.pop()
+        if isinstance(current_item, dict):
+            for key, value in current_item.items():
+                if key == search_key:
+                    yield value
+                else:
+                    stack.append(value)
+        elif isinstance(current_item, list):
+            for value in current_item:
+                stack.append(value)

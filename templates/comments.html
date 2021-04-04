@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html class="general-format";>
+
+	<title>
+		ShadowTube
+	</title>
+
+	<head>
+		<!-- CSS -->
+		<link rel="stylesheet"; type="text/css"; href="{{ url_for('static',filename='styles/css.css') }}";/>
+		<!-- Font -->
+		<link rel="stylesheet"; type="text/css"; href="https://fontlibrary.org//face/liberation-sans-unofficial-opentype-cff-version";/>
+		<!-- jQuery -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<div class="center-page";>
+			<a href="/"; class="header-button";>ShadowTube</a>
+			<br><br>
+			<!-- Comments -->
+			<a id="google-link" href="https://www.youtube.com/feed/history/comment_history"; class="general-format"; target="_blank";>Google comment history page</a>
+			<br><br>
+			<form method="POST"; enctype="multipart/form-data"; action="http://localhost:5000/comments";>
+				<input id="file"; type="file"; name="file";/>
+				<input class="toshow"; type="submit"; value="Confirm";/>
+				<div class="loader toshow";></div>
+				<script>
+					jQuery("input#file").change(function () {
+					    if ($('#file').get(0).files.length === 0) {
+    						alert("No files selected.");
+						} else {
+							$("#file").hide();
+							$("input.toshow").show();
+						}
+					});
+					$("input.toshow").click(function(e){
+						$("input.toshow").hide();
+						$(".header-button").hide();
+						$("#google-link").hide();
+						$("div.toshow").show();
+					});
+				</script>
+				{{ output }}
+			</form>
+		</div>
+	</body>
+
+	<footer>
+		<br>
+		<a style="color: black;"; href="/";>Videos</a>
+		<a style="color: black;";>Comments</a>
+		<a style="color: black;"; href="/why";>Why?</a>
+   <!-- <a style="color: black;"; href="/";>Onion link</a> -->
+		<a style="color: black;"; target="_blank"; href="https://github.com/danehobrecht/shadowtube";>GitHub</a>
+	</footer>
+
+</html>

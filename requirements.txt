@@ -1,0 +1,7 @@
+flask
+urllib3
+PySocks
+cssselect
+lxml
+requests
+stem

@@ -1,0 +1,98 @@
+/* General */
+
+.general-format {  
+	font-family: 'LiberationSansBold';
+	font-size: 20px;
+	color: white;
+	background-color: black;
+	text-align: center;
+}
+
+.header-button {
+	font-size: 40px;
+	color: white;
+    background: none;
+    border: none;
+	text-decoration: none;
+}
+
+footer {
+	font-size: 18px;
+	color: black;
+    background-color: white;
+    left: 0;
+    bottom: 0;
+    height: 60px;
+    width: 100%;
+	position: absolute;
+    overflow: hidden;
+}
+
+.center-page {
+    top: 43%;
+	left: 50%;
+	position: absolute;
+    transform: translateX(-50%) translateY(-50%);
+	-moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+}
+
+/* "Videos" */
+
+.link-box {
+	font-family: 'LiberationSansRegular';
+	font-size: 18px;
+	height: 50px;
+	width: 500px;
+	text-align: center;
+}
+
+/* "Comments" */
+
+.comments-box {
+	margin: auto;
+	text-align: left;
+	height: 500px;
+	width: 65%;
+	color: black;
+	background-color: white;
+	padding: 10px;
+	overflow: auto;
+}
+
+.comments-text {  
+	font-family: 'LiberationSansBold';
+	font-size: 20px;
+	color: black;
+}
+
+/* "Why" */
+
+.text-box {
+	margin: auto;
+	text-align: left;
+	width: 45%;
+	padding: 10px;
+	border: 2px solid white;
+}
+
+/* Animation */
+
+.toshow {
+	display: none;
+}
+
+.loader {
+	margin: auto;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	border: 16px solid white;
+	border-top: 16px solid black;
+	animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+	0% {transform: rotate(0deg);}
+	100% {transform: rotate(360deg);}
+}
