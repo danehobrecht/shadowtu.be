@@ -5,51 +5,54 @@ Website is in development. For now, this program is strictly bash.
 Analyzation features are as follows:
 
 Video links
-    Specific comments (or complete history)
+    * Video links
+	* Specific comments (or complete history)
 
-Installation
-Bash
-GNU/Linux, MacOS
+## Installation
+### Bash
+#### GNU/Linux, MacOS
 
-    Download "shadowtube-bash" and open in terminal:
+1. Download "shadowtube-bash" and open in terminal:
 
-    cd /path/to/shadowtube-bash
+    `cd /path/to/shadowtube-bash`
 
-    Install dependencies:
+2. Install dependencies:
 
-    pip3 install -r requirements.txt
+    `pip3 install -r requirements.txt`
 
-    Make the script an executable:
+3. Make the script an executable:
 
-    sudo chmod a+x main.py
+    `sudo chmod a+x main.py`
 
-    Run:
+4. Run:
 
-    ./main.py
+    `./main.py`
+    
+### Flask
+#### GNU/Linux, MacOS
 
-Flask
-GNU/Linux, MacOS
+1. Download "shadowtube-flask.zip" and extract the folder, and open in terminal
 
-    Download "shadowtube-flask.zip" and extract the folder, and open in terminal
+    `cd /path/to/shadowtube-flask`
+    
+2. Install dependencies:
 
-    cd /path/to/shadowtube-flask
+    `pip3 install -r requirements.txt`
 
-    Install dependencies:
+3. Establish the flask app:
 
-    pip3 install -r requirements.txt
+    `export FLASK_APP=app.py`
+    
+4. Run:
 
-    Establish the flask app:
+    `flask run`
 
-    export FLASK_APP=app.py
+**Windows support coming soon.**
 
-    Run:
+## Bash prerequisites
 
-    flask run
-
-Windows support coming soon.
-Bash prerequisites
-
-    Tor Browser | https://www.torproject.org/
-        Required to be running during script execution.
-    Comment History HTML | https://www.youtube.com/feed/history/comment_history
-        "Google - My Activity.html" must be locally available to the script to use the comment feature.
+- Tor Browser | https://www.torproject.org/
+    - Required to be running during script execution.
+- Comment History HTML | https://www.youtube.com/feed/history/comment_history
+    - "Google - My Activity.html" must be locally available to the script to use the comment feature.
+>>>>>>> adfb0752919e691cd48c325e9b9aa9eee8ae10bb
