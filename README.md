@@ -6,7 +6,7 @@ Analyzation features are as follows:
 
 Video links
     * Video links
-	* Specific comments (or complete history)
+    * Specific comments (or complete history)
 
 ## Installation
 ### Bash
