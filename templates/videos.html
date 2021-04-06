@@ -7,12 +7,9 @@
 	</title>
 
 	<head>
-		<!-- CSS -->
-		<link rel="stylesheet"; type="text/css"; href="{{ url_for('static',filename='styles/css.css') }}";/>
-		<!-- Font -->
-		<link rel="stylesheet"; type="text/css"; href="https://fontlibrary.org//face/liberation-sans-unofficial-opentype-cff-version";/>
-		<!-- jQuery -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<!-- CSS --> <link rel="stylesheet"; type="text/css"; href="{{ url_for('static',filename='styles/css.css') }}";/>
+		<!-- jQuery --> <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<!-- Font --> <link rel="stylesheet"; type="text/css"; href="https://fontlibrary.org//face/liberation-sans-unofficial-opentype-cff-version";/>
 	</head>
 
 	<body>
@@ -23,22 +20,20 @@
 		    Videos -->
 			<p>Enter the YouTube video link in question.</p>
 			<form method="POST";>
-				<div class="input-container">
-					<input class="link-box"; type="text"; name="shareUrl"; placeholder="https://www.youtube.com/watch?v=Y6ljFaKRTrI";/>
-					<div class="loader toshow";></div>
-				</div>
-				<script>
-					$(document).on('keypress',function(e) {
-				    	if(e.which == 13) {
-				    		$("div.toshow").show();
-							$(".link-box").hide();
-							$("p").hide();
-							$(".header-button").hide();
-				    	}
-					});
-				</script>
-				<p>{{ output }}</p>
+				<input id="link-input"; class="link-box"; type="text"; name="shareUrl"; placeholder="https://www.youtube.com/watch?v=Y6ljFaKRTrI"; minlength="1";/>
+				<div class="loader toshow";></div>
 			</form>
+			<script>
+				$("#link-input").on('keypress',function(e) {
+			    	if(e.which == 13) {
+				  		$("div.toshow").show();
+						$(".link-box").hide();
+						$("p").hide();
+						$(".header-button").hide();
+					}
+				});
+			</script>
+			<p>{{ output }}</p>
 		</div>
 	</body>
 

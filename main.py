@@ -48,8 +48,6 @@ def videoExecute(shareUrl):
 	videosAttempted = 0
 	videosAccessible = 0
 	if "https://youtu.be/" in str(shareUrl) or "https://www.youtube.com/watch?v=" in str(shareUrl):
-		if len(shareUrl) > 43:
-			return "Invalid input."
 		try:
 			print("\nInitial IP: " + getTorSession().get("http://icanhazip.com").text)
 		except IOError:
