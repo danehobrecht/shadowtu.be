@@ -6,7 +6,7 @@ Video links
 - Video links
 - Specific comments (or complete history)
     
-### Flask
+### Flask installation
 #### GNU/Linux, MacOS
 
 1. Download the zip, extract the folder, and open in terminal
