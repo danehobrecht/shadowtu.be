@@ -18,14 +18,16 @@
 
 footer {
 	font-size: 18px;
-	color: black;
-    background-color: white;
     left: 0;
     bottom: 0;
     height: 60px;
     width: 100%;
 	position: absolute;
     overflow: hidden;
+}
+
+a {
+	color: white;
 }
 
 .center-page {
@@ -86,9 +88,8 @@ footer {
 	margin: auto;
 	width: 15px;
 	height: 15px;
-	border-radius: 50%;
-	border: 16px solid white;
-	border-top: 16px solid black;
+	border-radius: 15%;
+	border: 15px solid white;
 	animation: spin 2s linear infinite;
 }
 
