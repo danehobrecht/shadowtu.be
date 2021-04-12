@@ -1,10 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
 	<div class="center-page">
-		<a class="header-button";>ShadowTube</a>
-		<!--
-		<img align="middle"; src="{{url_for('static', filename='images/png.png')}}";/>
-		-->
+		<h1>ShadowTube</h1>
+		<!-- <img align="middle"; src="{{url_for('static', filename='images/png.png')}}";/> -->
 		<p>Enter the YouTube video link in question.</p>
 		<form method="POST";>
 			<input id="link-input"; class="link-box"; type="text"; name="shareUrl"; placeholder="https://www.youtube.com/watch?v=Y6ljFaKRTrI"; minlength="1";/>
@@ -12,22 +10,13 @@
 		</form>
 		<script>
 			$("#link-input").on('keypress',function(e) {
-			    if(e.which == 13) {
-				 	$("div.toshow").show();
+				if(e.which == 13) {
+					$("div.toshow").show();
 					$(".link-box").hide();
 					$("p").hide();
-					$(".header-button").hide();
 				}
 			});
 		</script>
 		<p>{{ output }}</p>
 	</div>
-{% endblock %}
-
-{% block footer %}
-	<br>
-	<a>Videos</a>
-	<a href="/comments";>Comments (beta)</a>
-	<a href="/why";>Why?</a>
-	<a target="_blank"; href="https://github.com/danehobrecht/shadowtube";>GitHub</a>
 {% endblock %}

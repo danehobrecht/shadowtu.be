@@ -2,33 +2,24 @@
 
 <html class="general-format">
 	<head>
-		<div id="head">
-			{% block head %}
-				<!-- Font --> <link rel="stylesheet"; type="text/css"; href="https://fontlibrary.org//face/liberation-sans-unofficial-opentype-cff-version";/>
-				<!-- CSS --> <link rel="stylesheet"; type="text/css"; href="{{ url_for('static', filename='styles/css.css') }}";/>	
-				<!-- jQuery --> <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-				<title>ShadowTube</title>
-			{% endblock %}
-		</div>
+		{% block head %}
+			<!-- Font --> <link rel="stylesheet"; type="text/css"; href="https://fontlibrary.org//face/liberation-sans-unofficial-opentype-cff-version";/>
+			<!-- CSS --> <link rel="stylesheet"; type="text/css"; href="{{ url_for('static', filename='styles/css.css') }}";/>	
+			<!-- jQuery --> <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+			<title>ShadowTube</title>
+		{% endblock %}
 	</head>
 	<body>
-		<div id="content">
-			{% block content %}
-			{% endblock %}
-		</div>
+		{% block content %}
+		{% endblock %}
 	</body>
 	<footer>
-		<div id="footer">
-			{% block footer %}
-				<div>
-					<br>
-					<a href="/videos";>Videos</a>
-					<a href="/comments";>Comments (beta)</a>
-					<a href="/why";>Why?</a>
-   					<!-- <a style="color: black;"; href="/";>Onion link</a> -->
-					<a target="_blank"; href="https://github.com/danehobrecht/shadowtube";>GitHub</a>
-				</div>
-			{% endblock %}
-		</div>
+		{% block footer %}
+			<a id="a.videos"; href="/";>Videos</a>
+			<a id="a.comments"; href="/comments";>Comments (beta)</a>
+			<a id="a.why"; href="/why";>Why?</a>
+   			<!-- <a style="color: black;"; href="/";>Onion link</a> -->
+			<a id="a.github"; target="_blank"; href="https://github.com/danehobrecht/shadowtube";>GitHub</a>
+		{% endblock %}
 	</footer>
 </html>

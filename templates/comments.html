@@ -1,8 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 	<div class="center-page">
-		<a class="header-button";>ShadowTube</a>
-		<br><br>
+		<h1>ShadowTube</h1>
 		<a id="google-link" href="https://www.youtube.com/feed/history/comment_history"; class="general-format"; target="_blank";>Google comment history page</a>
 		<br><br>
 		<form method="POST"; enctype="multipart/form-data"; action="http://localhost:5000/comments";>
@@ -10,7 +9,7 @@
 			<input class="toshow"; type="submit"; value="Confirm";/>
 			<div class="loader toshow";></div>
 			<script>
-				jQuery("input#file").change(function () {
+				$("input#file").change(function() {
 					if ($('#file').get(0).files.length === 0) {
     					alert("No files selected.");
 					} else {
@@ -19,23 +18,13 @@
 					}
 				});
 				$("input.toshow").click(function(e){
-					$("input.toshow").hide();
-					$(".header-button").hide();
 					$("#google-link").hide();
-					$("footer").hide();
+					$("input.toshow").hide();
 					$("div.toshow").show();
 				});
 			</script>
-			<br>
+			<br><br>
 			{{ output }}
 		</form>
 	</div>
-{% endblock %}
-
-{% block footer %}
-	<br>
-	<a href="/";>Videos</a>
-	<a>Comments (beta)</a>
-	<a href="/why";>Why?</a>
-	<a target="_blank"; href="https://github.com/danehobrecht/shadowtube";>GitHub</a>
 {% endblock %}

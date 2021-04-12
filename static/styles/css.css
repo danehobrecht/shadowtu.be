@@ -8,12 +8,8 @@
 	text-align: center;
 }
 
-.header-button {
-	font-size: 40px;
+a {
 	color: white;
-    background: none;
-    border: none;
-	text-decoration: none;
 }
 
 footer {
@@ -24,10 +20,6 @@ footer {
     width: 100%;
 	position: absolute;
     overflow: hidden;
-}
-
-a {
-	color: white;
 }
 
 .center-page {
@@ -73,7 +65,6 @@ a {
 .text-box {
 	margin: auto;
 	text-align: left;
-	width: 45%;
 	padding: 10px;
 	border: 2px solid white;
 }
