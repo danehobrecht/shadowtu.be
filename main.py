@@ -18,6 +18,7 @@ import socks
 import time
 import json
 import html
+import sys
 import re
 import io
 import os
@@ -34,12 +35,13 @@ def getTorSession():
     return session
 
 def rotateConnection():
-	print("\nRotating... ", end = "")
+	#print("\nRotating... ", end = "")
 	time.sleep(10)
 	with Controller.from_port(port = 9151) as c:
 		c.authenticate()
 		c.signal(Signal.NEWNYM)
-	print("IP: " + getTorSession().get("http://icanhazip.com").text)
+	#print("IP: " + getTorSession().get("http://icanhazip.com").text)
+	print("\nIP: " + getTorSession().get("http://icanhazip.com").text)
 
 ### Videos 
 ## Test URL: https://youtu.be/Y6ljFaKRTrI
@@ -47,6 +49,8 @@ def rotateConnection():
 def videoExecute(shareUrl):
 	videosAttempted = 0
 	videosAccessible = 0
+	f = open("video.out", 'w')
+	sys.stdout = f
 	if "https://youtu.be/" in str(shareUrl) or "https://www.youtube.com/watch?v=" in str(shareUrl):
 		try:
 			print("\nInitial IP: " + getTorSession().get("http://icanhazip.com").text)
@@ -54,15 +58,16 @@ def videoExecute(shareUrl):
 			return "Tor service is down serverside. Please try again later."
 	else:
 		return "Invalid input."
-	print("Fetching title... ", end = "")
+	#print("Fetching title... ", end = "")
 	http = urllib3.PoolManager()
 	fsud = str(http.request('GET', shareUrl).data).replace("\n", "").replace("&amp;", "and")
 	titleFind = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', fsud))
 	titleFormat = titleFind.split("'")[1]
 	title = html.unescape(titleFormat)
-	print("done.\n" + title)
-	for x in range(0, 10, 1): # Video rotations
-		print("Searching for instance... ", end = "")
+	#print("done.\n" + title)
+	print('"' + title + '"\n')
+	for x in range(0, 5, 1):
+		print("Searching for instance... ", end="")
 		searchTitle = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
 		fetchQuery = str(http.request('GET', searchTitle).data).replace("\\", "")
 		if fetchQuery.find(title) >= 0:
@@ -82,7 +87,8 @@ def videoExecute(shareUrl):
 	elif videosAccessible == videosAttempted:
 		conclusion = "unlikely shadowbanned."
 	print(str(videosAccessible) + "/" + str(videosAttempted) + " public instances found - " + conclusion)
-	return str(videosAccessible) + "/" + str(videosAttempted) + " public instances found - " + conclusion
+	f.close()
+	return(open("video.out", "r").read())
 
 ### Comments [https://www.youtube.com/feed/history/comment_history]
 
@@ -94,7 +100,7 @@ def commentsExecute():
 	commentsAccessible = 0
 	index = 1
 	try:
-		f = open("Google_-_My_Activity.html")
+		open("Google_-_My_Activity.html")
 		try:
 			print("Initial IP: " + getTorSession().get("http://icanhazip.com").text)
 		except IOError:
@@ -103,7 +109,7 @@ def commentsExecute():
 	except IOError:
 		clearData()
 		return "Incorrect file type."
-	print("Parsing comment history... ", end = "")
+	print("Parsing comment history... ", end="")
 	with io.open("Google_-_My_Activity.html", "r", encoding = "utf-8") as commentHistoryHtml:
 		chh = commentHistoryHtml.read().replace("\n", "").replace("'", "`")
 		comments = str(re.findall('<div class="QTGV3c" jsname="r4nke">(.*?)</div>', chh))
@@ -132,7 +138,7 @@ def commentsExecute():
 		for i in range(0, 3, 1): # Comment rotations
 			rotateConnection()
 			fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
-			print("Searching for comment... ", end = "")
+			print("Searching for comment... ", end="")
 			with open("json.json", "r") as json:
 				b = json.read()
 			if b.find(commentId) >= 0:

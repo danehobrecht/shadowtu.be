@@ -1,15 +1,19 @@
 /* General */
 
-.general-format {  
+a {
+	color: white;
+}
+
+.toshow {
+	display: none;
+}
+
+html {  
 	font-family: 'LiberationSansBold';
 	font-size: 20px;
 	color: white;
 	background-color: black;
 	text-align: center;
-}
-
-a {
-	color: white;
 }
 
 footer {
@@ -43,6 +47,11 @@ footer {
 
 /* "Comments" */
 
+.comments-text {
+	font-size: 20px;
+	color: black;
+}
+
 .comments-box {
 	margin: auto;
 	text-align: left;
@@ -52,12 +61,6 @@ footer {
 	background-color: white;
 	padding: 10px;
 	overflow: auto;
-}
-
-.comments-text {  
-	font-family: 'LiberationSansBold';
-	font-size: 20px;
-	color: black;
 }
 
 /* "Why" */
@@ -71,8 +74,9 @@ footer {
 
 /* Animation */
 
-.toshow {
-	display: none;
+@keyframes spin {
+	0% {transform: rotate(0deg);}
+	100% {transform: rotate(360deg);}
 }
 
 .loader {
@@ -82,9 +86,4 @@ footer {
 	border-radius: 15%;
 	border: 15px solid white;
 	animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-	0% {transform: rotate(0deg);}
-	100% {transform: rotate(360deg);}
 }

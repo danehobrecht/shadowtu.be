@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+	<div class="center-page">
+		<h1>ShadowTube</h1>
+		<p>Enter the YouTube video link in question.</p>
+		<form method="post";>
+			<input 
+				class="link-box" 
+				type="text" 
+				name="shareUrl" 
+				placeholder="https://www.youtube.com/watch?v=Y6ljFaKRTrI" 
+				minlength="1"
+			/>
+			<div class="loader toshow"></div>
+		</form>
+		<script>
+			$("input.link-box").on('keypress',function(e) {
+				if(e.which == 13) {
+					$("div.toshow").show();
+					$("input.link-box").hide();
+					$("p").hide();
+					$("h1").hide();
+				}
+			});
+		</script>
+		<p>{{ output }}</p>
+	</div>
+{% endblock %}s

@@ -1,30 +1,29 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 {% block content %}
 	<div class="center-page">
 		<h1>ShadowTube</h1>
-		<a id="google-link" href="https://www.youtube.com/feed/history/comment_history"; class="general-format"; target="_blank";>Google comment history page</a>
-		<br><br>
-		<form method="POST"; enctype="multipart/form-data"; action="http://localhost:5000/comments";>
-			<input id="file"; type="file"; name="file";/>
-			<input class="toshow"; type="submit"; value="Confirm";/>
-			<div class="loader toshow";></div>
-			<script>
-				$("input#file").change(function() {
-					if ($('#file').get(0).files.length === 0) {
-    					alert("No files selected.");
-					} else {
-						$("#file").hide();
-						$("input.toshow").show();
-					}
-				});
-				$("input.toshow").click(function(e){
-					$("#google-link").hide();
-					$("input.toshow").hide();
-					$("div.toshow").show();
-				});
-			</script>
-			<br><br>
-			{{ output }}
+		<a id="google-link" href="https://www.youtube.com/feed/history/comment_history" target="_blank">Google comment history page</a>
+		<form method="post" enctype="multipart/form-data" action="http://localhost:5000/comments">
+			<input id="file" type="file" name="file"/>
+			<input class="toshow" type="submit" value="Confirm"/>
+			<div class="loader toshow"></div>
 		</form>
+		<script>
+			$("input#file").change(function() {
+				if ($('#file').get(0).files.length === 0) {
+    				alert("No files selected.");
+				} else {
+					$("#file").hide();
+					$("input.toshow").show();
+				}
+			});
+			$("input.toshow").click(function(e){
+				$("div.toshow").show();
+				$("input.toshow").hide();
+				$("#google-link").hide();
+				$("h1").hide();
+			});
+		</script>
+		<p>{{ output }}</p>
 	</div>
 {% endblock %}
