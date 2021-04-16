@@ -15,21 +15,23 @@ def video():
 	if request.method == 'POST':
 		user_input = request.form['shareUrl']
 		output = main.videoExecute(user_input)
-		return redirect(url_for('vOutput'))
+		return redirect(url_for('output'))
 	return render_template('video.html')
-
-@app.route('/video/results', methods=['GET'])
-def vOutput():
-	return render_template('video-results.html', output=output)
 
 @app.route('/comments', methods = ['GET', 'POST'])
 def comments():
+	global output
 	if request.method == 'POST':
 		f = request.files['file']
 		filename = 'Google_-_My_Activity.html'
 		f.save(secure_filename(f.filename))
-		return render_template('comments.html', output=main.commentsExecute())
+		output = main.commentsExecute()
+		return redirect(url_for('output'))
 	return render_template('comments.html')
+
+@app.route('/results', methods=['GET'])
+def output():
+	return render_template('results.html', output=output)
 
 @app.route('/why')
 def why():
