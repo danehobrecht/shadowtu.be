@@ -2,7 +2,6 @@
 
 Analyzation features are as follows:
 
-Video links
 - Video links
 - Specific comments (or complete history)
     
