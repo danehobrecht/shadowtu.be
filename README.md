@@ -33,7 +33,7 @@ Analyzation features are as follows:
 - Comment History HTML | https://www.youtube.com/feed/history/comment_history
     - "Google - My Activity.html" must be locally available to the script to use the comment feature.
 
-## Compatability issues (subject to change)
+## Known compatability issues (subject to change)
 
 - Video premieres
-- Certain unicode characters in titles
+- Geometric unicode characters in titles
