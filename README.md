@@ -32,3 +32,7 @@ Analyzation features are as follows:
     - Required to be running during script execution.
 - Comment History HTML | https://www.youtube.com/feed/history/comment_history
     - "Google - My Activity.html" must be locally available to the script to use the comment feature.
+
+## Sidenotes
+
+- Video premieres currently not supported.

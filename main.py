@@ -52,7 +52,6 @@ def videoExecute(shareUrl):
 	r = requests.get(shareUrl)
 	parseTitle = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', r.text))
 	title = html.unescape(parseTitle.split("'")[1])
-	print(parseTitle)
 	print('"' + title + '"')
 	print(shareUrl)
 	for x in range(0, 5, 1):
@@ -68,7 +67,7 @@ def videoExecute(shareUrl):
 			print("Non-accessible.")
 		attempted += 1
 	if accessible == 0:
-		conclusion = "likely shadowbanned (or non-existent)."
+		conclusion = "likely shadowbanned."
 	elif accessible <= attempted / 2:
 		conclusion = "potentially shadowbanned."
 	elif accessible == attempted:
@@ -105,19 +104,19 @@ def commentsExecute():
 		links = str(re.findall('  <a href="(.*?)&', html))
 	#parentLinks = str(re.findall('Commented on  <a href=(.*?)&', f))
 	#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
-	commentsReturn = comments.replace("['", "").replace("']", "").replace("`", "'")
-	num = 1
-	for i in range(int(commentsReturn.count("', '"))):
-		num = num + 1
-		commentsReturn = commentsReturn.replace("', '", "\n" + str(num) + ". ", 1)
+	#commentsReturn = comments.replace("['", "").replace("']", "").replace("`", "'")
+	#num = 1
+	#for i in range(int(commentsReturn.count("', '"))):
+	#	num = num + 1
+	#	commentsReturn = commentsReturn.replace("', '", "\n" + str(num) + ". ", 1)
 	for i in range(int(links.count("'") / 2)):
 		link = links.split("'")[index]
 		comment = comments.split("'")[index]
 		uuid = uuids.split("'")[index]
 		instances = 0;
 		index += 2
-		print("\n" + link)
-		print('"' + comment.replace("`", "'") + '"')
+		print('\n"' + comment.replace("`", "'") + '"')
+		print(link)
 		for i in range(0, 3, 1):
 			rotateConnection()
 			fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
@@ -138,8 +137,8 @@ def commentsExecute():
 				accessible -= 1
 		attempts += 1
 	print("\n" + str(accessible) + "/" + str(attempts) + " comments found.")
-	purge()
 	f.close()
+	purge()
 	return(open("results.out", "r").read())
 
 def fetchComments(youtubeId):
