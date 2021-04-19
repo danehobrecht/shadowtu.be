@@ -67,12 +67,12 @@ def video(shareUrl):
 			print("Non-accessible.")
 		attempted += 1
 	if accessible == 0:
-		conclusion = "likely shadowbanned."
+		conclusion = "Likely shadowbanned."
 	elif accessible <= attempted / 2:
-		conclusion = "potentially shadowbanned."
+		conclusion = "Potentially shadowbanned."
 	elif accessible == attempted:
-		conclusion = "unlikely shadowbanned."
-	print("\n" + str(accessible) + "/" + str(attempted) + " instances found - " + conclusion)
+		conclusion = "Unlikely shadowbanned."
+	print("\n" + conclusion)
 	f.close()
 	return(open("results.out", "r").read())
 

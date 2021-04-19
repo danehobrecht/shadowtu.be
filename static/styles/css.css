@@ -79,7 +79,7 @@ footer {
 	margin: auto;
 	width: 15px;
 	height: 15px;
-	border-radius: 15%;
+	border-radius: 10%;
 	border: 15px solid white;
 	animation: spin 2s linear infinite;
 }
