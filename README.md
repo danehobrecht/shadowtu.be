@@ -24,7 +24,7 @@ Analyzation features are as follows:
 
     `flask run`
 
-**Windows support coming soon.**
+**Windows instructions coming soon.**
 
 ## Prerequisites
 
@@ -33,6 +33,7 @@ Analyzation features are as follows:
 - Comment History HTML | https://www.youtube.com/feed/history/comment_history
     - "Google - My Activity.html" must be locally available to the script to use the comment feature.
 
-## Sidenotes
+## Compatability issues (subject to change)
 
-- Video premieres currently not supported.
+- Video premieres
+- Certain unicode characters in titles
