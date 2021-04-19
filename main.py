@@ -9,19 +9,12 @@ from stem import Signal
 
 import subprocess
 import lxml.html
-import argparse
-import requests
-import urllib3
-import urllib
+import argparse, requests
 import socket
 import socks
-import time
-import json
-import html
+import time, json, html
 import sys
-import re
-import io
-import os
+import re, io, os
 
 YOUTUBE_VIDEO_URL = "https://www.youtube.com/watch?v={youtubeId}"
 YOUTUBE_COMMENTS_AJAX_URL = "https://www.youtube.com/comment_service_ajax"
@@ -44,10 +37,11 @@ def rotateConnection():
 ### Videos - https://youtu.be/Y6ljFaKRTrI
 
 def videoExecute(shareUrl):
-	videosAttempted = 0
-	videosAccessible = 0
+	attempted = 0
+	accessible = 0
 	f = open("results.out", 'w')
 	sys.stdout = f
+	## implement link verification in jquery instead. keep tor portion
 	if "https://youtu.be/" in str(shareUrl) or "https://www.youtube.com/watch?v=" in str(shareUrl):
 		try:
 			getTorSession().get("http://icanhazip.com")
@@ -55,31 +49,31 @@ def videoExecute(shareUrl):
 			return "Tor service is down serverside. Please try again later."
 	else:
 		return "Invalid input."
-	http = urllib3.PoolManager()
-	fsud = str(http.request('GET', shareUrl).data).replace("\n", "").replace("&amp;", "and")
-	titleFind = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', fsud))
-	title = html.unescape(titleFind.split("'")[1])
+	r = requests.get(shareUrl)
+	parseTitle = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', r.text))
+	title = html.unescape(parseTitle.split("'")[1])
+	print(parseTitle)
 	print('"' + title + '"')
+	print(shareUrl)
 	for x in range(0, 5, 1):
 		rotateConnection()
-		searchTitle = "https://www.youtube.com/results?search_query=" + "+".join(title.split())
-		fetchQuery = str(http.request('GET', searchTitle).data).replace("\\", "")
-		if fetchQuery.find(title) >= 0:
-			videosAccessible += 1
-			print("Instance found.")
+		r = requests.get("https://www.youtube.com/results?search_query=" + "+".join(title.split()))
+		if r.text.find(title) >= 0:
+			accessible += 1
+			print("Accessible.")
 		else:
-			videosAccessible -= 1
-		if videosAccessible < 0:
-			videosAccessible = 0
-			print("Instance not found.")
-		videosAttempted += 1
-	if videosAccessible == 0:
+			accessible -= 1
+		if accessible < 0:
+			accessible = 0
+			print("Non-accessible.")
+		attempted += 1
+	if accessible == 0:
 		conclusion = "likely shadowbanned (or non-existent)."
-	elif videosAccessible <= videosAttempted / 2:
+	elif accessible <= attempted / 2:
 		conclusion = "potentially shadowbanned."
-	elif videosAccessible == videosAttempted:
+	elif accessible == attempted:
 		conclusion = "unlikely shadowbanned."
-	print("\n" + str(videosAccessible) + "/" + str(videosAttempted) + " instances found - " + conclusion)
+	print("\n" + str(accessible) + "/" + str(attempted) + " instances found - " + conclusion)
 	f.close()
 	return(open("results.out", "r").read())
 
@@ -109,11 +103,8 @@ def commentsExecute():
 		comments = str(re.findall('<div class="QTGV3c" jsname="r4nke">(.*?)</div>', html))
 		uuids = str(re.findall('data-token=(.*?) data-date', html))
 		links = str(re.findall('  <a href="(.*?)&', html))
-	#return "Choose comment(s) in question: " + comments
 	#parentLinks = str(re.findall('Commented on  <a href=(.*?)&', f))
 	#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
-	#print("\nVideos supposedly featuring parent comment(s): " + str(parentLinks) + "\n")
-	#print("\nVideos supposedly featuring reply comment(s): " + str(replyLinks) + "\n")
 	commentsReturn = comments.replace("['", "").replace("']", "").replace("`", "'")
 	num = 1
 	for i in range(int(commentsReturn.count("', '"))):

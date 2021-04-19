@@ -50,8 +50,12 @@ footer {
 .output-box {
 	margin: auto;
 	text-align: left;
-	height: 650px;
-	width: 1300px;
+	/*height: 650px;
+	width: 1300px;*/
+	height: inherit;
+	width: inherit;
+	max-height: 650px;
+	max-width: 1300px;
 	color: black;
 	background-color: black;
 	padding: 10px;
