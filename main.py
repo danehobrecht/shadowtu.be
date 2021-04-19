@@ -36,7 +36,7 @@ def rotateConnection():
 
 ### Videos - https://youtu.be/Y6ljFaKRTrI
 
-def videoExecute(shareUrl):
+def video(shareUrl):
 	attempted = 0
 	accessible = 0
 	f = open("results.out", 'w')
@@ -79,9 +79,9 @@ def videoExecute(shareUrl):
 ### Comments - https://www.youtube.com/feed/history/comment_history
 
 def purge():
-	subprocess.Popen(["rm", "Google_-_My_Activity.html", "json.json"], stdout=subprocess.PIPE)
+	subprocess.Popen(["rm", "Google_-_My_Activity.html", "json.json", "results.out"], stdout=subprocess.PIPE)
 
-def commentsExecute():
+def comments():
 	attempts = 0
 	accessible = 0
 	index = 1

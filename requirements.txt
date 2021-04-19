@@ -1,7 +1,6 @@
 flask
-urllib3
+requests
 PySocks
 cssselect
 lxml
-requests
 stem
