@@ -8,7 +8,7 @@ Current analyzation features are as follows:
 ### Host ShadowTube instance
 #### GNU/Linux, MacOS
 
-1. Download the zip and create a virtual environment in the extracted directory:
+1. Download the zip and create a virtual environment named "venv" in the extracted directory:
 
 	`python3 -m venv /path/to/shadowtube/venv`
 
