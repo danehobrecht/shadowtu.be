@@ -8,19 +8,23 @@ Current analyzation features are as follows:
 ### Host ShadowTube instance
 #### GNU/Linux, MacOS
 
-1. Download the zip, extract the folder, and open in terminal
+1. Download the zip and create a virtual environment in the extracted directory:
 
-    `cd /path/to/shadowtube`
-    
-2. Install dependencies:
+	`python3 -m venv /path/to/shadowtube/venv`
+
+2. Navigate to directory:
+
+	`cd /path/to/shadowtube`
+
+3. Install dependencies:
 
     `pip3 install -r requirements.txt`
 
-3. Establish the flask app:
+4. Establish the flask app:
 
     `export FLASK_APP=app.py`
     
-4. Run:
+5. Run:
 
     `flask run`
 
