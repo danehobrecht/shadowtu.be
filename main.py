@@ -36,25 +36,25 @@ def rotateConnection():
 
 ### Videos - https://youtu.be/Y6ljFaKRTrI
 
-def video(shareUrl):
+def video(url):
 	attempted = 0
 	accessible = 0
-	f = open("results.out", 'w')
+	f = open("results.txt", 'w')
 	sys.stdout = f
 	## implement link verification in jquery instead. keep tor portion
-	if "https://youtu.be/" in str(shareUrl) or "https://www.youtube.com/watch?v=" in str(shareUrl):
+	if "https://youtu.be/" in str(url) or "https://www.youtube.com/watch?v=" in str(url):
 		try:
 			getTorSession().get("http://icanhazip.com")
 		except IOError:
 			return "Tor service is down serverside. Please try again later."
 	else:
 		return "Invalid input."
-	r = requests.get(shareUrl)
+	r = requests.get(url)
 	parseTitle = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', r.text))
 	title = html.unescape(parseTitle.split("'")[1])
 	print('"' + title + '"')
-	print(shareUrl)
-	for x in range(0, 10, 1):
+	print(url)
+	for x in range(0, 5, 1):
 		rotateConnection()
 		r = requests.get("https://www.youtube.com/results?search_query=" + "+".join(title.split()))
 		if r.text.find(title) >= 0:
@@ -74,18 +74,18 @@ def video(shareUrl):
 		conclusion = "Unlikely shadowbanned."
 	print("\n" + conclusion)
 	f.close()
-	return(open("results.out", "r").read())
+	return(open("results.txt", "r").read())
 
 ### Comments - https://www.youtube.com/feed/history/comment_history
 
 def purge():
-	subprocess.Popen(["rm", "Google_-_My_Activity.html", "json.json", "results.out"], stdout=subprocess.PIPE)
+	subprocess.Popen(["rm", "Google_-_My_Activity.html", "json.json"], stdout=subprocess.PIPE)
 
 def comments():
 	attempts = 0
 	accessible = 0
 	index = 1
-	f = open("results.out", 'w')
+	f = open("results.txt", 'w')
 	sys.stdout = f
 	try:
 		open("Google_-_My_Activity.html")
@@ -102,20 +102,20 @@ def comments():
 		comments = str(re.findall('<div class="QTGV3c" jsname="r4nke">(.*?)</div>', html))
 		uuids = str(re.findall('data-token=(.*?) data-date', html))
 		links = str(re.findall('  <a href="(.*?)&', html))
-	#parentLinks = str(re.findall('Commented on  <a href=(.*?)&', f))
-	#replyLinks = str(re.findall('comment on  <a href=(.*?)&', f))
-	#commentsReturn = comments.replace("['", "").replace("']", "").replace("`", "'")
+	#parent_links = str(re.findall('Commented on  <a href=(.*?)&', f))
+	#reply_links = str(re.findall('comment on  <a href=(.*?)&', f))
+	#list = comments.replace("['", "").replace("']", "").replace("`", "'")
 	#num = 1
-	#for i in range(int(commentsReturn.count("', '"))):
+	#for i in range(int(list.count("', '"))):
 	#	num = num + 1
-	#	commentsReturn = commentsReturn.replace("', '", "\n" + str(num) + ". ", 1)
+	#	list = list.replace("', '", "\n" + str(num) + ". ", 1)
 	for i in range(int(links.count("'") / 2)):
 		link = links.split("'")[index]
 		comment = comments.split("'")[index]
 		uuid = uuids.split("'")[index]
-		instances = 0;
+		instances = 0
 		index += 2
-		print('\n"' + comment.replace("`", "'") + '"')
+		print('"' + comment.replace("`", "'") + '"')
 		print(link)
 		for i in range(0, 3, 1):
 			rotateConnection()
@@ -129,17 +129,16 @@ def comments():
 				if instances > 0:
 					instances -= 1
 		if instances > 0:
-			print("Accessible - unlikely shadowbanned.")
+			print("\nAccessible - unlikely shadowbanned.\n")
 			accessible += 1
 		elif instances == 0:
-			print("Non-accessible - potentially shadowbanned.")
+			print("\nNon-accessible - potentially shadowbanned.\n")
 			if accessible > 0:
 				accessible -= 1
 		attempts += 1
-	print("\n" + str(accessible) + "/" + str(attempts) + " comments found.")
+	print(str(accessible) + "/" + str(attempts) + " comments accessible.")
 	f.close()
-	purge()
-	return(open("results.out", "r").read())
+	return(open("results.txt", "r").read())
 
 def fetchComments(youtubeId):
 	parser = argparse.ArgumentParser()
@@ -149,12 +148,12 @@ def fetchComments(youtubeId):
 		limit = 1000
 		if not youtubeId or not output:
 			parser.print_usage()
-			raise ValueError('faulty video I.D.')
+			raise ValueError('ERROR: FAULTY VIDEO I.D.')
 		if os.sep in output:
 			if not os.path.exists(outdir):
 				os.makedirs(outdir)
 		count = 0
-		with io.open(output, 'w', encoding = 'utf8') as fp:
+		with io.open(output, 'w', encoding='utf8') as fp:
 			for comment in download_comments(youtubeId):
 				comment_json = json.dumps(comment, ensure_ascii=False)
 				print(comment_json.decode('utf-8') if isinstance(comment_json, bytes) else comment_json, file=fp)
@@ -162,7 +161,7 @@ def fetchComments(youtubeId):
 				if limit and count >= limit:
 					break
 	except Exception as e:
-		print('Error:', str(e))	
+		print('Error:', str(e))
 		exit()
 
 def find_value(html, key, num_chars=2, separator='"'):
@@ -193,11 +192,13 @@ def download_comments(youtubeId, sleep=.1):
     for renderer in search_dict(data, 'itemSectionRenderer'):
         ncd = next(search_dict(renderer, 'nextContinuationData'), None)
         if ncd:
-            break
-
-    if not ncd:
+           break
+    try:
+        if not ncd:
+            return
+    except UnboundLocalError:
+        print("\nVideo unavailable. Skipping.")
         return
-
     continuations = [(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments')]
     while continuations:
         continuation, itct, action = continuations.pop()
@@ -216,23 +217,27 @@ def download_comments(youtubeId, sleep=.1):
         if list(search_dict(response, 'externalErrorMessage')):
             raise RuntimeError('Error returned from server: ' + next(search_dict(response, 'externalErrorMessage')))
 
-        if action == 'action_get_comments':
-            section = next(search_dict(response, 'itemSectionContinuation'), {})
-            for continuation in section.get('continuations', []):
-                ncd = continuation['nextContinuationData']
-                continuations.append((ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments'))
-            for item in section.get('contents', []):
+        try:
+            if action == 'action_get_comments':
+                section = next(search_dict(response, 'itemSectionContinuation'), {})
+                for continuation in section.get('continuations', []):
+                    ncd = continuation['nextContinuationData']
+                    continuations.append((ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments'))
+                for item in section.get('contents', []):
+                    continuations.extend([(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comment_replies')
+                                          for ncd in search_dict(item, 'nextContinuationData')])
+
+            elif action == 'action_get_comment_replies':
                 continuations.extend([(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comment_replies')
-                                      for ncd in search_dict(item, 'nextContinuationData')])
+                                      for ncd in search_dict(response, 'nextContinuationData')])
 
-        elif action == 'action_get_comment_replies':
-            continuations.extend([(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comment_replies')
-                                  for ncd in search_dict(response, 'nextContinuationData')])
+            for comment in search_dict(response, 'commentRenderer'):
+                yield {'cid': comment['commentId'],'text': ''.join([c['text'] for c in comment['contentText']['runs']])}
 
-        for comment in search_dict(response, 'commentRenderer'):
-            yield {'cid': comment['commentId'],'text': ''.join([c['text'] for c in comment['contentText']['runs']])}
-
-        time.sleep(sleep)
+            time.sleep(sleep)
+        except UnboundLocalError:
+            print("\nVideo unavailable. Skipping.\n")
+            break
 
 def search_dict(partial, search_key):
     stack = [partial]
