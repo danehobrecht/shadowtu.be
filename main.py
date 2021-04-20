@@ -54,7 +54,7 @@ def video(shareUrl):
 	title = html.unescape(parseTitle.split("'")[1])
 	print('"' + title + '"')
 	print(shareUrl)
-	for x in range(0, 5, 1):
+	for x in range(0, 10, 1):
 		rotateConnection()
 		r = requests.get("https://www.youtube.com/results?search_query=" + "+".join(title.split()))
 		if r.text.find(title) >= 0:

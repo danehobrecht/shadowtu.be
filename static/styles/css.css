@@ -56,8 +56,9 @@ footer {
 	max-width: 1300px;
 	color: black;
 	background-color: black;
-	padding: 10px;
-	overflow: auto;
+	padding: 10px 30px 10px 10px;
+	overflow-x: hidden;
+	overflow-y: auto;
 	border: 2px solid white;
 }
 
