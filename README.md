@@ -1,9 +1,9 @@
 # ShadowTube
 
-Analyzation features are as follows:
+Current analyzation features are as follows:
 
 - Video links
-- Specific comments (or complete history)
+- Complete comment history
     
 ### Host ShadowTube instance
 #### GNU/Linux, MacOS
