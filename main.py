@@ -251,4 +251,4 @@ def search_dict(partial, search_key):
 					stack.append(value)
 		elif isinstance(current_item, list):
 			for value in current_item:
-			stack.append(value)
+				stack.append(value)
