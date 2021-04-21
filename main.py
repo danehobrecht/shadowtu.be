@@ -23,9 +23,9 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 ### Tor
 
 def getTorSession():
-    session = requests.Session()
-    session.proxies = {"http": "socks5://localhost:9150", "https": "socks5://localhost:9150"}
-    return session
+	session = requests.Session()
+	session.proxies = {"http": "socks5://localhost:9150", "https": "socks5://localhost:9150"}
+	return session
 
 def rotateConnection():
 	time.sleep(10)
