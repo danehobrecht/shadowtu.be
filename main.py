@@ -165,90 +165,90 @@ def fetchComments(youtubeId):
 		exit()
 
 def find_value(html, key, num_chars=2, separator='"'):
-    pos_begin = html.find(key) + len(key) + num_chars
-    pos_end = html.find(separator, pos_begin)
-    return html[pos_begin: pos_end]
+	pos_begin = html.find(key) + len(key) + num_chars
+	pos_end = html.find(separator, pos_begin)
+	return html[pos_begin: pos_end]
 
 def ajax_request(session, url, params=None, data=None, headers=None, retries=5, sleep=20):
-    for _ in range(retries):
-        response = session.post(url, params=params, data=data, headers=headers)
-        if response.status_code == 200:
-            return response.json()
-        if response.status_code in [403, 413]:
-            return {}
-        else:
-            time.sleep(sleep)
+	for _ in range(retries):
+		response = session.post(url, params=params, data=data, headers=headers)
+		if response.status_code == 200:
+			return response.json()
+		if response.status_code in [403, 413]:
+			return {}
+		else:
+			time.sleep(sleep)
 
 def download_comments(youtubeId, sleep=.1):
-    session = requests.Session()
-    session.headers['User-Agent'] = USER_AGENT
+	session = requests.Session()
+	session.headers['User-Agent'] = USER_AGENT
 
-    response = session.get(YOUTUBE_VIDEO_URL.format(youtubeId=youtubeId))
-    html = response.text
-    session_token = find_value(html, 'XSRF_TOKEN', 3)
-    session_token = session_token.encode('ascii').decode('unicode-escape')
+	response = session.get(YOUTUBE_VIDEO_URL.format(youtubeId=youtubeId))
+	html = response.text
+	session_token = find_value(html, 'XSRF_TOKEN', 3)
+	session_token = session_token.encode('ascii').decode('unicode-escape')
 
-    data = json.loads(find_value(html, 'var ytInitialData = ', 0, '};') + '}')
-    for renderer in search_dict(data, 'itemSectionRenderer'):
-        ncd = next(search_dict(renderer, 'nextContinuationData'), None)
-        if ncd:
-           break
-    try:
-        if not ncd:
-            return
-    except UnboundLocalError:
-        print("\nVideo unavailable. Skipping.")
-        return
-    continuations = [(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments')]
-    while continuations:
-        continuation, itct, action = continuations.pop()
-        response = ajax_request(session, YOUTUBE_COMMENTS_AJAX_URL,
-                                params={action: 1,
-                                        'pbj': 1,
-                                        'ctoken': continuation,
-                                        'continuation': continuation,
-                                        'itct': itct},
-                                data={'session_token': session_token},
-                                headers={'X-YouTube-Client-Name': '1',
-                                         'X-YouTube-Client-Version': '2.20201202.06.01'})
+	data = json.loads(find_value(html, 'var ytInitialData = ', 0, '};') + '}')
+	for renderer in search_dict(data, 'itemSectionRenderer'):
+		ncd = next(search_dict(renderer, 'nextContinuationData'), None)
+		if ncd:
+			break
+	try:
+		if not ncd:
+			return
+	except UnboundLocalError:
+		print("\nVideo unavailable. Skipping.")
+		return
+	continuations = [(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments')]
+	while continuations:
+		continuation, itct, action = continuations.pop()
+		response = ajax_request(session, YOUTUBE_COMMENTS_AJAX_URL,
+								params={action: 1,
+										'pbj': 1,
+										'ctoken': continuation,
+										'continuation': continuation,
+										'itct': itct},
+								data={'session_token': session_token},
+								headers={'X-YouTube-Client-Name': '1',
+										'X-YouTube-Client-Version': '2.20201202.06.01'})
 
-        if not response:
-            break
-        if list(search_dict(response, 'externalErrorMessage')):
-            raise RuntimeError('Error returned from server: ' + next(search_dict(response, 'externalErrorMessage')))
+		if not response:
+			break
+		if list(search_dict(response, 'externalErrorMessage')):
+			raise RuntimeError('Error returned from server: ' + next(search_dict(response, 'externalErrorMessage')))
 
-        try:
-            if action == 'action_get_comments':
-                section = next(search_dict(response, 'itemSectionContinuation'), {})
-                for continuation in section.get('continuations', []):
-                    ncd = continuation['nextContinuationData']
-                    continuations.append((ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments'))
-                for item in section.get('contents', []):
-                    continuations.extend([(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comment_replies')
-                                          for ncd in search_dict(item, 'nextContinuationData')])
+		try:
+			if action == 'action_get_comments':
+				section = next(search_dict(response, 'itemSectionContinuation'), {})
+				for continuation in section.get('continuations', []):
+					ncd = continuation['nextContinuationData']
+					continuations.append((ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments'))
+				for item in section.get('contents', []):
+					continuations.extend([(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comment_replies')
+										for ncd in search_dict(item, 'nextContinuationData')])
 
-            elif action == 'action_get_comment_replies':
-                continuations.extend([(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comment_replies')
-                                      for ncd in search_dict(response, 'nextContinuationData')])
+			elif action == 'action_get_comment_replies':
+				continuations.extend([(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comment_replies')
+									for ncd in search_dict(response, 'nextContinuationData')])
 
-            for comment in search_dict(response, 'commentRenderer'):
-                yield {'cid': comment['commentId'],'text': ''.join([c['text'] for c in comment['contentText']['runs']])}
+			for comment in search_dict(response, 'commentRenderer'):
+				yield {'cid': comment['commentId'],'text': ''.join([c['text'] for c in comment['contentText']['runs']])}
 
-            time.sleep(sleep)
-        except UnboundLocalError:
-            print("\nVideo unavailable. Skipping.\n")
-            break
+			time.sleep(sleep)
+		except UnboundLocalError:
+			print("\nVideo unavailable. Skipping.\n")
+			break
 
 def search_dict(partial, search_key):
-    stack = [partial]
-    while stack:
-        current_item = stack.pop()
-        if isinstance(current_item, dict):
-            for key, value in current_item.items():
-                if key == search_key:
-                    yield value
-                else:
-                    stack.append(value)
-        elif isinstance(current_item, list):
-            for value in current_item:
-                stack.append(value)
+	stack = [partial]
+	while stack:
+		current_item = stack.pop()
+		if isinstance(current_item, dict):
+			for key, value in current_item.items():
+				if key == search_key:
+					yield value
+				else:
+					stack.append(value)
+		elif isinstance(current_item, list):
+			for value in current_item:
+			stack.append(value)
