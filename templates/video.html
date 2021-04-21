@@ -6,15 +6,16 @@
 		<form method="POST";>
 			<input 
 				class="link-box" 
-				type="text" 
+				type="text"
 				name="url" 
+				id="link-input"
 				placeholder="https://www.youtube.com/watch?v=Y6ljFaKRTrI" 
-				minlength="1"
+				maxlength="43"
 			/>
 			<div class="loader toshow"></div>
 		</form>
 		<script>
-			$("input.link-box").on('keypress',function(e) {
+			$("#link-input").on('keypress',function(e) {
 				if(e.which == 13) {
 					$("div.toshow").show();
 					$("input.link-box").hide();
