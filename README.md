@@ -65,3 +65,4 @@ Current analyzation features are as follows:
 
 - Video premieres
 - Geometric unicode characters in titles
+- Discussion posts
