@@ -59,7 +59,7 @@ Current analyzation features are as follows:
 - Comment History HTML | https://www.youtube.com/feed/history/comment_history
     - "Google - My Activity.html" must be locally available to the script to use the comment feature.
 - virtualenv | https://pypi.org/project/virtualenv/
-	- Needed for sandboxed environment
+	- Needed for created sandboxed environments
 
 ## Known compatability issues (subject to change)
 
