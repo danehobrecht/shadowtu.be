@@ -28,7 +28,7 @@ def getTorSession():
 	return session
 
 def rotateConnection():
-	time.sleep(10)
+	time.sleep(1)
 	with Controller.from_port(port = 9151) as c:
 		c.authenticate()
 		c.signal(Signal.NEWNYM)
@@ -101,7 +101,7 @@ def comments():
 		html = rawHtml.read().replace("\n", "").replace("'", "`")
 		#a = re.sub('</div><div class="SiEggd">Commented on (.*?)`s Discussion tab</div>', '', html)
 		#<div class="QTGV3c" jsname="r4nke">Jubliani</div><div class="SiEggd">Commented on A S H`s Discussion tab</div>
-		comments = str(re.findall('<div class="QTGV3c" jsname="r4nke">(.*?)</div><div class="SiEggd">Commented on ', html))
+		comments = str(re.findall('<div class="QTGV3c" jsname="r4nke">(.*?)</div><div class="SiEggd">', html))
 		uuids = str(re.findall('data-token="(.*?)" data-date', html))
 		links = str(re.findall('&quot;">Details</a></div></div></div><div class="iXL6O"><a href="(.*?)" jslog="65086; track:click" jsname="pMSZnb" class="l8sGWb" target="_blank" aria-label="Play video" rel="noopener noreferrer"><div class="OUPWA">', html))
 		#print(a)
@@ -124,7 +124,7 @@ def comments():
 		index += 2
 		print('"' + comment.replace("`", "'") + '"')
 		print(link)
-		for i in range(0, 3, 1):
+		for i in range(0, 1, 1):
 			rotateConnection()
 			fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
 			with open("json.json", "r") as json:
@@ -140,8 +140,6 @@ def comments():
 			accessible += 1
 		elif instances == 0:
 			print("\nNon-accessible - potentially shadowbanned.\n")
-			if accessible > 0:
-				accessible -= 1
 		attempts += 1
 	print(str(accessible) + "/" + str(attempts) + " comments accessible.")
 	#f.close()
