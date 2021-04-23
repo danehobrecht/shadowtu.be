@@ -28,7 +28,7 @@ def getTorSession():
 	return session
 
 def rotateConnection():
-	time.sleep(1)
+	time.sleep(10)
 	with Controller.from_port(port = 9151) as c:
 		c.authenticate()
 		c.signal(Signal.NEWNYM)
@@ -54,7 +54,7 @@ def video(url):
 	title = html.unescape(parseTitle.split("'")[1])
 	print('"' + title + '"')
 	print(url)
-	for x in range(0, 5, 1):
+	for x in range(0, 10, 1):
 		rotateConnection()
 		r = requests.get("https://www.youtube.com/results?search_query=" + "+".join(title.split()))
 		if r.text.find(title) >= 0:
@@ -117,7 +117,7 @@ def comments():
 		index += 2
 		print('"' + comment.replace("`", "'") + '"')
 		print(link)
-		for i in range(0, 1, 1):
+		for i in range(0, 3, 1):
 			rotateConnection()
 			fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
 			with open("json.json", "r") as json:
