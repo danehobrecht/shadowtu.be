@@ -1,15 +1,25 @@
+@font-face {
+   font-family: "LiberationSans-Regular";
+   src: url("../liberation_sans/LiberationSans-Regular.ttf");
+}
+
+@font-face {
+   font-family: "LiberationSans-Bold";
+   src: url("../liberation_sans/LiberationSans-Bold.ttf");
+}
+
 a {
 	color: white;
 }
 
 pre {  
-	font-family: 'LiberationSansBold';
+	font-family: 'LiberationSans-Bold';
 	font-size: 20px;
 	color: white;
 }
 
 html {  
-	font-family: 'LiberationSansBold';
+	font-family: 'LiberationSans-Bold';
 	font-size: 20px;
 	color: white;
 	background-color: black;
@@ -40,7 +50,7 @@ footer {
 }
 
 .link-box {
-	font-family: 'LiberationSansRegular';
+	font-family: 'LiberationSans-Regular';
 	font-size: 18px;
 	height: 50px;
 	width: 500px;
