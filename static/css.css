@@ -1,11 +1,11 @@
 @font-face {
    font-family: "LiberationSans-Regular";
-   src: url("../liberation_sans/LiberationSans-Regular.ttf");
+   src: url("liberation_sans/LiberationSans-Regular.ttf");
 }
 
 @font-face {
    font-family: "LiberationSans-Bold";
-   src: url("../liberation_sans/LiberationSans-Bold.ttf");
+   src: url("liberation_sans/LiberationSans-Bold.ttf");
 }
 
 a {
