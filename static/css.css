@@ -57,25 +57,17 @@ footer {
 	text-align: center;
 }
 
-.output-box {
+.text-box {
 	margin: auto;
 	text-align: left;
 	height: inherit;
 	width: inherit;
 	max-height: 650px;
 	max-width: 1300px;
-	color: black;
 	background-color: black;
 	padding: 10px 30px 10px 10px;
 	overflow-x: hidden;
 	overflow-y: auto;
-	border: 2px solid white;
-}
-
-.text-box {
-	margin: auto;
-	text-align: left;
-	padding: 10px;
 	border: 2px solid white;
 }
 

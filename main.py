@@ -22,17 +22,17 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 ### Tor
 
-def getTorSession():
+def get_tor_session():
 	session = requests.Session()
 	session.proxies = {"http": "socks5://localhost:9150", "https": "socks5://localhost:9150"}
 	return session
 
-def rotateConnection():
+def rotate_connection():
 	time.sleep(10)
 	with Controller.from_port(port = 9151) as c:
 		c.authenticate()
 		c.signal(Signal.NEWNYM)
-	print("\n" + getTorSession().get("http://icanhazip.com").text, end="")
+	print("\n" + get_tor_session().get("http://icanhazip.com").text, end="")
 
 ### Videos - https://youtu.be/Y6ljFaKRTrI
 
@@ -44,7 +44,7 @@ def video(url):
 	## implement link verification in jquery instead. keep tor portion
 	if "https://youtu.be/" in str(url) or "https://www.youtube.com/watch?v=" in str(url):
 		try:
-			getTorSession().get("http://icanhazip.com")
+			get_tor_session().get("http://icanhazip.com")
 		except IOError:
 			return "Tor service is down serverside. Please try again later."
 	else:
@@ -55,7 +55,7 @@ def video(url):
 	print('"' + title + '"')
 	print(url)
 	for x in range(0, 10, 1):
-		rotateConnection()
+		rotate_connection()
 		r = requests.get("https://www.youtube.com/results?search_query=" + "+".join(title.split()))
 		if r.text.find(title) >= 0:
 			accessible += 1
@@ -87,7 +87,7 @@ def comments():
 	try:
 		open("Google_-_My_Activity.html")
 		try:
-			getTorSession().get("http://icanhazip.com")
+			get_tor_session().get("http://icanhazip.com")
 		except IOError:
 			purge()
 			return "Tor service is down serverside. Please try again later."
@@ -101,7 +101,7 @@ def comments():
 		#<div class="QTGV3c" jsname="r4nke">Jubliani</div><div class="SiEggd">Commented on A S H`s Discussion tab</div>
 		comments = str(re.findall('<div class="QTGV3c" jsname="r4nke">(.*?)</div><div class="SiEggd">', html))
 		uuids = str(re.findall('data-token="(.*?)" data-date', html))
-		links = str(re.findall('&quot;">Details</a></div></div></div><div class="iXL6O"><a href="(.*?)" jslog="65086; track:click" jsname="pMSZnb" class="l8sGWb" target="_blank" aria-label="Play video" rel="noopener noreferrer"><div class="OUPWA">', html))
+		links = str(re.findall('<div class="iXL6O"><a href="(.*?)" jslog="65086; track:click"', html))
 	#parent_links = str(re.findall('Commented on  <a href=(.*?)&', f))
 	#reply_links = str(re.findall('comment on  <a href=(.*?)&', f))
 	#list = comments.replace("['", "").replace("']", "").replace("`", "'")
@@ -118,8 +118,10 @@ def comments():
 		print('"' + comment.replace("`", "'") + '"')
 		print(link)
 		for i in range(0, 3, 1):
-			rotateConnection()
-			fetchComments(link.replace("https://www.youtube.com/watch?v=", ""))
+			rotate_connection()
+			fetch_comments(link.replace("https://www.youtube.com/watch?v=", ""))
+			if private == bool(True):
+				break
 			with open("json.json", "r") as json:
 				j = json.read()
 			if j.find(uuid) >= 0:
@@ -128,17 +130,18 @@ def comments():
 			else:
 				if instances > 0:
 					instances -= 1
-		if instances > 0:
-			print("\nAccessible - unlikely shadowbanned.\n")
-			accessible += 1
-		elif instances == 0:
-			print("\nNon-accessible - potentially shadowbanned.\n")
+		if private == bool(False):
+			if instances > 0:
+				print("\nAccessible.\n")
+				accessible += 1
+			elif instances == 0:
+				print("\nNon-accessible.\n")
 		attempts += 1
 	print(str(accessible) + "/" + str(attempts) + " comments accessible.")
 	f.close()
 	return(open("results.txt", "r").read())
 
-def fetchComments(youtubeId):
+def fetch_comments(youtubeId):
 	parser = argparse.ArgumentParser()
 	try:
 		args, unknown = parser.parse_known_args()
@@ -178,6 +181,8 @@ def ajax_request(session, url, params=None, data=None, headers=None, retries=5, 
 			time.sleep(sleep)
 
 def download_comments(youtubeId, sleep=.1):
+	global private
+	private = bool(False)
 	session = requests.Session()
 	session.headers['User-Agent'] = USER_AGENT
 
@@ -193,9 +198,11 @@ def download_comments(youtubeId, sleep=.1):
 			break
 	try:
 		if not ncd:
+			private = bool(False)
 			return
 	except UnboundLocalError:
-		print("\nVideo unavailable. Skipping.")
+		private = bool(True	)
+		print("\nVideo unavailable. Skipping.\n")
 		return
 	continuations = [(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments')]
 	while continuations:

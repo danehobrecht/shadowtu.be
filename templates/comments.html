@@ -14,15 +14,15 @@
 				if ($('#file').get(0).files.length === 0) {
 					alert("No files selected.");
 				} else {
-					$("#file").hide();
 					$("input.toshow").show();
 				}
 			});
 			$("input.toshow").click(function(e){
 				$("div.toshow").show();
-				$("input.toshow").hide();
 				$("#google-link").hide();
 				$("h1").hide();
+				$("input.toshow").hide();
+				$("#file").hide();
 			});
 		</script>
 	</div>
