@@ -54,16 +54,13 @@ def video(url):
 	title = html.unescape(parseTitle.split("'")[1])
 	print('"' + title + '"')
 	print(url)
-	for x in range(0, 5, 1):
+	for x in range(0, 10, 1):
 		rotateConnection()
 		r = requests.get("https://www.youtube.com/results?search_query=" + "+".join(title.split()))
 		if r.text.find(title) >= 0:
 			accessible += 1
 			print("Accessible.")
 		else:
-			accessible -= 1
-		if accessible < 0:
-			accessible = 0
 			print("Non-accessible.")
 		attempted += 1
 	if accessible == 0:
@@ -85,8 +82,8 @@ def comments():
 	attempts = 0
 	accessible = 0
 	index = 1
-	#f = open("results.txt", 'w')
-	#sys.stdout = f
+	f = open("results.txt", 'w')
+	sys.stdout = f
 	try:
 		open("Google_-_My_Activity.html")
 		try:
@@ -99,16 +96,12 @@ def comments():
 		return "Incorrect file type."
 	with io.open("Google_-_My_Activity.html", "r", encoding = "utf-8") as rawHtml:
 		html = rawHtml.read().replace("\n", "").replace("'", "`")
-		#a = re.sub('</div><div class="SiEggd">Commented on (.*?)`s Discussion tab</div>', '', html)
+		#a = re.sub('<div class="uUy2re"><div class="QTGV3c" jsname="r4nke">(.*?)`s Discussion tab</div>', '', html) WORKS?
+		#b = re.sub('<c-data id="i7" jsdata="(.*?)" data-date', '', a) DOESNT WORK
 		#<div class="QTGV3c" jsname="r4nke">Jubliani</div><div class="SiEggd">Commented on A S H`s Discussion tab</div>
-		comments = str(re.findall('<div class="QTGV3c" jsname="r4nke">(.*?)</div><div class="SiEggd">Commented on ', html))
+		comments = str(re.findall('<div class="QTGV3c" jsname="r4nke">(.*?)</div><div class="SiEggd">', html))
 		uuids = str(re.findall('data-token="(.*?)" data-date', html))
 		links = str(re.findall('&quot;">Details</a></div></div></div><div class="iXL6O"><a href="(.*?)" jslog="65086; track:click" jsname="pMSZnb" class="l8sGWb" target="_blank" aria-label="Play video" rel="noopener noreferrer"><div class="OUPWA">', html))
-		#print(a)
-		print(html + "\n")
-		print(comments + "\n")
-		print(uuids + "\n")
-		print(links + "\n")
 	#parent_links = str(re.findall('Commented on  <a href=(.*?)&', f))
 	#reply_links = str(re.findall('comment on  <a href=(.*?)&', f))
 	#list = comments.replace("['", "").replace("']", "").replace("`", "'")
@@ -140,11 +133,9 @@ def comments():
 			accessible += 1
 		elif instances == 0:
 			print("\nNon-accessible - potentially shadowbanned.\n")
-			if accessible > 0:
-				accessible -= 1
 		attempts += 1
 	print(str(accessible) + "/" + str(attempts) + " comments accessible.")
-	#f.close()
+	f.close()
 	return(open("results.txt", "r").read())
 
 def fetchComments(youtubeId):
