@@ -19,9 +19,7 @@ import re, io, os
 YOUTUBE_VIDEO_URL = "https://www.youtube.com/watch?v={youtubeId}"
 YOUTUBE_COMMENTS_AJAX_URL = "https://www.youtube.com/comment_service_ajax"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"
-
-cwd = os.getcwd()
-uploads_path = cwd + "/uploads/Google_-_My_Activity.html"
+CURRENT_WORKING_DIRECTORY = os.getcwd()
 
 ### Tor
 
@@ -78,7 +76,7 @@ def video(url):
 ### Comments - https://www.youtube.com/feed/history/comment_history
 
 def purge_uploads():
-	folder = cwd + "/uploads"
+	folder = CURRENT_WORKING_DIRECTORY + "/uploads"
 	for filename in os.listdir(folder):
 		file_path = os.path.join(folder, filename)
 		try:
@@ -96,7 +94,7 @@ def comments():
 	#results_file = open("results.txt", 'w')
 	#sys.stdout = results_file
 	try:
-		open(uploads_path)
+		open(CURRENT_WORKING_DIRECTORY + "/uploads/Google_-_My_Activity.html")
 		try:
 			get_tor_session().get("http://icanhazip.com")
 		except IOError:
@@ -105,7 +103,7 @@ def comments():
 	except IOError:
 		purge_uploads()
 		return "Incorrect file type."
-	with io.open(uploads_path, "r", encoding = "utf-8") as raw_html:
+	with io.open(CURRENT_WORKING_DIRECTORY + "/uploads/Google_-_My_Activity.html", "r", encoding = "utf-8") as raw_html:
 		html = raw_html.read().replace("\n", "").replace("'", "`")
 		comments = str(re.findall('<div class="QTGV3c" jsname="r4nke">(.*?)</div><div class="SiEggd">', html))
 		uuids = str(re.findall('data-token="(.*?)" data-date', html))
