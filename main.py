@@ -33,7 +33,7 @@ def rotate_connection():
 	with Controller.from_port(port = 9151) as c:
 		c.authenticate()
 		c.signal(Signal.NEWNYM)
-	r = get_tor_session().get("https://ip.seeip.org/geoip")
+	r = requests.get("https://ip.seeip.org/geoip")
 	r_dict = r.json()
 	print("\n" + r_dict['country'] + " (" + r_dict['ip'] + ") - ", end="")
 
@@ -42,8 +42,8 @@ def rotate_connection():
 def video(url):
 	attempted = 0
 	accessible = 0
-	results_file = open("results.txt", 'w')
-	sys.stdout = results_file
+	#results_file = open("results.txt", 'w')
+	#sys.stdout = results_file
 	if "https://youtu.be/" in str(url) or "https://www.youtube.com/watch?v=" in str(url):
 		try:
 			get_tor_session().get("https://ip4.seeip.org/")
@@ -72,7 +72,7 @@ def video(url):
 	elif accessible == attempted:
 		conclusion = "Unlikely shadowbanned."
 	print("\n" + conclusion)
-	results_file.close()
+	#results_file.close()
 	return(open("results.txt", "r").read())
 
 ### Comments - https://www.youtube.com/feed/history/comment_history
