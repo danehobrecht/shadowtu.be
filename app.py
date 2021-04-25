@@ -9,6 +9,9 @@ import os
 app = Flask(__name__)
 app.secret_key = '_5#y2L"F4Q8z'
 
+UPLOAD_FOLDER = '/home/tmuq5/Backup/Documents/Programming/shadowtube/shadowtube-flask/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 @app.route('/', methods=['GET', 'POST'])
 def video():
 	global output
@@ -24,7 +27,7 @@ def comments():
 	if request.method == 'POST':
 		f = request.files['file']
 		filename = 'Google_-_My_Activity.html'
-		f.save(secure_filename(f.filename))
+		f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
 		output = main.comments()
 		return redirect(url_for('results'))
 	return render_template('comments.html')

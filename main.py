@@ -10,7 +10,7 @@ from stem import Signal
 import subprocess
 import lxml.html
 import argparse, requests
-import socket
+import socket, shutil
 import socks
 import time, json, html
 import sys
@@ -19,6 +19,9 @@ import re, io, os
 YOUTUBE_VIDEO_URL = "https://www.youtube.com/watch?v={youtubeId}"
 YOUTUBE_COMMENTS_AJAX_URL = "https://www.youtube.com/comment_service_ajax"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"
+
+cwd = os.getcwd()
+uploads_path = cwd + "/uploads/Google_-_My_Activity.html"
 
 ### Tor
 
@@ -39,9 +42,8 @@ def rotate_connection():
 def video(url):
 	attempted = 0
 	accessible = 0
-	f = open("results.txt", 'w')
-	sys.stdout = f
-	## implement link verification in jquery instead. keep tor portion
+	results_file = open("results.txt", 'w')
+	sys.stdout = results_file
 	if "https://youtu.be/" in str(url) or "https://www.youtube.com/watch?v=" in str(url):
 		try:
 			get_tor_session().get("http://icanhazip.com")
@@ -49,15 +51,15 @@ def video(url):
 			return "Tor service is down serverside. Please try again later."
 	else:
 		return "Invalid input."
-	r = requests.get(url)
-	parseTitle = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', r.text))
-	title = html.unescape(parseTitle.split("'")[1])
+	page_data = requests.get(url)
+	parse_title = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', page_data.text))
+	title = html.unescape(parse_title.split("'")[1])
 	print('"' + title + '"')
 	print(url)
 	for x in range(0, 10, 1):
 		rotate_connection()
-		r = requests.get("https://www.youtube.com/results?search_query=" + "+".join(title.split()))
-		if r.text.find(title) >= 0:
+		title_search = requests.get("https://www.youtube.com/results?search_query=" + "+".join(title.split()))
+		if title_search.text.find(title) >= 0:
 			accessible += 1
 			print("Accessible.")
 		else:
@@ -70,45 +72,44 @@ def video(url):
 	elif accessible == attempted:
 		conclusion = "Unlikely shadowbanned."
 	print("\n" + conclusion)
-	f.close()
+	results_file.close()
 	return(open("results.txt", "r").read())
 
 ### Comments - https://www.youtube.com/feed/history/comment_history
 
-def purge():
-	subprocess.Popen(["rm", "Google_-_My_Activity.html", "json.json"], stdout=subprocess.PIPE)
+def purge_uploads():
+	folder = cwd + "/uploads"
+	for filename in os.listdir(folder):
+		file_path = os.path.join(folder, filename)
+		try:
+			if os.path.isfile(file_path) or os.path.islink(file_path):
+				os.unlink(file_path)
+			elif os.path.isdir(file_path):
+				shutil.rmtree(file_path)
+		except Exception as e:
+			print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 def comments():
 	attempts = 0
 	accessible = 0
 	index = 1
-	f = open("results.txt", 'w')
-	sys.stdout = f
+	#results_file = open("results.txt", 'w')
+	#sys.stdout = results_file
 	try:
-		open("Google_-_My_Activity.html")
+		open(uploads_path)
 		try:
 			get_tor_session().get("http://icanhazip.com")
 		except IOError:
-			purge()
+			purge_uploads()
 			return "Tor service is down serverside. Please try again later."
 	except IOError:
-		purge()
+		purge_uploads()
 		return "Incorrect file type."
-	with io.open("Google_-_My_Activity.html", "r", encoding = "utf-8") as rawHtml:
-		html = rawHtml.read().replace("\n", "").replace("'", "`")
-		#a = re.sub('<div class="uUy2re"><div class="QTGV3c" jsname="r4nke">(.*?)`s Discussion tab</div>', '', html) WORKS?
-		#b = re.sub('<c-data id="i7" jsdata="(.*?)" data-date', '', a) DOESNT WORK
-		#<div class="QTGV3c" jsname="r4nke">Jubliani</div><div class="SiEggd">Commented on A S H`s Discussion tab</div>
+	with io.open(uploads_path, "r", encoding = "utf-8") as raw_html:
+		html = raw_html.read().replace("\n", "").replace("'", "`")
 		comments = str(re.findall('<div class="QTGV3c" jsname="r4nke">(.*?)</div><div class="SiEggd">', html))
 		uuids = str(re.findall('data-token="(.*?)" data-date', html))
 		links = str(re.findall('<div class="iXL6O"><a href="(.*?)" jslog="65086; track:click"', html))
-	#parent_links = str(re.findall('Commented on  <a href=(.*?)&', f))
-	#reply_links = str(re.findall('comment on  <a href=(.*?)&', f))
-	#list = comments.replace("['", "").replace("']", "").replace("`", "'")
-	#num = 1
-	#for i in range(int(list.count("', '"))):
-	#	num = num + 1
-	#	list = list.replace("', '", "\n" + str(num) + ". ", 1)
 	for i in range(int(links.count("'") / 2)):
 		link = links.split("'")[index]
 		comment = comments.split("'")[index]
@@ -138,7 +139,7 @@ def comments():
 				print("\nNon-accessible.\n")
 		attempts += 1
 	print(str(accessible) + "/" + str(attempts) + " comments accessible.")
-	f.close()
+	#results_file.close()
 	return(open("results.txt", "r").read())
 
 def fetch_comments(youtubeId):
