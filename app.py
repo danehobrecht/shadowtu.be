@@ -7,7 +7,6 @@ import main
 import os
 
 app = Flask(__name__)
-app.secret_key = '_5#y2L"F4Q8z'
 
 UPLOAD_FOLDER = os.getcwd() + '/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
