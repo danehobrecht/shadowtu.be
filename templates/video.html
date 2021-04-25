@@ -1,21 +1,20 @@
 {% extends "base.html" %}
-{% block content %}
+{% block body %}
 	<div class="center-page">
 		<h1>ShadowTube</h1>
 		<p>Enter the YouTube video link in question.</p>
 		<form method="POST";>
-			<input 
-				class="link-box" 
+			<input
+				class="link-box"
 				type="text"
-				name="url" 
-				id="link-input"
+				name="url"
 				placeholder="https://www.youtube.com/watch?v=Y6ljFaKRTrI" 
 				maxlength="43"
 			/>
 			<div class="loader toshow"></div>
 		</form>
 		<script>
-			$("#link-input").on('keypress',function(e) {
+			$("input.link-box").on('keypress',function(e) {
 				if(e.which == 13) {
 					$("h1").hide();
 					$("p").hide();

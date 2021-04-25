@@ -33,7 +33,9 @@ def rotate_connection():
 	with Controller.from_port(port = 9151) as c:
 		c.authenticate()
 		c.signal(Signal.NEWNYM)
-	print("\n" + get_tor_session().get("http://icanhazip.com").text, end="")
+	r = get_tor_session().get("https://ip.seeip.org/geoip")
+	r_dict = r.json()
+	print("\n" + r_dict['country'] + " (" + r_dict['ip'] + ") - ", end="")
 
 ### Videos - https://youtu.be/Y6ljFaKRTrI
 
@@ -44,7 +46,7 @@ def video(url):
 	sys.stdout = results_file
 	if "https://youtu.be/" in str(url) or "https://www.youtube.com/watch?v=" in str(url):
 		try:
-			get_tor_session().get("http://icanhazip.com")
+			get_tor_session().get("https://ip4.seeip.org/")
 		except IOError:
 			return "Tor service is down serverside. Please try again later."
 	else:
@@ -59,9 +61,9 @@ def video(url):
 		title_search = requests.get("https://www.youtube.com/results?search_query=" + "+".join(title.split()))
 		if title_search.text.find(title) >= 0:
 			accessible += 1
-			print("Accessible.")
+			print("accessible.")
 		else:
-			print("Non-accessible.")
+			print("non-accessible.")
 		attempted += 1
 	if accessible == 0:
 		conclusion = "Likely shadowbanned."
@@ -91,12 +93,12 @@ def comments():
 	attempts = 0
 	accessible = 0
 	index = 1
-	#results_file = open("results.txt", 'w')
-	#sys.stdout = results_file
+	results_file = open("results.txt", 'w')
+	sys.stdout = results_file
 	try:
 		open(CURRENT_WORKING_DIRECTORY + "/uploads/Google_-_My_Activity.html")
 		try:
-			get_tor_session().get("http://icanhazip.com")
+			get_tor_session().get("https://ip4.seeip.org/")
 		except IOError:
 			purge_uploads()
 			return "Tor service is down serverside. Please try again later."
@@ -131,13 +133,13 @@ def comments():
 					instances -= 1
 		if private == bool(False):
 			if instances > 0:
-				print("\nAccessible.\n")
+				print("accessible.\n")
 				accessible += 1
 			elif instances == 0:
-				print("\nNon-accessible.\n")
+				print("non-accessible.\n")
 		attempts += 1
 	print(str(accessible) + "/" + str(attempts) + " comments accessible.")
-	#results_file.close()
+	results_file.close()
 	return(open("results.txt", "r").read())
 
 def fetch_comments(youtubeId):
