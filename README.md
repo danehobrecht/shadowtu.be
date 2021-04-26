@@ -30,13 +30,13 @@ Current analyzation features are as follows:
 
 #### Windows
 
-1. Download the zip and create a virtual environment in the extracted directory:
+1. Download the zip and create a virtual environment (venv) in the extracted directory:
 
-	`python3 -m venv c:path\to\shadowtube`
+	`python3 -m venv c:path\to\shadowtube\venv`
 
 2. Activate virtual environment:
 
-	`<venv>\Scripts\activate.bat`
+	`venv\Scripts\activate.bat`
 
 3. Install dependencies:
 
@@ -52,14 +52,10 @@ Current analyzation features are as follows:
 	
 ## Prerequisites
 
-- Python 3 | https://www.python.org/downloads/
-	- pip3 must be available.
-- Tor Browser | https://www.torproject.org/
-    - Required to be running during script execution.
-- virtualenv | https://pypi.org/project/virtualenv/
-	- Required for creating sandboxed environments.
-- Comment History HTML | https://www.youtube.com/feed/history/comment_history
-    - "Google - My Activity.html" must be locally available to the script to use the comment feature.
+- Python 3 - pip3 must be available | https://www.python.org/downloads/
+- Tor Browser - Required to be running during script execution | https://www.torproject.org/
+- virtualenv - Required for creating sandboxed environments | https://pypi.org/project/virtualenv/
+- Comment History HTML - "Google - My Activity.html" must be locally available to the script | https://www.youtube.com/feed/history/comment_history
 
 ## Known compatability issues (subject to change)
 
