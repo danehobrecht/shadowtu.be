@@ -55,7 +55,6 @@ Current analyzation features are as follows:
 - Python 3 - pip3 must be available | https://www.python.org/downloads/
 - Tor Browser - Required to be running during script execution | https://www.torproject.org/
 - virtualenv - Required for creating sandboxed environments | https://pypi.org/project/virtualenv/
-- Comment History HTML - "Google - My Activity.html" must be locally available to the script | https://www.youtube.com/feed/history/comment_history
 
 ## Known compatability issues (subject to change)
 
