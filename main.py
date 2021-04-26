@@ -151,7 +151,7 @@ def fetch_comments(youtubeId):
 		limit = 1000
 		if not youtubeId or not output:
 			parser.print_usage()
-			raise ValueError('ERROR: FAULTY VIDEO I.D.')
+			raise ValueError('Error: Faulty video I.D.')
 		if os.sep in output:
 			if not os.path.exists(outdir):
 				os.makedirs(outdir)
