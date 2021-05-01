@@ -30,10 +30,10 @@ def get_tor_session():
 	return session
 
 def rotate_connection():
+	time.sleep(10)
 	with Controller.from_port(port = 9151) as c:
 		c.authenticate()
 		c.signal(Signal.NEWNYM)
-	time.sleep(10)
 	#r = get_tor_session().get("http://ip-api.com/json")
 	#r_dict = r.json()
 	#print("\n" + r_dict['country'] + " (" + r_dict['query'] + ")")
@@ -42,6 +42,7 @@ def rotate_connection():
 ### Videos - https://youtu.be/Y6ljFaKRTrI
 
 def video(url):
+
 	attempts = 0
 	accessible = 0
 	#results_file = open("results.txt", 'w')
@@ -53,21 +54,17 @@ def video(url):
 			return "Tor service is down serverside. Please try again later."
 	else:
 		return "Invalid input."
-	page_data = requests.get(url)
-	parse_title = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', page_data.text))
+	page_data = requests.get(url).text
+	parse_title = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', page_data))
 	title = html.unescape(parse_title.split("'")[1])
-	#print(page_data.text)
 	print('"' + title + '"')
 	print(url)
 	while attempts < 5:
 		rotate_connection()
-
 		title_query = "https://www.youtube.com/results?search_query=" + "+".join(title.split()).replace('\n', '')
 		title_search = get_tor_session().get(title_query).text
-
 		#print("TITLE QUERY: " + title_query)
 		#print("TITLE QUERY DATA: " + title_search)
-		
 		if title_search.find('"title":{"runs":[{"text":"') >= 0:
 			if title_search.find(title) >= 0:	
 				accessible += 1
@@ -77,7 +74,6 @@ def video(url):
 			attempts += 1
 		else:
 			print("Blacklisted. Skipping.")
-		
 	if accessible == 0:
 		conclusion = "Likely shadowbanned."
 	elif accessible <= attempts / 2:
