@@ -5,8 +5,10 @@
 		<a id="google-link" href="https://www.youtube.com/feed/history/comment_history" target="_blank">Google comment history page</a>
 		<br><br>
 		<form method="POST" enctype="multipart/form-data" action="http://localhost:5000/comments">
-			<input id="file" type="file" name="file"/>
-			<input class="toshow" type="submit" value="Confirm"/>
+			<div class="comments-input">
+				<input id="file" type="file" name="file"/>
+				<input class="toshow" type="submit" value="Confirm"/>
+			</div>
 			<div class="loader toshow"></div>
 		</form>
 		<script>
@@ -21,7 +23,7 @@
 				$("div.toshow").show();
 				$("#google-link").hide();
 				$("h1").hide();
-				$("input.toshow").hide();
+				$("div.comments-input").hide();
 				$("#file").hide();
 			});
 		</script>

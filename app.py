@@ -20,7 +20,7 @@ def video():
 		return redirect(url_for('results'))
 	return render_template('video.html')
 
-@app.route('/comments', methods = ['GET', 'POST'])
+@app.route('/comments', methods=['GET', 'POST'])
 def comments():
 	global output
 	if request.method == 'POST':
@@ -30,10 +30,6 @@ def comments():
 		output = main.comments()
 		return redirect(url_for('results'))
 	return render_template('comments.html')
-
-@app.route('/why')
-def why():
-	return render_template('why.html')
 
 @app.route('/results', methods=['GET'])
 def results():

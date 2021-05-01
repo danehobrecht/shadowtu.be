@@ -5,7 +5,7 @@
 		<p>Enter the YouTube video link in question.</p>
 		<form method="POST";>
 			<input
-				class="link-box"
+				class="video-input"
 				type="text"
 				name="url"
 				placeholder="https://www.youtube.com/watch?v=Y6ljFaKRTrI" 
@@ -14,11 +14,11 @@
 			<div class="loader toshow"></div>
 		</form>
 		<script>
-			$("input.link-box").on('keypress',function(e) {
+			$("input.video-input").on('keypress',function(e) {
 				if(e.which == 13) {
 					$("h1").hide();
 					$("p").hide();
-					$("input.link-box").hide();
+					$("input.video-input").hide();
 					$("div.toshow").show();
 				}
 			});

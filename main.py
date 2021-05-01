@@ -4,6 +4,7 @@ from __future__ import print_function
 
 from lxml.cssselect import CSSSelector
 from stem.control import Controller
+from requests import get
 from array import array
 from stem import Signal
 
@@ -29,25 +30,25 @@ def get_tor_session():
 	return session
 
 def rotate_connection():
-	time.sleep(10)
 	with Controller.from_port(port = 9151) as c:
 		c.authenticate()
 		c.signal(Signal.NEWNYM)
-	r = get_tor_session().get("https://ip.seeip.org/geoip")
-	r_dict = r.json()
-	print("\n" + r_dict['country'] + " (" + r_dict['ip'] + ") - ", end="")
-	#print(get_tor_session().get("http://icanhazip.com/").text)
+	time.sleep(10)
+	#r = get_tor_session().get("http://ip-api.com/json")
+	#r_dict = r.json()
+	#print("\n" + r_dict['country'] + " (" + r_dict['query'] + ")")
+	print("\n" + get_tor_session().get("http://icanhazip.com/").text, end="")
 
 ### Videos - https://youtu.be/Y6ljFaKRTrI
 
 def video(url):
-	attempted = 0
+	attempts = 0
 	accessible = 0
-	results_file = open("results.txt", 'w')
-	sys.stdout = results_file
+	#results_file = open("results.txt", 'w')
+	#sys.stdout = results_file
 	if "https://youtu.be/" in str(url) or "https://www.youtube.com/watch?v=" in str(url):
 		try:
-			get_tor_session().get("https://ip4.seeip.org/")
+			get_tor_session().get("http://icanhazip.com/")
 		except IOError:
 			return "Tor service is down serverside. Please try again later."
 	else:
@@ -55,25 +56,36 @@ def video(url):
 	page_data = requests.get(url)
 	parse_title = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', page_data.text))
 	title = html.unescape(parse_title.split("'")[1])
+	#print(page_data.text)
 	print('"' + title + '"')
 	print(url)
-	for x in range(0, 10, 1):
+	while attempts < 5:
 		rotate_connection()
-		title_search = requests.get("https://www.youtube.com/results?search_query=" + "+".join(title.split()))
-		if title_search.text.find(title) >= 0:
-			accessible += 1
-			print("accessible.")
+
+		title_query = "https://www.youtube.com/results?search_query=" + "+".join(title.split()).replace('\n', '')
+		title_search = get_tor_session().get(title_query).text
+
+		#print("TITLE QUERY: " + title_query)
+		#print("TITLE QUERY DATA: " + title_search)
+		
+		if title_search.find('"title":{"runs":[{"text":"') >= 0:
+			if title_search.find(title) >= 0:	
+				accessible += 1
+				print("Accessible.")
+			else:
+				print("Non-accessible.")
+			attempts += 1
 		else:
-			print("non-accessible.")
-		attempted += 1
+			print("Blacklisted. Skipping.")
+		
 	if accessible == 0:
 		conclusion = "Likely shadowbanned."
-	elif accessible <= attempted / 2:
+	elif accessible <= attempts / 2:
 		conclusion = "Potentially shadowbanned."
-	elif accessible == attempted:
+	elif accessible == attempts:
 		conclusion = "Unlikely shadowbanned."
 	print("\n" + conclusion)
-	results_file.close()
+	#results_file.close()
 	return(open("results.txt", "r").read())
 
 ### Comments - https://www.youtube.com/feed/history/comment_history
@@ -99,7 +111,7 @@ def comments():
 	try:
 		open(CURRENT_WORKING_DIRECTORY + "/uploads/Google_-_My_Activity.html")
 		try:
-			get_tor_session().get("https://ip4.seeip.org/")
+			get_tor_session().get("http://ip-api.com/json")
 		except IOError:
 			purge_uploads()
 			return "Tor service is down serverside. Please try again later."

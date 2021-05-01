@@ -49,12 +49,22 @@ footer {
     -webkit-transform: translateX(-50%) translateY(-50%);
 }
 
-.link-box {
+.video-input {
 	font-family: 'LiberationSans-Regular';
 	font-size: 18px;
 	height: 50px;
 	width: 500px;
 	text-align: center;
+}
+
+.comments-input {
+	display: inline-block;
+	cursor: pointer;
+	border-radius: 5px;
+	background-color: white;
+	font-size: 16px;
+	color: black;
+	padding: 12px 18px;
 }
 
 .text-box {
