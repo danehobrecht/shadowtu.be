@@ -1,25 +1,26 @@
 {% extends "base.html" %}
 {% block body %}
 	<div class="center-page">
-		<h1>ShadowTube</h1>
-		<p>Enter the YouTube video link in question.</p>
-		<form method="POST";>
-			<input
-				class="video-input"
-				type="text"
-				name="url"
-				placeholder="https://www.youtube.com/watch?v=Y6ljFaKRTrI" 
-				maxlength="43"
-			/>
-			<div class="loader toshow"></div>
-		</form>
+		<div id="input">
+			<h1>ShadowTube</h1>
+			<p>Enter the YouTube video link in question.</p>
+			<form method="POST";>
+				<input
+					class="video-input"
+					type="text"
+					name="url"
+					placeholder="https://www.youtube.com/watch?v=Y6ljFaKRTrI" 
+					maxlength="43"
+				/><br><br>
+				<a href="/comments">Comments (alpha)</a>
+			</form>
+		</div>
+		<div class="loader toshow"></div>
 		<script>
 			$("input.video-input").on('keypress',function(e) {
 				if(e.which == 13) {
-					$("h1").hide();
-					$("p").hide();
-					$("input.video-input").hide();
-					$("div.toshow").show();
+					$("#input").hide();
+					$(".loader").show();
 				}
 			});
 		</script>

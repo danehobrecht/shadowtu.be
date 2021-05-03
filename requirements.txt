@@ -4,3 +4,4 @@ PySocks
 cssselect
 lxml
 stem
+colorama

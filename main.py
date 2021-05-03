@@ -34,22 +34,17 @@ def rotate_connection():
 	with Controller.from_port(port = 9151) as c:
 		c.authenticate()
 		c.signal(Signal.NEWNYM)
-	#r = get_tor_session().get("http://ip-api.com/json")
-	#r_dict = r.json()
-	#print("\n" + r_dict['country'] + " (" + r_dict['query'] + ")")
-	print("\n" + get_tor_session().get("http://icanhazip.com/").text, end="")
 
 ### Videos - https://youtu.be/Y6ljFaKRTrI
 
 def video(url):
-
 	attempts = 0
 	accessible = 0
-	#results_file = open("results.txt", 'w')
-	#sys.stdout = results_file
+	results_file = open("results.txt", 'w')
+	sys.stdout = results_file
 	if "https://youtu.be/" in str(url) or "https://www.youtube.com/watch?v=" in str(url):
 		try:
-			get_tor_session().get("http://icanhazip.com/")
+			get_tor_session().get("https://icanhazip.com")
 		except IOError:
 			return "Tor service is down serverside. Please try again later."
 	else:
@@ -57,31 +52,25 @@ def video(url):
 	page_data = requests.get(url).text
 	parse_title = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', page_data))
 	title = html.unescape(parse_title.split("'")[1])
-	print('"' + title + '"')
+	if title == "":
+		print("Video unavailable")
+	else:
+		print('"' + title + '"')
 	print(url)
 	while attempts < 5:
 		rotate_connection()
 		title_query = "https://www.youtube.com/results?search_query=" + "+".join(title.split()).replace('\n', '')
 		title_search = get_tor_session().get(title_query).text
-		#print("TITLE QUERY: " + title_query)
-		#print("TITLE QUERY DATA: " + title_search)
 		if title_search.find('"title":{"runs":[{"text":"') >= 0:
-			if title_search.find(title) >= 0:	
+			print("\n" + get_tor_session().get("https://icanhazip.com").text.replace('\n', '') + " ", end="")
+			if title_search.find(title) >= 0:
 				accessible += 1
-				print("Accessible.")
+				print("[ ✓ ]")
 			else:
-				print("Non-accessible.")
+				print("[ X ]")
 			attempts += 1
-		else:
-			print("Blacklisted. Skipping.")
-	if accessible == 0:
-		conclusion = "Likely shadowbanned."
-	elif accessible <= attempts / 2:
-		conclusion = "Potentially shadowbanned."
-	elif accessible == attempts:
-		conclusion = "Unlikely shadowbanned."
-	print("\n" + conclusion)
-	#results_file.close()
+	print("\n" + str(accessible) + "/" + str(attempts))
+	results_file.close()
 	return(open("results.txt", "r").read())
 
 ### Comments - https://www.youtube.com/feed/history/comment_history
@@ -107,7 +96,7 @@ def comments():
 	try:
 		open(CURRENT_WORKING_DIRECTORY + "/uploads/Google_-_My_Activity.html")
 		try:
-			get_tor_session().get("http://ip-api.com/json")
+			get_tor_session().get("https://icanhazip.com")
 		except IOError:
 			purge_uploads()
 			return "Tor service is down serverside. Please try again later."
@@ -212,7 +201,7 @@ def download_comments(youtubeId, sleep=.1):
 			return
 	except UnboundLocalError:
 		private = bool(True	)
-		print("\nVideo unavailable. Skipping.\n")
+		print("\nVideo unavailable.\n")
 		return
 	continuations = [(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments')]
 	while continuations:

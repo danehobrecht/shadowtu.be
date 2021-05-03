@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 {% block body %}
 	<div class="center-page">
-		<h1>ShadowTube</h1>
-		<a id="google-link" href="https://www.youtube.com/feed/history/comment_history" target="_blank">Google comment history page</a>
-		<br><br>
-		<form method="POST" enctype="multipart/form-data" action="http://localhost:5000/comments">
-			<div class="comments-input">
-				<input id="file" type="file" name="file"/>
-				<input class="toshow" type="submit" value="Confirm"/>
-			</div>
-			<div class="loader toshow"></div>
-		</form>
+		<div id="input">
+			<h1>ShadowTube</h1>
+			<a href="https://www.youtube.com/feed/history/comment_history" target="_blank">Google comment history page</a>
+			<br><br>
+			<form method="POST" enctype="multipart/form-data" action="http://localhost:5000/comments">
+				<div class="comments-input">
+					<input id="file" type="file" name="file"/>
+					<input class="toshow" type="submit" value="Confirm"/>
+				</div><br><br>
+				<a href="/">Video</a>
+			</form>
+		</div>
+		<div class="loader toshow"></div>
 		<script>
 			$("input#file").change(function() {
 				if ($('#file').get(0).files.length === 0) {
@@ -20,11 +23,8 @@
 				}
 			});
 			$("input.toshow").click(function(e){
-				$("div.toshow").show();
-				$("#google-link").hide();
-				$("h1").hide();
-				$("div.comments-input").hide();
-				$("#file").hide();
+				$("#input").hide();
+				$(".loader").show();
 			});
 		</script>
 	</div>
