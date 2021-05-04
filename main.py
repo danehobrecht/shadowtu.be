@@ -40,8 +40,8 @@ def rotate_connection():
 def video(url):
 	attempts = 0
 	accessible = 0
-	#results_file = open("results.txt", 'w')
-	#sys.stdout = results_file
+	results_file = open("results.txt", 'w')
+	sys.stdout = results_file
 
 	if "https://youtu.be/" in str(url) or "https://www.youtube.com/watch?v=" in str(url):
 		try:
@@ -90,7 +90,7 @@ def video(url):
 	elif accessible == 0:
 		print("\nAlarming behavior detected.")
 
-	#results_file.close()
+	results_file.close()
 	return(open("results.txt", "r").read())
 
 ### Comments - https://www.youtube.com/feed/history/comment_history
@@ -111,8 +111,8 @@ def comments():
 	attempts = 0
 	accessible = 0
 	index = 1
-	#results_file = open("results.txt", 'w')
-	#sys.stdout = results_file
+	results_file = open("results.txt", 'w')
+	sys.stdout = results_file
 
 	try:
 		open(CURRENT_WORKING_DIRECTORY + "/uploads/Google_-_My_Activity.html")
@@ -176,7 +176,7 @@ def comments():
 		else:
 			print(str(accessible) + " of " + str(attempts) + " comments publicly available.")
 
-	#results_file.close()
+	results_file.close()
 	return(open("results.txt", "r").read())
 
 def fetch_comments(youtubeId):
