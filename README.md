@@ -2,12 +2,12 @@
 
 ![alt text](https://github.com/danehobrecht/shadowtube/blob/main/static/images/shadowtube.png)
 
-Available functions:
+Current available analyzation features:
 
 - Video links
 - Complete comment history (alpha)
 
-Future functions:
+To be developed:
 - "Discussion", or, "Community" posts
 
 ### Sample Output
