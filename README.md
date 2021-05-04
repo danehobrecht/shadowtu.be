@@ -1,5 +1,7 @@
 # ShadowTube
 
+![alt text](https://github.com/danehobrecht/shadowtube/blob/main/static/images/shadowtube.png)
+
 Current analyzation features are as follows:
 
 - Video links
