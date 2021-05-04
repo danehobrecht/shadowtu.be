@@ -80,7 +80,13 @@ def video(url):
 			else:
 				print(" in " + r_dict["country"] + " (" + r_dict["ip"] + ")")
 
-	print("\n" + str(accessible) + "/" + str(attempts) + " attempts successful.")
+		if attempts == accessible and accessible > 0:
+			print("No abnormal behavior detected.")
+		elif attempts > accessible:
+			print("Questionable behavior detected.")
+		elif accessible == 0:
+			print("Alarming behavior detected.")
+
 	results_file.close()
 	return(open("results.txt", "r").read())
 
@@ -159,12 +165,13 @@ def comments():
 				elif instances == 0:
 					print("\n[ ! ]\n")
 			attempts += 1
+
+		if attempts == accessible and accessible > 0:
+			print("No abnormal behavior detected. All comments are publicly available.")
 		if attempts > accessible:
 			print("Questionable behavior detected in " + str(attempts - accessible) + " comment(s) of " + str(attempts) + " attempted.")
-		elif attempts == accessible:
-			print("No abnormal behavior detected. All comments are publicly available.")
 		else:
-			print(str(accessible) + " of " + str(attempts) + "comments publicly available.")
+			print(str(accessible) + " of " + str(attempts) + " comments publicly available.")
 
 	#results_file.close()
 	return(open("results.txt", "r").read())
