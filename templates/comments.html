@@ -5,8 +5,9 @@
 			<a href="{{ url_for('video') }}">
 				<h1>ShadowTube</h1>
 			</a>
-			<a href="https://www.youtube.com/feed/history/comment_history" target="_blank">Google comment history page</a>
-			<br><br>
+			<a href="https://www.youtube.com/feed/history/comment_history" target="_blank">
+				<p>Google comment history page</p>
+			</a>
 			<form method="POST" enctype="multipart/form-data" action="http://localhost:5000/comments">
 				<div class="comments-input">
 					<input id="file" type="file" name="file"/>
