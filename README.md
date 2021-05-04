@@ -37,7 +37,7 @@ pip3 install -r requirements.txt
 ```
 4. Establish the flask app:
 ```
-export FLASK_APP=app.py`
+export FLASK_APP=app.py
 ```
 5. Run:
 ```
@@ -47,7 +47,7 @@ flask run
 
 1. Download the zip and create a virtual environment (venv) in the extracted directory:
 
-	`python3 -m venv c:path\to\shadowtube\venv`
+	``python3 -m venv c:path\to\shadowtube\venv``
 
 2. Activate virtual environment:
 
