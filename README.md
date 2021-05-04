@@ -4,11 +4,11 @@
 
 Current available analyzation features:
 
-- Video links
-- Complete comment history (alpha)
+ - Video links
+ - Complete comment history (alpha)
 
 To be developed:
-- "Discussion", or, "Community" posts
+ - "Discussion", or, "Community" posts
 
 ### Sample Output
 
@@ -72,17 +72,15 @@ python3 -m flask run
 ```
 ### Prerequisites
 
-Python 3 | pip3 and latest python version
+ - Python 3 | pip3 and latest python version
 https://www.python.org/downloads/
-
-Tor Browser | Required to be running during script execution
+ - Tor Browser | Required to be running during script execution
 https://www.torproject.org/
-
-virtualenv | Sandboxed environment creation
+ - virtualenv | Sandboxed environment creation
 https://pypi.org/project/virtualenv/
 
 ### Known compatability issues (subject to change)
 
-- Video premieres
-- Geometric unicode characters in titles
-- Discussion posts
+ - Video premieres
+ - Geometric unicode characters in titles
+ - Discussion posts
