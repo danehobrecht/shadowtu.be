@@ -105,8 +105,8 @@ def comments():
 	attempts = 0
 	accessible = 0
 	index = 1
-	results_file = open("results.txt", 'w')
-	sys.stdout = results_file
+	#results_file = open("results.txt", 'w')
+	#sys.stdout = results_file
 
 	try:
 		open(CURRENT_WORKING_DIRECTORY + "/uploads/Google_-_My_Activity.html")
@@ -141,12 +141,19 @@ def comments():
 				break
 			with open("json.json", "r") as json:
 				j = json.read()
-			if j.find(uuid) >= 0:
+				if j.find(uuid) >= 0:
+					print("Accessible", end="")
+				else:
+					print("Non-accessible", end="")
+					if instances > 0:
+						instances -= 1
+				r = get_tor_session().get("https://ip.seeip.org/geoip")
+				r_dict = r.json()
+				if r_dict["country"] == "United States" or r_dict["country"] == "Netherlands":
+					print(" in the " + r_dict["country"] + " (" + r_dict["ip"] + ")")
+				else:
+					print(" in " + r_dict["country"] + " (" + r_dict["ip"] + ")")
 				instances += 1
-				break
-			else:
-				if instances > 0:
-					instances -= 1
 
 		if private == bool(False):
 			if instances > 0:
@@ -157,7 +164,7 @@ def comments():
 
 		attempts += 1
 	print(str(accessible) + "/" + str(attempts) + " comments accessible.")
-	results_file.close()
+	#results_file.close()
 	return(open("results.txt", "r").read())
 
 def fetch_comments(youtubeId):
