@@ -24,25 +24,25 @@ Accessible in the United States (199.249.230.158)
 #### GNU/Linux, MacOS
 
 1. Download the zip and create a virtual environment named "venv" in the extracted directory:
-
-	`python3 -m venv /path/to/shadowtube/venv`
-
+```
+python3 -m venv /path/to/shadowtube/venv
+```
 2. Navigate to directory:
-
-	`cd /path/to/shadowtube`
-
+```
+cd /path/to/shadowtube
+```
 3. Install dependencies:
-
-    `pip3 install -r requirements.txt`
-
+```
+pip3 install -r requirements.txt
+```
 4. Establish the flask app:
-
-    `export FLASK_APP=app.py`
-    
+```
+export FLASK_APP=app.py`
+```
 5. Run:
-
-    `flask run`
-
+```
+flask run
+```
 #### Windows
 
 1. Download the zip and create a virtual environment (venv) in the extracted directory:
