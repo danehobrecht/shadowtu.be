@@ -40,8 +40,8 @@ def rotate_connection():
 def video(url):
 	attempts = 0
 	accessible = 0
-	results_file = open("results.txt", 'w')
-	sys.stdout = results_file
+	#results_file = open("results.txt", 'w')
+	#sys.stdout = results_file
 
 	if "https://youtu.be/" in str(url) or "https://www.youtube.com/watch?v=" in str(url):
 		try:
@@ -72,22 +72,25 @@ def video(url):
 				print("Accessible", end="")
 			else:
 				print("Non-accessible", end="")
+			try:
+				r = get_tor_session().get("https://ip.seeip.org/geoip")
+				r_dict = r.json()
+				if r_dict["country"] == "United States" or r_dict["country"] == "Netherlands" or r_dict["country"] == "Republic of Moldova":
+					print(" in the " + r_dict["country"] + " (" + r_dict["ip"] + ")")
+				else:
+					print(" in " + r_dict["country"] + " (" + r_dict["ip"] + ")")
+			except IOError:
+				print(" from an unknown location.")
 			attempts += 1
-			r = get_tor_session().get("https://ip.seeip.org/geoip")
-			r_dict = r.json()
-			if r_dict["country"] == "United States":
-				print(" in the " + r_dict["country"] + " (" + r_dict["ip"] + ")")
-			else:
-				print(" in " + r_dict["country"] + " (" + r_dict["ip"] + ")")
 
-		if attempts == accessible and accessible > 0:
-			print("No abnormal behavior detected.")
-		elif attempts > accessible:
-			print("Questionable behavior detected.")
-		elif accessible == 0:
-			print("Alarming behavior detected.")
+	if attempts == accessible and accessible > 0:
+		print("\nNo abnormal behavior detected.")
+	elif attempts > accessible:
+		print("\nQuestionable behavior detected.")
+	elif accessible == 0:
+		print("\nAlarming behavior detected.")
 
-	results_file.close()
+	#results_file.close()
 	return(open("results.txt", "r").read())
 
 ### Comments - https://www.youtube.com/feed/history/comment_history
@@ -140,7 +143,7 @@ def comments():
 				fetch_comments(link.replace("https://www.youtube.com/watch?v=", ""))
 				if private == bool(True):
 					break
-				with open("json.json", "r") as json:
+				with open("temp_comments.json", "r") as json:
 					j = json.read()
 					if j.find(uuid) >= 0:
 						print("Accessible", end="")
@@ -151,13 +154,13 @@ def comments():
 					try:
 						r = get_tor_session().get("https://ip.seeip.org/geoip")
 						r_dict = r.json()
-						if r_dict["country"] == "United States" or r_dict["country"] == "Netherlands" or r_dict["country"] == 'Republic of Moldova":
+						if r_dict["country"] == "United States" or r_dict["country"] == "Netherlands" or r_dict["country"] == "Republic of Moldova":
 							print(" in the " + r_dict["country"] + " (" + r_dict["ip"] + ")")
 						else:
 							print(" in " + r_dict["country"] + " (" + r_dict["ip"] + ")")
-						instances += 1
 					except IOError:
 						print(" from an unknown location.")
+					instances += 1
 			if private == bool(False):
 				if instances > 0:
 					print("\n[ ✓ ]\n")
@@ -180,7 +183,7 @@ def fetch_comments(youtubeId):
 	parser = argparse.ArgumentParser()
 	try:
 		args, unknown = parser.parse_known_args()
-		output = "json.json"
+		output = "temp_comments.json"
 		limit = 1000
 		if not youtubeId or not output:
 			parser.print_usage()

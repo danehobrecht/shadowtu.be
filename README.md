@@ -67,7 +67,7 @@ Accessible in Ukraine (193.218.118.183)
 Accessible in Seychelles (37.228.129.5)
 Accessible in the United States (199.249.230.158)
 
-5/5 attempts successful.
+No abnormal behavior detected.
 ```
 
 #### Comments
