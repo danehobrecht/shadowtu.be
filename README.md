@@ -23,45 +23,45 @@ Accessible in the United States (199.249.230.158)
 ### Host ShadowTube instance
 #### GNU/Linux, MacOS
 
-1. Download the zip and create a virtual environment named "venv" in the extracted directory:
+1. Download the zip and create a virtual environment named "venv" in the extracted directory
 ```
 python3 -m venv /path/to/shadowtube/venv
 ```
-2. Navigate to directory:
+2. Navigate to directory
 ```
 cd /path/to/shadowtube
 ```
-3. Install dependencies:
+3. Install dependencies
 ```
 pip3 install -r requirements.txt
 ```
-4. Establish the flask app:
+4. Establish the flask app
 ```
 export FLASK_APP=app.py
 ```
-5. Run:
+5. Run
 ```
 flask run
 ```
 #### Windows
 
-1. Download the zip and create a virtual environment (venv) in the extracted directory:
+1. Download the zip and create a virtual environment (venv) in the extracted directory
 ```
 python3 -m venv c:path\to\shadowtube\venv
 ```
-2. Activate virtual environment:
+2. Activate virtual environment
 ```
 venv\Scripts\activate.bat
 ```
-3. Install dependencies:
+3. Install dependencies
 ```
 pip3 install -r requirements.txt
 ```
-4. Establish the flask app:
+4. Establish the flask app
 ```
 set FLASK_APP=app.py
 ```
-5. Run:
+5. Run
 ```
 python3 -m flask run
 ```
