@@ -2,7 +2,9 @@
 {% block body %}
 	<div class="center-page">
 		<div id="input">
-			<h1>ShadowTube</h1>
+			<a href="{{ url_for('comments') }}">
+				<h1>ShadowTube</h1>
+			</a>
 			<p>Enter the YouTube video link in question.</p>
 			<form method="POST";>
 				<input

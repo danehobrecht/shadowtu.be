@@ -105,8 +105,8 @@ def comments():
 	attempts = 0
 	accessible = 0
 	index = 1
-	#results_file = open("results.txt", 'w')
-	#sys.stdout = results_file
+	results_file = open("results.txt", 'w')
+	sys.stdout = results_file
 
 	try:
 		open(CURRENT_WORKING_DIRECTORY + "/uploads/Google_-_My_Activity.html")
@@ -131,8 +131,8 @@ def comments():
 		uuid = uuids.split("'")[index]
 		instances = 0
 		index += 2
-		print('"' + comment.replace("`", "'") + '"')
 		print(link)
+		print('"' + comment.replace("`", "'") + '"')
 
 		for i in range(0, 3, 1):
 			rotate_connection()
@@ -150,14 +150,14 @@ def comments():
 
 		if private == bool(False):
 			if instances > 0:
-				print("[ ✓ ]")
+				print("[ ✓ ]\n")
 				accessible += 1
 			elif instances == 0:
-				print("[ X ]")
+				print("[ X ]\n")
 
 		attempts += 1
 	print(str(accessible) + "/" + str(attempts) + " comments accessible.")
-	#results_file.close()
+	results_file.close()
 	return(open("results.txt", "r").read())
 
 def fetch_comments(youtubeId):
