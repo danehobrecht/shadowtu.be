@@ -2,10 +2,13 @@
 
 ![alt text](https://github.com/danehobrecht/shadowtube/blob/main/static/images/shadowtube.png)
 
-Current analyzation features are as follows:
+Available functions:
 
 - Video links
-- Complete comment history
+- Complete comment history (alpha)
+
+Future functions:
+- "Discussion", or, "Community" posts
 
 ### Sample Output
 
@@ -22,7 +25,7 @@ Accessible in the United States (199.249.230.158)
 5/5 attempts successful.
 ```
 
-### Host ShadowTube instance
+### Self-host
 #### GNU/Linux, MacOS
 
 1. Download the zip and create a virtual environment named "venv" in the extracted directory
