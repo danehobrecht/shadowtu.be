@@ -7,7 +7,7 @@ Current analyzation features are as follows:
 
 ### Sample Output
 
-```sh
+```
 "Portal - 'Still Alive'"
 https://www.youtube.com/watch?v=Y6ljFaKRTrI
 
