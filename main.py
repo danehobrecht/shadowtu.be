@@ -40,8 +40,9 @@ def rotate_connection():
 def video(url):
 	attempts = 0
 	accessible = 0
-	results_file = open("results.txt", 'w')
-	sys.stdout = results_file
+	#results_file = open("results.txt", 'w')
+	#sys.stdout = results_file
+
 	if "https://youtu.be/" in str(url) or "https://www.youtube.com/watch?v=" in str(url):
 		try:
 			get_tor_session().get("https://icanhazip.com")
@@ -49,28 +50,41 @@ def video(url):
 			return "Tor service is down serverside. Please try again later."
 	else:
 		return "Invalid input."
+
 	page_data = requests.get(url).text
 	parse_title = str(re.findall('<title>(.*?) - YouTube</title><meta name="title" content=', page_data))
 	title = html.unescape(parse_title.split("'")[1])
+
 	if title == "":
 		print("Video unavailable")
 	else:
 		print('"' + title + '"')
-	print(url)
+	print(url + "\n")
+
 	while attempts < 5:
+
 		rotate_connection()
 		title_query = "https://www.youtube.com/results?search_query=" + "+".join(title.split()).replace('\n', '')
 		title_search = get_tor_session().get(title_query).text
+
 		if title_search.find('"title":{"runs":[{"text":"') >= 0:
-			print("\n" + get_tor_session().get("https://icanhazip.com").text.replace('\n', '') + " ", end="")
+			#print("\n" + get_tor_session().get("https://icanhazip.com").text.replace('\n', '') + " - ", end="")
 			if title_search.find(title) >= 0:
 				accessible += 1
-				print("[ ✓ ]")
+				print("Accessible", end="")
 			else:
-				print("[ X ]")
+				print("Non-accessible", end="")
 			attempts += 1
-	print("\n" + str(accessible) + "/" + str(attempts))
-	results_file.close()
+
+			r = get_tor_session().get("https://ip.seeip.org/geoip")
+			r_dict = r.json()
+			if r_dict["country"] == "United States":
+				print(" in the " + r_dict["country"] + " (" + r_dict["ip"] + ")")
+			else:
+				print(" in " + r_dict["country"] + " (" + r_dict["ip"] + ")")
+
+	print("\n" + str(accessible) + "/" + str(attempts) + " attempts successful.")
+	#results_file.close()
 	return(open("results.txt", "r").read())
 
 ### Comments - https://www.youtube.com/feed/history/comment_history
@@ -91,8 +105,9 @@ def comments():
 	attempts = 0
 	accessible = 0
 	index = 1
-	results_file = open("results.txt", 'w')
-	sys.stdout = results_file
+	#results_file = open("results.txt", 'w')
+	#sys.stdout = results_file
+
 	try:
 		open(CURRENT_WORKING_DIRECTORY + "/uploads/Google_-_My_Activity.html")
 		try:
@@ -103,11 +118,13 @@ def comments():
 	except IOError:
 		purge_uploads()
 		return "Incorrect file type."
+
 	with io.open(CURRENT_WORKING_DIRECTORY + "/uploads/Google_-_My_Activity.html", "r", encoding = "utf-8") as raw_html:
 		html = raw_html.read().replace("\n", "").replace("'", "`")
 		comments = str(re.findall('<div class="QTGV3c" jsname="r4nke">(.*?)</div><div class="SiEggd">', html))
 		uuids = str(re.findall('data-token="(.*?)" data-date', html))
 		links = str(re.findall('<div class="iXL6O"><a href="(.*?)" jslog="65086; track:click"', html))
+
 	for i in range(int(links.count("'") / 2)):
 		link = links.split("'")[index]
 		comment = comments.split("'")[index]
@@ -116,6 +133,7 @@ def comments():
 		index += 2
 		print('"' + comment.replace("`", "'") + '"')
 		print(link)
+
 		for i in range(0, 3, 1):
 			rotate_connection()
 			fetch_comments(link.replace("https://www.youtube.com/watch?v=", ""))
@@ -129,15 +147,17 @@ def comments():
 			else:
 				if instances > 0:
 					instances -= 1
+
 		if private == bool(False):
 			if instances > 0:
-				print("accessible.\n")
+				print("[ ✓ ]")
 				accessible += 1
 			elif instances == 0:
-				print("non-accessible.\n")
+				print("[ X ]")
+
 		attempts += 1
 	print(str(accessible) + "/" + str(attempts) + " comments accessible.")
-	results_file.close()
+	#results_file.close()
 	return(open("results.txt", "r").read())
 
 def fetch_comments(youtubeId):
@@ -187,6 +207,7 @@ def download_comments(youtubeId, sleep=.1):
 
 	response = session.get(YOUTUBE_VIDEO_URL.format(youtubeId=youtubeId))
 	html = response.text
+
 	session_token = find_value(html, 'XSRF_TOKEN', 3)
 	session_token = session_token.encode('ascii').decode('unicode-escape')
 
@@ -201,7 +222,7 @@ def download_comments(youtubeId, sleep=.1):
 			return
 	except UnboundLocalError:
 		private = bool(True	)
-		print("\nVideo unavailable.\n")
+		print("Video unavailable.\n")
 		return
 	continuations = [(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments')]
 	while continuations:
@@ -221,27 +242,23 @@ def download_comments(youtubeId, sleep=.1):
 		if list(search_dict(response, 'externalErrorMessage')):
 			raise RuntimeError('Error returned from server: ' + next(search_dict(response, 'externalErrorMessage')))
 
-		try:
-			if action == 'action_get_comments':
-				section = next(search_dict(response, 'itemSectionContinuation'), {})
-				for continuation in section.get('continuations', []):
-					ncd = continuation['nextContinuationData']
-					continuations.append((ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments'))
-				for item in section.get('contents', []):
-					continuations.extend([(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comment_replies')
-										for ncd in search_dict(item, 'nextContinuationData')])
-
-			elif action == 'action_get_comment_replies':
+		if action == 'action_get_comments':
+			section = next(search_dict(response, 'itemSectionContinuation'), {})
+			for continuation in section.get('continuations', []):
+				ncd = continuation['nextContinuationData']
+				continuations.append((ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comments'))
+			for item in section.get('contents', []):
 				continuations.extend([(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comment_replies')
-									for ncd in search_dict(response, 'nextContinuationData')])
+									for ncd in search_dict(item, 'nextContinuationData')])
 
-			for comment in search_dict(response, 'commentRenderer'):
-				yield {'cid': comment['commentId'],'text': ''.join([c['text'] for c in comment['contentText']['runs']])}
+		elif action == 'action_get_comment_replies':
+			continuations.extend([(ncd['continuation'], ncd['clickTrackingParams'], 'action_get_comment_replies')
+								for ncd in search_dict(response, 'nextContinuationData')])
 
-			time.sleep(sleep)
-		except UnboundLocalError:
-			print("\nVideo unavailable. Skipping.\n")
-			break
+		for comment in search_dict(response, 'commentRenderer'):
+			yield {'cid': comment['commentId'],'text': ''.join([c['text'] for c in comment['contentText']['runs']])}
+
+		time.sleep(sleep)
 
 def search_dict(partial, search_key):
 	stack = [partial]
