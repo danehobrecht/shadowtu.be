@@ -67,13 +67,13 @@ python3 -m flask run
 ```
 ### Prerequisites
 
-Python 3
+Python 3 | pip3 and latest python version
 https://www.python.org/downloads/
 
-Tor Browser [must be running during script execution]
+Tor Browser | Required to be running during script execution
 https://www.torproject.org/
 
-virtualenv
+virtualenv | Sandboxed environment creation
 https://pypi.org/project/virtualenv/
 
 ### Known compatability issues (subject to change)
