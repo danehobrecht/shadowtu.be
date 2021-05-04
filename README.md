@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/danehobrecht/shadowtube/blob/main/static/images/shadowtube.png)
 
-Current available analyzation features:
+Analyzation features:
 
  - Video links
  - Complete comment history (alpha)
