@@ -62,11 +62,9 @@ def video(url):
 	print(url + "\n")
 
 	while attempts < 5:
-
 		rotate_connection()
 		title_query = "https://www.youtube.com/results?search_query=" + "+".join(title.split()).replace('\n', '')
 		title_search = get_tor_session().get(title_query).text
-
 		if title_search.find('"title":{"runs":[{"text":"') >= 0:
 			#print("\n" + get_tor_session().get("https://icanhazip.com").text.replace('\n', '') + " - ", end="")
 			if title_search.find(title) >= 0:
@@ -75,7 +73,6 @@ def video(url):
 			else:
 				print("Non-accessible", end="")
 			attempts += 1
-
 			r = get_tor_session().get("https://ip.seeip.org/geoip")
 			r_dict = r.json()
 			if r_dict["country"] == "United States":
@@ -124,46 +121,51 @@ def comments():
 		comments = str(re.findall('<div class="QTGV3c" jsname="r4nke">(.*?)</div><div class="SiEggd">', html))
 		uuids = str(re.findall('data-token="(.*?)" data-date', html))
 		links = str(re.findall('<div class="iXL6O"><a href="(.*?)" jslog="65086; track:click"', html))
+		for i in range(int(links.count("'") / 2)):
+			link = links.split("'")[index]
+			comment = comments.split("'")[index]
+			uuid = uuids.split("'")[index]
+			instances = 0
+			index += 2
+			print('"' + comment.replace("`", "'") + '"')
+			print(link + "\n")
+			for i in range(0, 3, 1):
+				rotate_connection()
+				fetch_comments(link.replace("https://www.youtube.com/watch?v=", ""))
+				if private == bool(True):
+					break
+				with open("json.json", "r") as json:
+					j = json.read()
+					if j.find(uuid) >= 0:
+						print("Accessible", end="")
+					else:
+						print("Non-accessible", end="")
+						if instances > 0:
+							instances -= 1
+					try:
+						r = get_tor_session().get("https://ip.seeip.org/geoip")
+						r_dict = r.json()
+						if r_dict["country"] == "United States" or r_dict["country"] == "Netherlands" or r_dict["country"] == 'Republic of Moldova":
+							print(" in the " + r_dict["country"] + " (" + r_dict["ip"] + ")")
+						else:
+							print(" in " + r_dict["country"] + " (" + r_dict["ip"] + ")")
+						instances += 1
+					except IOError:
+						print(" from an unknown location.")
+			if private == bool(False):
+				if instances > 0:
+					print("\n[ ✓ ]\n")
+					accessible += 1
+				elif instances == 0:
+					print("\n[ ! ]\n")
+			attempts += 1
+		if attempts > accessible:
+			print("Questionable behavior detected in " + str(attempts - accessible) + " comment(s) of " + str(attempts) + " attempted.")
+		elif attempts == accessible:
+			print("No abnormal behavior detected. All comments are publicly available.")
+		else:
+			print(str(accessible) + " of " + str(attempts) + "comments publicly available.")
 
-	for i in range(int(links.count("'") / 2)):
-		link = links.split("'")[index]
-		comment = comments.split("'")[index]
-		uuid = uuids.split("'")[index]
-		instances = 0
-		index += 2
-		print('"' + comment.replace("`", "'") + '"')
-		print(link + "\n")
-
-		for i in range(0, 3, 1):
-			rotate_connection()
-			fetch_comments(link.replace("https://www.youtube.com/watch?v=", ""))
-			if private == bool(True):
-				break
-			with open("json.json", "r") as json:
-				j = json.read()
-				if j.find(uuid) >= 0:
-					print("Accessible", end="")
-				else:
-					print("Non-accessible", end="")
-					if instances > 0:
-						instances -= 1
-				r = get_tor_session().get("https://ip.seeip.org/geoip")
-				r_dict = r.json()
-				if r_dict["country"] == "United States" or r_dict["country"] == "Netherlands":
-					print(" in the " + r_dict["country"] + " (" + r_dict["ip"] + ")")
-				else:
-					print(" in " + r_dict["country"] + " (" + r_dict["ip"] + ")")
-				instances += 1
-
-		if private == bool(False):
-			if instances > 0:
-				print("\n[ ✓ ]\n")
-				accessible += 1
-			elif instances == 0:
-				print("\n[ ! ]\n")
-
-		attempts += 1
-	print(str(accessible) + "/" + str(attempts) + " comments accessible.")
 	#results_file.close()
 	return(open("results.txt", "r").read())
 

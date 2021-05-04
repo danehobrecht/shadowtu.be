@@ -30,40 +30,72 @@ Accessible in the United States (199.249.230.158)
 "Super clever, really like the use of chickens. The smaller scale interpretations seem to be popular as opposed to som..."
 https://www.youtube.com/watch?v=Drx1DEXa0GM
 
-Accessible in Germany (89.163.252.230)
-Accessible in France (89.234.157.254)
-Accessible in Austria (109.70.100.58)
+Accessible in Germany (185.220.102.8)
+Accessible in Seychelles (37.228.129.5)
+Accessible in Germany (185.220.101.213)
 
 [ ✓ ]
 
 "This is good work. Feel your pain with the beatmap conversion."
 https://www.youtube.com/watch?v=nWfF8wj19yk
 
-Accessible in Switzerland (31.7.61.186)
-Accessible in the United States (199.249.230.69)
-Accessible in Denmark (185.38.175.71)
+Accessible in Germany (185.220.100.249)
+Accessible from an unknown location.
+Accessible in Austria (109.70.100.50)
 
 [ ✓ ]
 
 "Doesn't look like failing to me. Glad you enjoyed the map."
 https://www.youtube.com/watch?v=e_pyT5yFuYY
 
-Accessible in the Netherlands (185.248.160.21)
-Accessible in Czechia (45.153.160.133)
-Accessible in Germany (185.220.102.249)
+Accessible in Switzerland (176.10.104.240)
+Accessible in Germany (185.220.101.144)
+Accessible in China (23.154.177.131)
 
 [ ✓ ]
 
 "This video is seriously helping the beatmapping process for a personal Minecraft project of mine. Thank you."
 https://www.youtube.com/watch?v=LDiylRToAGE
 
-Non-accessible in Czechia (45.153.160.136)
-Non-accessible in Austria (109.70.100.51)
-Non-accessible in the United States (162.247.74.202)
+Accessible in Sweden (213.164.206.124)
+Accessible in Canada (51.161.43.237)
+Accessible in the United States (107.189.10.63)
+
+[ ✓ ]
+
+No abnormal behavior detected. All comments are publicly available.
+```
+
+### Hypothetical outputs
+
+#### Video
+
+```
+"Me at the zoo"
+https://www.youtube.com/watch?v=jNQXAC9IVRw
+
+Non-accessible in the United States (199.249.230.78)
+Non-accessible in the Republic of Moldova (178.17.174.164)
+Non-accessible in Ukraine (193.218.118.183)
+Non-accessible in Seychelles (37.228.129.5)
+Non-accessible in the United States (199.249.230.158)
+
+0/5 attempts successful.
+```
+
+#### Comments
+
+```
+"This video is seriously helping the beatmapping process for a personal Minecraft project of mine. Thank you."
+https://www.youtube.com/watch?v=LDiylRToAGE
+
+Non-accessible in Sweden (213.164.206.124)
+Accessible in Canada (51.161.43.237)
+Non-accessible in the United States (107.189.10.63)
 
 [ ! ]
 
-3/4 comments publicly accessible.
+Questionable behavior detected in 1 of 1 comment(s).
 ```
 
 ### Self-host
