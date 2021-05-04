@@ -1,6 +1,6 @@
 # ShadowTube
 
-![alt text](https://github.com/danehobrecht/shadowtube/blob/main/static/images/shadowtube.png)
+![alt text](https://github.com/danehobrecht/shadowtu.be/blob/main/static/images/shadowtube.png)
 
 Analyzation features:
 
