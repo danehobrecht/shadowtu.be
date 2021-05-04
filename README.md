@@ -8,7 +8,53 @@ Analyzation features:
  - Complete comment history (alpha)
  - "Discussion", or, "Community" posts (under development)
 
-### Sample outputs
+### Self-host
+#### GNU/Linux, MacOS
+
+1. Download the zip and create a virtual environment named "venv" in the extracted directory
+```
+python3 -m venv /path/to/shadowtube/venv
+```
+2. Navigate to directory
+```
+cd /path/to/shadowtube
+```
+3. Install dependencies
+```
+pip3 install -r requirements.txt
+```
+4. Establish "app.py"
+```
+export FLASK_APP=app.py
+```
+5. Run
+```
+flask run
+```
+#### Windows
+
+1. Download the zip and create a virtual environment (venv) in the extracted directory
+```
+python3 -m venv c:path\to\shadowtube\venv
+```
+2. Activate virtual environment
+```
+venv\Scripts\activate.bat
+```
+3. Install dependencies
+```
+pip3 install -r requirements.txt
+```
+4. Establish "app.py"
+```
+set FLASK_APP=app.py
+```
+5. Run
+```
+python3 -m flask run
+```
+
+### Sample results
 #### Video
 
 ```
@@ -66,7 +112,7 @@ Accessible in the United States (107.189.10.63)
 No abnormal behavior detected. All comments are publicly available.
 ```
 
-### Hypothetical outputs
+### Hypothetical results
 
 #### Video
 
@@ -98,51 +144,6 @@ Non-accessible in the United States (107.189.10.63)
 Questionable behavior detected in 1 of 1 comment(s).
 ```
 
-### Self-host
-#### GNU/Linux, MacOS
-
-1. Download the zip and create a virtual environment named "venv" in the extracted directory
-```
-python3 -m venv /path/to/shadowtube/venv
-```
-2. Navigate to directory
-```
-cd /path/to/shadowtube
-```
-3. Install dependencies
-```
-pip3 install -r requirements.txt
-```
-4. Establish "app.py"
-```
-export FLASK_APP=app.py
-```
-5. Run
-```
-flask run
-```
-#### Windows
-
-1. Download the zip and create a virtual environment (venv) in the extracted directory
-```
-python3 -m venv c:path\to\shadowtube\venv
-```
-2. Activate virtual environment
-```
-venv\Scripts\activate.bat
-```
-3. Install dependencies
-```
-pip3 install -r requirements.txt
-```
-4. Establish "app.py"
-```
-set FLASK_APP=app.py
-```
-5. Run
-```
-python3 -m flask run
-```
 ### Prerequisites
 
  - Python 3 | pip3 and latest python version
