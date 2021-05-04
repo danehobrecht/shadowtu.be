@@ -40,8 +40,8 @@ def rotate_connection():
 def video(url):
 	attempts = 0
 	accessible = 0
-	#results_file = open("results.txt", 'w')
-	#sys.stdout = results_file
+	results_file = open("results.txt", 'w')
+	sys.stdout = results_file
 
 	if "https://youtu.be/" in str(url) or "https://www.youtube.com/watch?v=" in str(url):
 		try:
@@ -84,7 +84,7 @@ def video(url):
 				print(" in " + r_dict["country"] + " (" + r_dict["ip"] + ")")
 
 	print("\n" + str(accessible) + "/" + str(attempts) + " attempts successful.")
-	#results_file.close()
+	results_file.close()
 	return(open("results.txt", "r").read())
 
 ### Comments - https://www.youtube.com/feed/history/comment_history
