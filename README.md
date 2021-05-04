@@ -35,7 +35,7 @@ cd /path/to/shadowtube
 ```
 pip3 install -r requirements.txt
 ```
-4. Establish the flask app
+4. Establish "app.py"
 ```
 export FLASK_APP=app.py
 ```
@@ -57,7 +57,7 @@ venv\Scripts\activate.bat
 ```
 pip3 install -r requirements.txt
 ```
-4. Establish the flask app
+4. Establish "app.py"
 ```
 set FLASK_APP=app.py
 ```
