@@ -45,7 +45,7 @@ def video(url):
 
 	if "https://youtu.be/" in str(url) or "https://www.youtube.com/watch?v=" in str(url):
 		try:
-			get_tor_session().get("https://icanhazip.com")
+			get_tor_session().get("https://ip.seeip.org/")
 		except IOError:
 			return "Tor service is down serverside. Please try again later."
 	else:
@@ -117,7 +117,7 @@ def comments():
 	try:
 		open(CURRENT_WORKING_DIRECTORY + "/uploads/Google_-_My_Activity.html")
 		try:
-			get_tor_session().get("https://icanhazip.com")
+			get_tor_session().get("https://ip.seeip.org/")
 		except IOError:
 			purge_uploads()
 			return "Tor service is down serverside. Please try again later."
