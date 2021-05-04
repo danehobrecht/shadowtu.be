@@ -46,25 +46,25 @@ flask run
 #### Windows
 
 1. Download the zip and create a virtual environment (venv) in the extracted directory:
-
-	``python3 -m venv c:path\to\shadowtube\venv``
-
+```
+python3 -m venv c:path\to\shadowtube\venv
+```
 2. Activate virtual environment:
-
-	`venv\Scripts\activate.bat`
-
+```
+venv\Scripts\activate.bat
+```
 3. Install dependencies:
-
-	`pip3 install -r requirements.txt`
-
+```
+pip3 install -r requirements.txt
+```
 4. Establish the flask app:
-
-	`set FLASK_APP=app.py`
-
+```
+set FLASK_APP=app.py
+```
 5. Run:
-
-	`python3 -m flask run`
-	
+```
+python3 -m flask run
+```
 ## Prerequisites
 
 - Python 3 - pip3 must be available | https://www.python.org/downloads/
