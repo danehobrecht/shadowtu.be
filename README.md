@@ -4,7 +4,22 @@ Current analyzation features are as follows:
 
 - Video links
 - Complete comment history
-    
+
+### Sample Output
+
+```sh
+"Portal - 'Still Alive'"
+https://www.youtube.com/watch?v=Y6ljFaKRTrI
+
+Accessible in the United States (199.249.230.78)
+Accessible in Republic of Moldova (178.17.174.164)
+Accessible in Ukraine (193.218.118.183)
+Accessible in Seychelles (37.228.129.5)
+Accessible in the United States (199.249.230.158)
+
+5/5 attempts successful.
+```
+
 ### Host ShadowTube instance
 #### GNU/Linux, MacOS
 
