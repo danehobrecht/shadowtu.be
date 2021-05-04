@@ -65,13 +65,13 @@ set FLASK_APP=app.py
 ```
 python3 -m flask run
 ```
-## Prerequisites
+### Prerequisites
 
 - Python 3 - pip3 must be available | https://www.python.org/downloads/
 - Tor Browser - Required to be running during script execution | https://www.torproject.org/
 - virtualenv - Required for creating sandboxed environments | https://pypi.org/project/virtualenv/
 
-## Known compatability issues (subject to change)
+### Known compatability issues (subject to change)
 
 - Video premieres
 - Geometric unicode characters in titles
