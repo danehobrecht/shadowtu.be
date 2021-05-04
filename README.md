@@ -6,11 +6,10 @@ Analyzation features:
 
  - Video links
  - Complete comment history (alpha)
+ - "Discussion", or, "Community" posts (under development)
 
-To be developed:
- - "Discussion", or, "Community" posts
-
-### Sample Output
+### Sample outputs
+#### Video
 
 ```
 "Me at the zoo"
@@ -23,6 +22,28 @@ Accessible in Seychelles (37.228.129.5)
 Accessible in the United States (199.249.230.158)
 
 5/5 attempts successful.
+```
+
+#### Comments
+
+```
+https://www.youtube.com/watch?v=Drx1DEXa0GM
+"Super clever, really like the use of chickens. The smaller scale interpretations seem to be popular as opposed to som..."
+[ ✓ ]
+
+https://www.youtube.com/watch?v=nWfF8wj19yk
+"This is good work. Feel your pain with the beatmap conversion."
+[ ✓ ]
+
+https://www.youtube.com/watch?v=e_pyT5yFuYY
+"Doesn't look like failing to me. Glad you enjoyed the map."
+[ ✓ ]
+
+https://www.youtube.com/watch?v=LDiylRToAGE
+"This video is seriously helping the beatmapping process for a personal Minecraft project of mine. Thank you."
+[ ✓ ]
+
+4/4 comments accessible.
 ```
 
 ### Self-host
