@@ -27,35 +27,43 @@ Accessible in the United States (199.249.230.158)
 #### Comments
 
 ```
-https://www.youtube.com/watch?v=Drx1DEXa0GM
 "Super clever, really like the use of chickens. The smaller scale interpretations seem to be popular as opposed to som..."
-Accessible in Germany (185.220.101.204)
-Accessible in the Netherlands (104.248.88.112)
-Accessible in the Netherlands (51.15.124.1)
+https://www.youtube.com/watch?v=Drx1DEXa0GM
+
+Accessible in Germany (89.163.252.230)
+Accessible in France (89.234.157.254)
+Accessible in Austria (109.70.100.58)
+
 [ ✓ ]
 
-https://www.youtube.com/watch?v=nWfF8wj19yk
 "This is good work. Feel your pain with the beatmap conversion."
-Accessible in Norway (185.35.202.222)
-Accessible in Switzerland (46.19.141.84)
-Accessible in the United States (104.244.73.13)
+https://www.youtube.com/watch?v=nWfF8wj19yk
+
+Accessible in Switzerland (31.7.61.186)
+Accessible in the United States (199.249.230.69)
+Accessible in Denmark (185.38.175.71)
+
 [ ✓ ]
 
-https://www.youtube.com/watch?v=e_pyT5yFuYY
 "Doesn't look like failing to me. Glad you enjoyed the map."
-Accessible in Finland (95.216.145.1)
-Accessible in Germany (5.199.130.188)
-Accessible in Canada (209.127.17.234)
+https://www.youtube.com/watch?v=e_pyT5yFuYY
+
+Accessible in the Netherlands (185.248.160.21)
+Accessible in Czechia (45.153.160.133)
+Accessible in Germany (185.220.102.249)
+
 [ ✓ ]
 
-https://www.youtube.com/watch?v=LDiylRToAGE
 "This video is seriously helping the beatmapping process for a personal Minecraft project of mine. Thank you."
-Accessible in the Netherlands (185.191.124.150)
-Accessible in Ukraine (95.214.235.160)
-Accessible in Germany (185.220.101.5)
-[ ✓ ]
+https://www.youtube.com/watch?v=LDiylRToAGE
 
-4/4 comments accessible.
+Non-accessible in Czechia (45.153.160.136)
+Non-accessible in Austria (109.70.100.51)
+Non-accessible in the United States (162.247.74.202)
+
+[ ! ]
+
+3/4 comments publicly accessible.
 ```
 
 ### Self-host

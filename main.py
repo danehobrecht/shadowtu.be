@@ -131,8 +131,8 @@ def comments():
 		uuid = uuids.split("'")[index]
 		instances = 0
 		index += 2
-		print(link)
 		print('"' + comment.replace("`", "'") + '"')
+		print(link + "\n")
 
 		for i in range(0, 3, 1):
 			rotate_connection()
@@ -157,10 +157,10 @@ def comments():
 
 		if private == bool(False):
 			if instances > 0:
-				print("[ ✓ ]\n")
+				print("\n[ ✓ ]\n")
 				accessible += 1
 			elif instances == 0:
-				print("[ X ]\n")
+				print("\n[ ! ]\n")
 
 		attempts += 1
 	print(str(accessible) + "/" + str(attempts) + " comments accessible.")
