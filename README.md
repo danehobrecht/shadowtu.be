@@ -29,7 +29,7 @@ export FLASK_APP=app.py
 ```
 5. Run
 ```
-flask run
+python3 -m flask run
 ```
 #### Windows
 
