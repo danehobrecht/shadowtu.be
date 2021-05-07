@@ -40,8 +40,8 @@ def rotate_connection():
 def video(url):
 	attempts = 0
 	accessible = 0
-	results_file = open("results.txt", 'w')
-	sys.stdout = results_file
+	#results_file = open("results.txt", 'w')
+	#sys.stdout = results_file
 
 	if "https://youtu.be/" in str(url) or "https://www.youtube.com/watch?v=" in str(url):
 		try:
@@ -75,7 +75,7 @@ def video(url):
 			try:
 				r = get_tor_session().get("https://ip.seeip.org/geoip")
 				r_dict = r.json()
-				if r_dict["country"] == "United States" or r_dict["country"] == "Netherlands" or r_dict["country"] == "Republic of Moldova":
+				if r_dict["country"] == "United States" or r_dict["country"] == "Netherlands" or r_dict["country"] == "Republic of Moldova" or r_dict["country"] == "Seychelles" or r_dict["country"] == "Ukraine" or r_dict["country"] == "Czech Republic":
 					print(" in the " + r_dict["country"] + " (" + r_dict["ip"] + ")")
 				else:
 					print(" in " + r_dict["country"] + " (" + r_dict["ip"] + ")")
@@ -90,7 +90,7 @@ def video(url):
 	elif accessible == 0:
 		print("\nAlarming behavior detected.")
 
-	results_file.close()
+	#results_file.close()
 	return(open("results.txt", "r").read())
 
 ### Comments - https://www.youtube.com/feed/history/comment_history
