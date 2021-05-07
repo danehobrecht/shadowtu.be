@@ -1,5 +1,3 @@
-# ShadowTube
-
 ![alt text](https://github.com/danehobrecht/shadowtu.be/blob/main/static/images/shadowtube.png)
 
 Analyzation features:
@@ -100,57 +98,16 @@ Accessible in China (23.154.177.131)
 
 [ ✓ ]
 
-"This video is seriously helping the beatmapping process for a personal Minecraft project of mine. Thank you."
-https://www.youtube.com/watch?v=LDiylRToAGE
-
-Accessible in Sweden (213.164.206.124)
-Accessible in Canada (51.161.43.237)
-Accessible in the United States (107.189.10.63)
-
-[ ✓ ]
-
 No abnormal behavior detected. All comments are publicly available.
-```
-
-### Hypothetical results
-
-#### Video
-
-```
-"Me at the zoo"
-https://www.youtube.com/watch?v=jNQXAC9IVRw
-
-Non-accessible in the United States (199.249.230.78)
-Non-accessible in the Republic of Moldova (178.17.174.164)
-Non-accessible in Ukraine (193.218.118.183)
-Non-accessible in Seychelles (37.228.129.5)
-Non-accessible in the United States (199.249.230.158)
-
-Alarming behavior detected.
-```
-
-#### Comments
-
-```
-"This video is seriously helping the beatmapping process for a personal Minecraft project of mine. Thank you."
-https://www.youtube.com/watch?v=LDiylRToAGE
-
-Non-accessible in Sweden (213.164.206.124)
-Accessible in Canada (51.161.43.237)
-Non-accessible in the United States (107.189.10.63)
-
-[ ! ]
-
-Questionable behavior detected in 1 of 1 comment(s).
 ```
 
 ### Prerequisites
 
- - Python 3 | pip3 and latest python version
+ - Python 3.7.3+ & pip3
 https://www.python.org/downloads/
- - Tor Browser | Required to be running during script execution
+ - Tor Browser
 https://www.torproject.org/
- - virtualenv | Sandboxed environment creation
+ - virtualenv
 https://pypi.org/project/virtualenv/
 
 ### Known compatability issues (subject to change)
