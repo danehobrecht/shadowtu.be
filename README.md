@@ -21,7 +21,7 @@ cd /path/to/shadowtube
 ```
 3. Install dependencies
 ```
-pip3 install -r requirements.txt
+pip3 install -r requirements.txt --no-warn-script-location
 ```
 4. Establish "app.py"
 ```
