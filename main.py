@@ -58,7 +58,7 @@ def video(url):
 	if title == "":
 		print("Video unavailable")
 	else:
-		print('"' + title + '"')
+		print(title)
 	print(url + "\n")
 
 	while attempts < 5:
@@ -66,21 +66,17 @@ def video(url):
 		title_query = "https://www.youtube.com/results?search_query=" + "+".join(title.split()).replace('\n', '')
 		title_search = get_tor_session().get(title_query).text
 		if title_search.find('"title":{"runs":[{"text":"') >= 0:
-			#print("\n" + get_tor_session().get("https://icanhazip.com").text.replace('\n', '') + " - ", end="")
 			if title_search.find(title) >= 0:
 				accessible += 1
-				print("Accessible", end="")
+				print("[ ✓ ]", end="")
 			else:
-				print("Non-accessible", end="")
+				print("[ X ]", end="")
 			try:
 				r = get_tor_session().get("https://ip.seeip.org/geoip")
 				r_dict = r.json()
-				if r_dict["country"] == "United States" or r_dict["country"] == "Netherlands" or r_dict["country"] == "Republic of Moldova" or r_dict["country"] == "Seychelles" or r_dict["country"] == "Ukraine" or r_dict["country"] == "Czech Republic":
-					print(" in the " + r_dict["country"] + " (" + r_dict["ip"] + ")")
-				else:
-					print(" in " + r_dict["country"] + " (" + r_dict["ip"] + ")")
+				print(" " + r_dict["country"] + " (" + r_dict["ip"] + ")")
 			except IOError:
-				print(" from an unknown location.")
+				print(" Unknown location.")
 			attempts += 1
 
 	if attempts == accessible and accessible > 0:
@@ -146,27 +142,24 @@ def comments():
 				with open("temp_comments.json", "r") as json:
 					j = json.read()
 					if j.find(uuid) >= 0:
-						print("Accessible", end="")
+						print("[ ✓ ]", end="")
 					else:
-						print("Non-accessible", end="")
+						print("[ X ]", end="")
 						if instances > 0:
 							instances -= 1
 					try:
 						r = get_tor_session().get("https://ip.seeip.org/geoip")
 						r_dict = r.json()
-						if r_dict["country"] == "United States" or r_dict["country"] == "Netherlands" or r_dict["country"] == "Republic of Moldova":
-							print(" in the " + r_dict["country"] + " (" + r_dict["ip"] + ")")
-						else:
-							print(" in " + r_dict["country"] + " (" + r_dict["ip"] + ")")
+						print(" " + r_dict["country"] + " (" + r_dict["ip"] + ")")
 					except IOError:
-						print(" from an unknown location.")
+						print(" Unknown location.")
 					instances += 1
 			if private == bool(False):
 				if instances > 0:
-					print("\n[ ✓ ]\n")
 					accessible += 1
+					print("\nAccessible.\n")
 				elif instances == 0:
-					print("\n[ ! ]\n")
+					print("\nNon-accessible.\n")
 			attempts += 1
 
 		if attempts == accessible and accessible > 0:
@@ -292,3 +285,6 @@ def search_dict(partial, search_key):
 		elif isinstance(current_item, list):
 			for value in current_item:
 				stack.append(value)
+
+if __name__ == "__main__":
+	main()
