@@ -1,6 +1,5 @@
 venv
 __pycache__
 results.txt
-potential.txt
-temp_comments.json
+temp.json
 Google_-_My_Activity.html

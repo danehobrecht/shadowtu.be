@@ -90,6 +90,17 @@ def video(url):
 	return(open("results.txt", "r").read())
 
 ### Comments - https://www.youtube.com/feed/history/comment_history
+### Potential applications
+#parent_links = str(re.findall('Commented on  <a href=(.*?)&', f))
+#reply_links = str(re.findall('comment on  <a href=(.*?)&', f))
+#list = comments.replace("['", "").replace("']", "").replace("`", "'")
+#num = 1
+#for i in range(int(list.count("', '"))):
+#	num = num + 1
+#	list = list.replace("', '", "\n" + str(num) + ". ", 1)
+#a = re.sub('<div class="uUy2re"><div class="QTGV3c" jsname="r4nke">(.*?)`s Discussion tab</div>', '', html) WORKS?
+#b = re.sub('<c-data id="i7" jsdata="(.*?)" data-date', '', a) DOESNT WORK
+#<div class="QTGV3c" jsname="r4nke">Jubliani</div><div class="SiEggd">Commented on A S H`s Discussion tab</div>
 
 def purge_uploads():
 	folder = CURRENT_WORKING_DIRECTORY + "/uploads"
@@ -139,7 +150,7 @@ def comments():
 				fetch_comments(link.replace("https://www.youtube.com/watch?v=", ""))
 				if private == bool(True):
 					break
-				with open("temp_comments.json", "r") as json:
+				with open("temp.json", "r") as json:
 					j = json.read()
 					if j.find(uuid) >= 0:
 						print("[ ✓ ]", end="")
@@ -176,7 +187,7 @@ def fetch_comments(youtubeId):
 	parser = argparse.ArgumentParser()
 	try:
 		args, unknown = parser.parse_known_args()
-		output = "temp_comments.json"
+		output = "temp.json"
 		limit = 1000
 		if not youtubeId or not output:
 			parser.print_usage()
